@@ -20,25 +20,35 @@ const PasswordBox = () => {
     const [values, setValues] = React.useState({
         amount: '',
         password: '',
+        newPassword: '',
+        confirmPassword: '',
         weight: '',
         weightRange: '',
         showPassword: false,
+        showNewPassword: false,
+        showConfirmPassword: false,
     });
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
-      };
+    };
     
     const handleClickShowPassword = () => {
-      setValues({
-        ...values,
-        showPassword: !values.showPassword,
-      });
+        setValues({...values, showPassword: !values.showPassword});
+    };
+
+    const handleClickShowNewPassword = () => {
+        setValues({...values, showNewPassword: !values.showNewPassword});
+    };
+
+    const handleClickShowConfirmPassword = () => {
+        setValues({...values, showConfirmPassword: !values.showConfirmPassword});
     };
 
     const handleMouseDownPassword = (event) => {
-      event.preventDefault();
+        event.preventDefault();
     };
+
     return (
         <div>
         <PassContainer>
@@ -51,11 +61,11 @@ const PasswordBox = () => {
             </PassHeader>
             <DataWrapper>
                 <FormControl fullWidth variant="filled">
-                    <InputLabel htmlFor="filled-adornment-password">
+                    <InputLabel htmlFor="password">
                         Password
                     </InputLabel>
                     <FilledInput
-                        id="filled-adornment-password"
+                        id="password"
                         type={values.showPassword ? "text" : "password"}
                         value={values.password}
                         onChange={handleChange("password")}
@@ -74,46 +84,46 @@ const PasswordBox = () => {
                     />
                 </FormControl>
                 <FormControl fullWidth variant="filled">
-                    <InputLabel htmlFor="filled-adornment-password">
+                    <InputLabel htmlFor="newPassword">
                         New Password
                     </InputLabel>
                     <FilledInput
-                        id="filled-adornment-password"
-                        type={values.showPassword ? "text" : "password"}
-                        value={values.password}
-                        onChange={handleChange("password")}
+                        id="newPassword"
+                        type={values.showNewPassword ? "text" : "password"}
+                        value={values.newPassword}
+                        onChange={handleChange("newPassword")}
                         endAdornment={
                             <InputAdornment position="end">
                             <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={handleClickShowNewPassword}
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                {values.showNewPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                             </InputAdornment>
                         }
                     />
                 </FormControl>
                 <FormControl fullWidth variant="filled">
-                    <InputLabel htmlFor="filled-adornment-password">
+                    <InputLabel htmlFor="confirmPassword">
                         Password Confirmation
                     </InputLabel>
                     <FilledInput
-                        id="filled-adornment-password"
-                        type={values.showPassword ? "text" : "password"}
-                        value={values.password}
-                        onChange={handleChange("password")}
+                        id="confirmPassword"
+                        type={values.showConfirmPassword ? "text" : "password"}
+                        value={values.confirmPassword}
+                        onChange={handleChange("confirmPassword")}
                         endAdornment={
                             <InputAdornment position="end">
                             <IconButton
                                 aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
+                                onClick={handleClickShowConfirmPassword}
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+                                {values.showConfirmPassword ? <Visibility /> : <VisibilityOff />}
                             </IconButton>
                             </InputAdornment>
                         }
