@@ -1,25 +1,78 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import NavbarComp from './component/navbar/index';
+import { Route, Switch } from 'react-router-dom';
+import RegisterPage from './pages/register';
+import ResetPassPage from './pages/resetPass';
+import VerificationPage from './pages/verification';
+import { keepLogin } from "./actions"
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { URL_API } from './helper';
+import LandingPage from './pages/landing';
+import AdminPage from './pages/admin';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {}
+  }
+
+  componentDidMount() {
+    this.reLogin()
+  }
+
+  reLogin = () => {
+    let token = localStorage.getItem("tkn_id");
+    if (token) {
+      const headers = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+      axios.post(URL_API + `/auth/keep`, {}, headers)
+        .then((res) => {
+          this.props.keepLogin(res.data)
+        })
+        .catch((err) => {
+          console.log("Keeplogin error :", err)
+        })
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        {
+          this.props.role == "admin" ?
+            <>
+              <NavbarComp />
+              <Switch>
+                <Route path="/" component={AdminPage} exact />
+              </Switch>
+            </> : this.props.role == "user" ?
+              <>
+                <NavbarComp />
+                <Route path="/" component={LandingPage} exact />
+              </> :
+              <>
+                <NavbarComp />
+                <Switch>
+                  <Route path="/" component={LandingPage} exact />
+                  <Route path="/regis" component={RegisterPage} />
+                  <Route path="/forget-pass" component={ResetPassPage} />
+                  <Route path="/verification" component={VerificationPage} />
+                </Switch>
+              </>
+        }
+      </div>
+    );
+  }
 }
 
-export default App;
+const mapsStateToProps = ({ authReducer }) => {
+  return {
+    role: authReducer.role
+  }
+}
+
+export default connect(mapsStateToProps, { keepLogin })(App);
