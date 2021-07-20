@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import axios from 'axios';
+import { URL_API } from '../../helper'
 import profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,7 +21,7 @@ import {
     ProfileWrapper,
     Form,
     Status,
-  } from "./profileBoxComp";
+} from "./profileBoxComp";
 import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
@@ -44,6 +46,18 @@ const ProfileBox = () => {
     const handleNotify = (subject) => {
         toast.success(`Hey 👋, ${subject} has been updated!`);
     };
+
+    const handleImageUpload = (event) => {
+      let formData = new FormData()
+      formData.append('images', event.target.files[0])
+      axios.post(URL_API + '/profile/update-photo', formData)
+        .then(response => {
+          console.log(response.data)
+        }).catch(error => {
+          console.log(error)
+        })
+      // setImageUpload(URL.createObjectURL(event.target.files[0]))
+    }
 
     return (
         <div>
@@ -111,7 +125,7 @@ const ProfileBox = () => {
                     }}
                     badgeContent={
                       <label htmlFor="icon-button-file">
-                        <Input accept="image/*" id="icon-button-file" type="file" />
+                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImageUpload}/>
                         <Fab
                           size="small"
                           color="primary"
