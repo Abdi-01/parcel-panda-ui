@@ -42,7 +42,7 @@ class VerificationPage extends React.Component {
                 <Container>
                     <Row className="mt-5 box">
                         <Col md="6" className="p-0">
-                            <img className="img" src={otp1} />
+                            <img className="img" src={otp1} alt="verification"/>
                         </Col>
                         <Col md="6" className="col2">
                             <h6>Forgot Password</h6>
