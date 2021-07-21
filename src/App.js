@@ -10,6 +10,11 @@ import axios from 'axios';
 import { URL_API } from './helper';
 import LandingPage from './pages/landing';
 import AdminPage from './pages/admin';
+import UserProfile from './pages/profile';
+// import FinancialReport from './pages/report'
+// import ProductManagement from './pages/product'
+// import TransactionManagement from './pages/transaction'
+// import SpecialMenu from './pages/specialMenu'
 
 class App extends React.Component {
   constructor(props) {
@@ -53,6 +58,7 @@ class App extends React.Component {
               <>
                 <NavbarComp />
                 <Route path="/" component={LandingPage} exact />
+                <Route path='/user-profile' component={UserProfile} />
               </> :
               <>
                 <NavbarComp />
