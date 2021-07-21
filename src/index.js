@@ -19,8 +19,8 @@ const globalStore = createStore(Reducers, {}, applyMiddleware(ReduxThunk))
 ReactDOM.render(
   <Provider store={globalStore}>
     <BrowserRouter>
-    <App />
-  </BrowserRouter>
+      <App />
+    </BrowserRouter>
   </Provider>,
   document.getElementById('root')
 );

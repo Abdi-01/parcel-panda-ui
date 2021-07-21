@@ -28,7 +28,7 @@ class RegisterPage extends React.Component {
         let email = this.state.email
         let password = this.state.pass
         console.log(password)
-        if (username == '' || fullname == '' || email == '' || password == '') {
+        if (username === '' || fullname === '' || email === '' || password === '') {
             this.setState({ alert: !this.state.alert, message: "Lengkapi semua form!", alertType: 'danger' })
             setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
         } else {
@@ -65,7 +65,7 @@ class RegisterPage extends React.Component {
                 <Container>
                     <Row className="mt-5 box">
                         <Col md="6" className="p-0">
-                            <img className="img" src={regis1} />
+                            <img className="img" alt={"..."} src={regis1} />
                         </Col>
                         <Col md="6" className="col2">
                             <h4>Get Started.</h4>

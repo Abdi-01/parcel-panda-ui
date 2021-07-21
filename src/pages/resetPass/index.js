@@ -29,7 +29,7 @@ class ResetPassPage extends React.Component {
             axios.get(URL_API + `/auth/get?email=${email}`)
                 .then(res => {
                     if (res.data.length > 0) {
-                        if (newPass == confirmPass) {
+                        if (newPass === confirmPass) {
                             axios.patch(URL_API + `/auth/update-pass`, { email: email, password: newPass })
                                 .then(res => {
                                     this.setState({ alert: !this.state.alert, message: "Your account has been updated!", alertType: 'success' })
@@ -57,7 +57,7 @@ class ResetPassPage extends React.Component {
                 <Container>
                     <Row className="mt-5 box">
                         <Col md="6" className="p-0">
-                            <img src={forgett1} className="img" />
+                            <img src={forgett1} alt={"..."} className="img" />
                         </Col>
                         <Col md="6" className="col2">
                             <h4>Reset Password</h4>

@@ -1,5 +1,5 @@
 import React from 'react';
-import NavbarComp from './component/navbar/index';
+import NavbarComp from './components/navbar/index';
 import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './pages/register';
 import ResetPassPage from './pages/resetPass';
@@ -48,13 +48,13 @@ class App extends React.Component {
     return (
       <div>
         {
-          this.props.role == "admin" ?
+          this.props.role === "admin" ?
             <>
               <NavbarComp />
               <Switch>
                 <Route path="/" component={AdminPage} exact />
               </Switch>
-            </> : this.props.role == "user" ?
+            </> : this.props.role === "user" ?
               <>
                 <NavbarComp />
                 <Route path="/" component={LandingPage} exact />

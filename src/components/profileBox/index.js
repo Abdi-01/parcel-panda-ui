@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios';
 import { URL_API } from '../../helper'
-import profile from "../../asset/img/profile-user.png";
+import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { 
     Badge,
     Button, 
@@ -25,6 +26,7 @@ import {
 import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
+// import { getProfile } from '../../actions';
 
 const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
@@ -32,7 +34,7 @@ const ProfileBox = () => {
     const [openDialogVerify, setOpenDialogVerify] = useState(false);
 
     const editFullname = () => {
-        setOpenDialogFullname(true);
+      setOpenDialogFullname(true);
     };
 
     const editGender = () => {
@@ -43,8 +45,12 @@ const ProfileBox = () => {
         setOpenDialogVerify(true);
     };
 
-    const handleNotify = (subject) => {
-        toast.success(`Hey 👋, ${subject} has been updated!`);
+    const handleNotify = (status, message) => {
+      if (status === 200) {
+        toast.success(`Hey 👋, ${message}`);
+      } else {
+        toast.error(`Hey 👋, ${message}`);
+      }
     };
 
     const handleImageUpload = (event) => {
@@ -59,26 +65,37 @@ const ProfileBox = () => {
       // setImageUpload(URL.createObjectURL(event.target.files[0]))
     }
 
+    const { profile } = useSelector(({ authReducer }) => {
+      return {
+        profile: authReducer.profile
+      }
+    })
+  
+    console.log("My Profile Page", profile)
+
+    // useEffect(() => {
+    //   getProfile()
+    // }, [openDialogFullname, openDialogGender, openDialogVerify])
+
     return (
         <div>
             <ProfileContainer>
               <ProfileHeader>
                 <h3>My Profile</h3>
                 <div>
-                  Manage your profile information to control, protect and secure
-                  your account
+                  Manage your profile information to control, protect and secure your account.
                 </div>
               </ProfileHeader>
               <ProfileWrapper>
                 <Form>
                   <EditContainer>
                     <Label>Username</Label>
-                    <Typography variant="subtitle1">idoyudha</Typography>
+                    <Typography variant="subtitle1">{profile.username}</Typography>
                   </EditContainer>
                   <EditContainer>
                     <Label>Fullname</Label>
                     <Typography variant="subtitle1">
-                      Ido Yudhatama
+                      {profile.fullname}
                       <Button
                         size="small"
                         color="primary"
@@ -91,7 +108,7 @@ const ProfileBox = () => {
                   </EditContainer>
                   <EditContainer>
                     <Label>Gender</Label>
-                    <Typography variant="subtitle1">Male</Typography>
+                    <Typography variant="subtitle1">{profile.gender}</Typography>
                     <Button
                       size="small"
                       color="primary"
@@ -104,15 +121,19 @@ const ProfileBox = () => {
                   <EditContainer>
                     <Label>Email</Label>
                     <Typography variant="subtitle1">
-                      idoyudha@gmail.com<Status> verified</Status>
-                      <Button
-                        size="small"
-                        color="secondary"
-                        onClick={verifyAccount}
-                        style={{ textTransform: "lowercase", marginLeft: "5px" }}
-                      >
-                        verify
-                      </Button>
+                      {profile.email}
+                      { profile.idstatus === 1 ? 
+                        <Status> verified</Status> 
+                      : 
+                        <Button
+                          size="small"
+                          color="secondary"
+                          onClick={verifyAccount}
+                          style={{ textTransform: "lowercase", marginLeft: "5px" }}
+                        >
+                          verify
+                        </Button>
+                      }
                     </Typography>
                   </EditContainer>
                 </Form>
@@ -137,7 +158,7 @@ const ProfileBox = () => {
                       </label>
                     }
                   >
-                    <LargeAvatar alt="Ido Yudhatama" src={profile} />
+                    <LargeAvatar alt="Ido Yudhatama" src={picture_profile} />
                   </Badge>
                 </PictContainer>
               </ProfileWrapper>
@@ -146,11 +167,13 @@ const ProfileBox = () => {
                 open={openDialogFullname}
                 setOpen={setOpenDialogFullname}
                 handleNotify={handleNotify}
+                value={profile.fullname}
             />
             <FormDialogGender
                 open={openDialogGender}
                 setOpen={setOpenDialogGender}
                 handleNotify={handleNotify}
+                value={profile.gender}
             />
             <FormDialogVerify
                 open={openDialogVerify}
