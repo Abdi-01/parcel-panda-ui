@@ -10,7 +10,6 @@ class LandingPage extends React.Component {
     render() { 
         return ( 
             <div>
-                <NavbarComp />
                 <CarouselComp/>
             </div>
          );
