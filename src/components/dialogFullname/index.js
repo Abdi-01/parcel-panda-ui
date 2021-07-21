@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import axios from "axios";
+import { URL_API } from "../../helper";
+import { getProfile } from "../../actions";
 import {
   Button,
   Dialog,
@@ -10,9 +13,6 @@ import {
   TextField,
 } from "@material-ui/core/";
 import { ButtonWrapper } from "./dialogFullnameComp";
-import { URL_API } from "../../helper";
-import axios from "axios";
-import { getProfile } from "../../actions";
 
 const FormDialogProfile = ({ open, setOpen, handleNotify, value }) => {
   const [fullname, setFullname] = useState(value)
@@ -77,7 +77,6 @@ const FormDialogProfile = ({ open, setOpen, handleNotify, value }) => {
           <ButtonWrapper>
             <Button 
               onClick={handleSave} 
-              loading={loading}
               variant="contained" 
               color="primary"
             >

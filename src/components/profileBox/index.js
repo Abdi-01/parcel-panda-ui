@@ -38,11 +38,11 @@ const ProfileBox = () => {
     };
 
     const editGender = () => {
-        setOpenDialogGender(true);
+      setOpenDialogGender(true);
     };
 
     const verifyAccount = () => {
-        setOpenDialogVerify(true);
+      setOpenDialogVerify(true);
     };
 
     const handleNotify = (status, message) => {
@@ -70,12 +70,6 @@ const ProfileBox = () => {
         profile: authReducer.profile
       }
     })
-  
-    console.log("My Profile Page", profile)
-
-    // useEffect(() => {
-    //   getProfile()
-    // }, [openDialogFullname, openDialogGender, openDialogVerify])
 
     return (
         <div>
