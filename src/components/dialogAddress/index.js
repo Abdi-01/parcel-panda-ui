@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -9,9 +9,14 @@ import {
     Grid,
     TextField,
 } from "@material-ui/core/";
-import { ButtonWrapper } from "./dialogAddressComp";
+import { toast } from 'react-toastify';
+import { ButtonWrapper, StyledButton } from "./dialogAddressComp";
+import { URL_API } from '../../helper';
+import axios from 'axios';
+import { getProfile } from '../../actions';
 
-const FormDialogAddress = ({ open, setOpen, handleNotify, data }) => {
+toast.configure()
+const FormDialogAddress = ({ open, setOpen, data }) => {
     const [loading, setLoading] = useState(false)
     const [values, setValues] = useState({
         label: '',
@@ -21,6 +26,7 @@ const FormDialogAddress = ({ open, setOpen, handleNotify, data }) => {
         city: '',
         postal_code: ''
     })
+    const dispatch = useDispatch()
 
     const handleClose = () => {
         setOpen(false);
@@ -28,31 +34,80 @@ const FormDialogAddress = ({ open, setOpen, handleNotify, data }) => {
 
     const handleSave = async () => {
         try {
+            setLoading(true)
+            let token = localStorage.getItem("tkn_id")
+            let config = {}
+            if (data) {
+                console.log("Edit address", values)
+                let temp = values
+                temp.id = data.id
+                config = {
+                    method: 'patch',
+                    url: URL_API + '/profile/update-address',
+                    data: temp,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            } else {
+                console.log("Add address", values)
+                config = {
+                    method: 'post',
+                    url: URL_API + '/profile/add-address',
+                    data: values,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            }
+            let response = await axios(config)
+            dispatch(getProfile(token))
             setLoading(false)
+            setOpen(false)
+            handleNotify(response.status, response.data.message)
+            setValues({...values, 
+                label: '',
+                recipient_name: '',
+                phone_number: '',
+                address: '',
+                city: '',
+                postal_code: ''
+            })
         } catch (error) {
             console.log(error)
+            setLoading(false)
+            setOpen(false)
+            handleNotify(400, "Can't add address")
         }
     }
 
-    const handleInitialData = () => {
-        if (data !== undefined && data !== null) {
-            setValues({
-                ...values,
+    const handleNotify = (status, message) => {
+        if (status === 200) {
+            toast.success(`Success, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
+        } else {
+            toast.error(`Error, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
+        }
+    }
+
+    useEffect(() => {
+        console.log(data)
+        if (data) {
+            setValues({...values, 
                 label: data.label,
                 recipient_name: data.recipient_name,
                 phone_number: data.phone_number,
                 address: data.address,
                 city: data.city,
                 postal_code: data.postal_code
-            });
+            })  
         }
-    }
+    }, [data])
 
-    useEffect(() => {
-        handleInitialData()
-    },[])
-
-    console.log(data)
+    // console.log(values)
 
     return (
         <div>
@@ -63,7 +118,9 @@ const FormDialogAddress = ({ open, setOpen, handleNotify, data }) => {
                 onClose={handleClose}
                 aria-labelledby="fullname"
             >
-                <DialogTitle>Edit Address</DialogTitle>
+                <DialogTitle>
+                    { data ? "Edit Address" : "Add address"}
+                </DialogTitle>
                 <DialogContent>
                 <DialogContentText>Type address data</DialogContentText>
                     <TextField
@@ -135,13 +192,13 @@ const FormDialogAddress = ({ open, setOpen, handleNotify, data }) => {
                 </DialogContent>
                 <DialogActions>
                 <ButtonWrapper>
-                    <Button 
-                    onClick={handleSave} 
-                    variant="contained" 
-                    color="primary"
+                    <StyledButton 
+                        onClick={handleSave} 
+                        variant="contained" 
+                        
                     >
                         {loading ? "Loading..." : "Save"}
-                    </Button>
+                    </StyledButton>
                 </ButtonWrapper>
                 </DialogActions>
             </Dialog>

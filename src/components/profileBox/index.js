@@ -3,7 +3,8 @@ import axios from 'axios';
 import { URL_API } from '../../helper'
 import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { 
     Badge,
@@ -13,6 +14,7 @@ import {
 } from "@material-ui/core/";
 import {
     EditContainer,
+    Form,
     Input,
     Label,
     LargeAvatar,
@@ -20,8 +22,8 @@ import {
     ProfileContainer,
     ProfileHeader,
     ProfileWrapper,
-    Form,
     Status,
+    StyledButton,
 } from "./profileBoxComp";
 import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
@@ -45,14 +47,7 @@ const ProfileBox = () => {
       setOpenDialogVerify(true);
     };
 
-    const handleNotify = (status, message) => {
-      if (status === 200) {
-        toast.success(`Hey 👋, ${message}`);
-      } else {
-        toast.error(`Hey 👋, ${message}`);
-      }
-    };
-
+    
     const handleImageUpload = (event) => {
       let formData = new FormData()
       formData.append('images', event.target.files[0])
@@ -90,27 +85,27 @@ const ProfileBox = () => {
                     <Label>Fullname</Label>
                     <Typography variant="subtitle1">
                       {profile.fullname}
-                      <Button
+                      <StyledButton
                         size="small"
                         color="primary"
                         onClick={editFullname}
                         style={{ textTransform: "lowercase", marginLeft: "5px" }}
                       >
                         update
-                      </Button>
+                      </StyledButton>
                     </Typography>
                   </EditContainer>
                   <EditContainer>
                     <Label>Gender</Label>
                     <Typography variant="subtitle1">{profile.gender}</Typography>
-                    <Button
+                    <StyledButton
                       size="small"
                       color="primary"
                       onClick={editGender}
                       style={{ textTransform: "lowercase", marginLeft: "5px" }}
                     >
                       update
-                    </Button>
+                    </StyledButton>
                   </EditContainer>
                   <EditContainer>
                     <Label>Email</Label>
@@ -160,21 +155,21 @@ const ProfileBox = () => {
             <FormDialogProfile
                 open={openDialogFullname}
                 setOpen={setOpenDialogFullname}
-                handleNotify={handleNotify}
+                // handleNotify={handleNotify}
                 value={profile.fullname}
             />
             <FormDialogGender
                 open={openDialogGender}
                 setOpen={setOpenDialogGender}
-                handleNotify={handleNotify}
+                // handleNotify={handleNotify}
                 value={profile.gender}
             />
             <FormDialogVerify
                 open={openDialogVerify}
                 setOpen={setOpenDialogVerify}
-                handleNotify={handleNotify}
+                // handleNotify={handleNotify}
             />
-            <ToastContainer
+            {/* <ToastContainer
                 position="top-center"
                 autoClose={3000}
                 hideProgressBar={false}
@@ -184,7 +179,7 @@ const ProfileBox = () => {
                 pauseOnFocusLoss
                 draggable
                 pauseOnHover
-            />
+            /> */}
         </div>
     )
 }

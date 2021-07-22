@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { URL_API } from "../../helper";
 import { getProfile } from "../../actions";
+import { toast } from 'react-toastify';
 import {
   Button,
   Dialog,
@@ -14,7 +15,8 @@ import {
 } from "@material-ui/core/";
 import { ButtonWrapper } from "./dialogFullnameComp";
 
-const FormDialogProfile = ({ open, setOpen, handleNotify, value }) => {
+toast.configure()
+const FormDialogProfile = ({ open, setOpen, value }) => {
   const [fullname, setFullname] = useState(value)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -42,12 +44,18 @@ const FormDialogProfile = ({ open, setOpen, handleNotify, value }) => {
         }
       }
       let response = await axios(config)
+      // console.log(response)
       dispatch(getProfile(token))
       setLoading(false)
       setOpen(false);
-      handleNotify(response.status, response.data.message);
+      toast.success(`Success, ${response.data.message}!`, {
+        position: toast.POSITION.TOP_CENTER
+      });
     } catch (error) {
       console.log(error)
+      toast.error("Error update profile !", {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
   };
 

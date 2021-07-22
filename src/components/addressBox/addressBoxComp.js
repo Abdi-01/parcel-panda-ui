@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import FormLabel from '@material-ui/core/FormLabel';
+import Button from "@material-ui/core/Button";
 
 export const AddressContainer = styled.div`
     display: flex;
@@ -41,4 +42,13 @@ export const ButtonWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+`
+
+export const StyledButton = styled(Button)`
+    background-color: #FAB629;
+    color: #000;
+
+    &:hover {
+        background-color: #E1A425;
+    }
 `

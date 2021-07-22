@@ -11,12 +11,14 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core/";
+import { toast } from 'react-toastify';
 import { ButtonWrapper, RadioWrapper } from "./dialogGenderComp";
 import { URL_API } from "../../helper";
 import axios from "axios";
 import { getProfile } from "../../actions";
 
-const FormDialogGender = ({ open, setOpen, handleNotify, id, value }) => {
+toast.configure()
+const FormDialogGender = ({ open, setOpen, value }) => {
   const [gender, setGender] = useState(value);
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
@@ -47,9 +49,14 @@ const FormDialogGender = ({ open, setOpen, handleNotify, id, value }) => {
       dispatch(getProfile(token))
       setLoading(false)
       setOpen(false);
-      handleNotify(response.status, response.data.message);
+      toast.success(`Success, ${response.data.message}!`, {
+        position: toast.POSITION.TOP_CENTER
+      });
     } catch (error) {
-      
+      console.log(error)
+      toast.error("Error update profile !", {
+        position: toast.POSITION.TOP_CENTER
+      });
     }
   };
 

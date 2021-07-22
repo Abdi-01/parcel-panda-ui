@@ -1,5 +1,7 @@
-import React, { useState } from 'react'
-import { ToastContainer, toast } from "react-toastify";
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import HomeIcon from '@material-ui/icons/Home';
@@ -20,13 +22,21 @@ import {
     ButtonWrapper,
     DataWrapper,
     Label,
+    StyledButton,
 } from './addressBoxComp'
 import FormDialogAddress from '../dialogAddress';
+import axios from 'axios';
+import { URL_API } from '../../helper';
+import { getProfile } from '../../actions';
 
+toast.configure()
 const AddressBox = () => {
     const [openDialogAddress, setOpenDialogAddress] = useState(false)
     const [openDialogDelete, setOpenDialogDelete] = useState(false)
-    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [item, setItem] = useState(null)
+    const [idDelete, setIdDelete] = useState(null)
+    const dispatch = useDispatch()
 
     const printAddress = () => {
         // console.log("My Address Page", address)
@@ -52,7 +62,7 @@ const AddressBox = () => {
                                 </DataWrapper>
                             </div>
                             <ButtonWrapper>
-                                <Button onClick={() => editAddress(item)} variant="outlined" color="primary" fontSize="inherit" startIcon={<EditIcon />}>
+                                <Button onClick={() => dialogAddress(item)} variant="outlined" color="primary" fontSize="inherit" startIcon={<EditIcon />}>
                                     Edit
                                 </Button>
                                 <Button onClick={() => deleteAddress(item.id)} variant="outlined" color="secondary" fontSize="inherit" startIcon={<DeleteIcon />}>
@@ -64,25 +74,52 @@ const AddressBox = () => {
         }
     }
 
-    const editAddress = (item) => {
+    const dialogAddress = (item) => {
+        if (item) {
+            setItem(item)
+        }
         setOpenDialogAddress(true)
-        setData(item)
     }
 
-    const deleteAddress = () => {
+    const deleteAddress = (id) => {
         setOpenDialogDelete(true)
+        setIdDelete(id)
     }
-    
+
+    const handleDeleteAddress = async () => {
+        try {
+            setLoading(true)
+            let token = localStorage.getItem("tkn_id");
+            let config = {
+                method: 'delete',
+                url: URL_API + `/profile/delete-address/${idDelete}`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            let response = await axios(config)
+            dispatch(getProfile(token))
+            setLoading(false)
+            setOpenDialogDelete(false)
+            handleNotify(response.status, response.data.message)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+            setOpenDialogDelete(false)
+            handleNotify(400, "Can't add address")
+        }
+    }
+
     const handleNotify = (status, message) => {
         if (status === 200) {
-          toast.success(`Hey 👋, ${message}`);
+            toast.success(`Success, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
         } else {
-          toast.error(`Hey 👋, ${message}`);
+            toast.error(`Error, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
         }
-    };
-
-    const handleDeleteAddress = () => {
-        console.log("delete")
     }
 
     const handleCloseDelete = () => {
@@ -95,21 +132,23 @@ const AddressBox = () => {
         }
     })
 
-    console.log("address", address)
+    useEffect(() => {
+        
+    }, [item])
 
     return (
         <div>
             <AddressContainer>
                 <AddressHeader>
                     <h3>My Address</h3>
-                    <Button 
+                    <StyledButton 
                         variant="contained" 
                         color="secondary" 
                         startIcon={<HomeIcon />}
-                        onClick={editAddress}
+                        onClick={dialogAddress}
                     >
                         Add New Address
-                    </Button>
+                    </StyledButton>
                 </AddressHeader>
                 {printAddress()}
             </AddressContainer>
@@ -130,26 +169,14 @@ const AddressBox = () => {
                 <DialogActions>
                     <Button onClick={handleCloseDelete}>Disagree</Button>
                     <Button onClick={handleDeleteAddress} color="secondary">
-                        Agree
+                        {loading ? "Loading..." : "Agree"}
                     </Button>
                 </DialogActions>
             </Dialog>
             <FormDialogAddress 
                 open={openDialogAddress}
                 setOpen={setOpenDialogAddress}
-                handleNotify={handleNotify}
-                data={data}
-            />
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+                data={item}
             />
         </div>
     )

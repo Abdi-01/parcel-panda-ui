@@ -1,11 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { ToastContainer, toast } from "react-toastify";
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
 import {
-    Button,
     FilledInput,
     FormControl,
     InputAdornment,
@@ -16,11 +14,12 @@ import {
     DataWrapper,
     PassContainer,
     PassHeader,
+    StyledButton,
 } from "./passwordBoxComp";
 import { URL_API } from "../../helper";
 import axios from "axios";
 
-// toast.configure();
+toast.configure();
 
 const PasswordBox = () => {
     const [values, setValues] = useState({
@@ -72,29 +71,19 @@ const PasswordBox = () => {
               }
             }
             let response = await axios(config)
-            console.log("Response => ", response)
+            // console.log("Response => ", response)
             setLoading(false)
-            handleNotify(response.status, response.data.message)
+            toast.success(`Success, ${response.data.message}!`, {
+                position: toast.POSITION.TOP_CENTER
+              });
         } catch (error) {
             console.log("Error => ", error)
             setLoading(false)
-            handleNotify(400, "error update password")
-            alert("error update password")
+            toast.error("Error update password !", {
+                position: toast.POSITION.TOP_CENTER
+            });
         }
     }
-
-    const handleNotify = (status, message) => {
-        console.log("handle notify", status, message)
-        if (status === 200) {
-            toast.success(`Hey 👋, ${message}`);
-        } else {
-            toast.error(`Hey 👋, ${message}`);
-        }
-    };
-
-    useEffect(() => {
-        toast.success(`Hey 👋, trial`);
-    }, [])
 
     return (
         <div>
@@ -178,28 +167,17 @@ const PasswordBox = () => {
                         />
                     </FormControl>
                     <ButtonWrapper>
-                        <Button 
+                        <StyledButton 
                             disabled={values.password.length < 1 || values.newPassword.length < 1 || values.confirmPassword.length < 1 || (values.newPassword !== values.confirmPassword)}
                             variant="contained" 
                             color="primary"
                             onClick={handleSavePassword}
                             >
                                 {loading ? "Loading..." : "Save"}
-                        </Button>
+                        </StyledButton>
                     </ButtonWrapper>
                 </DataWrapper>
             </PassContainer>
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
         </div>
     );
 };

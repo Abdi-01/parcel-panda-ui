@@ -13,8 +13,10 @@ import { ButtonWrapper } from './dialogVerifyComp';
 import { URL_API } from '../../helper';
 import axios from 'axios';
 import { getProfile } from '../../actions';
+import { toast } from 'react-toastify';
 
-const FormDialogVerify = ({ open, setOpen, handleNotify }) => {
+toast.configure()
+const FormDialogVerify = ({ open, setOpen }) => {
     const [otp, setOtp] = useState(null)
     const [loading, setLoading] = useState(false)
     const dispatch = useDispatch()
@@ -44,10 +46,14 @@ const FormDialogVerify = ({ open, setOpen, handleNotify }) => {
             let response = await axios(config)
             dispatch(getProfile(token))
             // console.log(response)
-            handleNotify(response.status, response.data.message)
+            toast.success(`Success, ${response.data.message}!`, {
+                position: toast.POSITION.TOP_CENTER
+            });
         } catch (error) {
-            // console.log(error)
-            handleNotify(400, "error verify account")
+            console.log(error)
+            toast.error("Error verify email !", {
+                position: toast.POSITION.TOP_CENTER
+            });
         }
         setLoading(false)
         setOpen(false)
