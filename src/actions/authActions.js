@@ -8,18 +8,11 @@ export const authLogin = (username, password) => {
                 username, password
             })
             console.log("CEK AUTHLOGIN:", res.data)
-            if (res.data.idstatus == 1) {
                 localStorage.setItem('tkn_id', res.data.token)
                 dispatch({
                     type: "LOGIN_SUCCESS",
                     payload: { ...res.data }
                 })
-            } else {
-                dispatch({
-                    type: "LOGIN_SUCCESS",
-                    payload: { idstatus: res.data.idstatus}
-                })
-            }
         } catch (error) {
             console.log(error)
         }

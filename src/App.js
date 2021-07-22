@@ -1,5 +1,5 @@
 import React from 'react';
-import NavbarComp from './component/navbar/index';
+import NavbarComp from './components/navbar/index';
 import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './pages/register';
 import ResetPassPage from './pages/resetPass';
@@ -47,29 +47,25 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        {
-          this.props.role == "admin" ?
+        <NavbarComp />
+        <Switch>
+          <Route path="/" component={LandingPage} exact />
+          <Route path="/regis" component={RegisterPage} />
+          <Route path="/forget-pass" component={ResetPassPage} />
+          <Route path="/verification" component={VerificationPage} />
+          {
+            this.props.role === "admin" ?
             <>
-              <NavbarComp />
-              <Switch>
-                <Route path="/" component={AdminPage} exact />
-              </Switch>
-            </> : this.props.role == "user" ?
-              <>
-                <NavbarComp />
-                <Route path="/" component={LandingPage} exact />
-                <Route path='/user-profile' component={UserProfile} />
-              </> :
-              <>
-                <NavbarComp />
-                <Switch>
-                  <Route path="/" component={LandingPage} exact />
-                  <Route path="/regis" component={RegisterPage} />
-                  <Route path="/forget-pass" component={ResetPassPage} />
-                  <Route path="/verification" component={VerificationPage} />
-                </Switch>
-              </>
-        }
+              <Route path="/" component={AdminPage} exact />
+              <Route path='/user-profile' component={UserProfile} />
+            </> : this.props.role === "user" ?
+          <>
+            <Route path="/" component={LandingPage} exact />
+            <Route path='/user-profile' component={UserProfile} />
+          </> :
+          <Route path="*" component={LandingPage} exact />
+          }
+        </Switch>
       </div>
     );
   }

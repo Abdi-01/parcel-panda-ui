@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Col, Container, Row, Alert } from 'reactstrap';
 import regis1 from '../../asset/img/regis1.jpg';
-import { Link } from 'react-router-dom';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import "../register/registerPage.css"
@@ -28,7 +27,7 @@ class RegisterPage extends React.Component {
         let email = this.state.email
         let password = this.state.pass
         console.log(password)
-        if (username == '' || fullname == '' || email == '' || password == '') {
+        if (username === '' || fullname === '' || email === '' || password === '') {
             this.setState({ alert: !this.state.alert, message: "Lengkapi semua form!", alertType: 'danger' })
             setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
         } else {
@@ -65,11 +64,10 @@ class RegisterPage extends React.Component {
                 <Container>
                     <Row className="mt-5 box">
                         <Col md="6" className="p-0">
-                            <img className="img" src={regis1} />
+                            <img className="img" src={regis1} alt="register" />
                         </Col>
                         <Col md="6" className="col2">
                             <h4>Get Started.</h4>
-                            <p className="label">Alredy have an account? <Link className="link">Log in</Link> </p>
                             <br></br>
                             <Alert isOpen={this.state.alert} color={this.state.alertType}>
                                 {this.state.message}
