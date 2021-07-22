@@ -3,8 +3,7 @@ import axios from 'axios';
 import { URL_API } from '../../helper'
 import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-// import { ToastContainer, toast } from "react-toastify";
-// import { toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { 
     Badge,
@@ -47,17 +46,61 @@ const ProfileBox = () => {
       setOpenDialogVerify(true);
     };
 
-    
-    const handleImageUpload = (event) => {
-      let formData = new FormData()
-      formData.append('images', event.target.files[0])
-      axios.post(URL_API + '/profile/update-photo', formData)
-        .then(response => {
-          console.log(response.data)
-        }).catch(error => {
-          console.log(error)
-        })
-      // setImageUpload(URL.createObjectURL(event.target.files[0]))
+    const handleImageUpload = async (event) => {
+      try {
+        var formData = new FormData()
+        formData.append('images', event.target.files[0])
+        let token = localStorage.getItem("tkn_id")
+        console.log("formdata", [...formData])
+        console.log("images", event.target.files[0])
+        let config = {
+          method: 'patch',
+          url: URL_API + '/profile/update-photo',
+          data: formData,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        let response = await axios(config)
+        handleNotify(response.status, response.data.message)
+      } catch (error) {
+        console.log(error)
+        handleNotify(400, "Can't update photo")
+      }
+    }
+
+    // const handleImageUpload = async (event) => { 
+    //   try {
+    //     let formData = new FormData()
+    //     formData.append('images', event.target.files[0])
+    //     console.log(event.target.files[0])
+    //     let token = localStorage.getItem("tkn_id")
+    //     let config = {
+    //       method: 'post',
+    //       url: URL_API + '/profile/update-photo',
+    //       data: formData,
+    //       headers: {
+    //         Authorization: `Bearer ${token}`
+    //       }
+    //     }
+    //     let response = await axios(config)
+    //     handleNotify(response.status, response.data.message)
+    //   } catch (error) {
+    //     console.log(error)
+    //     handleNotify(400, "Can't update photo")
+    //   }
+    // }
+
+    const handleNotify = (status, message) => {
+      if (status === 200) {
+          toast.success(`Success, ${message} !`, {
+              position: toast.POSITION.TOP_CENTER, autoClose: 3000
+          });
+      } else {
+          toast.error(`Error, ${message} !`, {
+              position: toast.POSITION.TOP_CENTER, autoClose: 3000
+          });
+      }
     }
 
     const { profile } = useSelector(({ authReducer }) => {
@@ -65,6 +108,8 @@ const ProfileBox = () => {
         profile: authReducer.profile
       }
     })
+
+    console.log(profile)
 
     return (
         <div>
@@ -135,7 +180,12 @@ const ProfileBox = () => {
                     }}
                     badgeContent={
                       <label htmlFor="icon-button-file">
-                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImageUpload}/>
+                        <Input 
+                          accept="image/*" 
+                          id="icon-button-file"
+                          type="file" 
+                          onChange={handleImageUpload}
+                        />
                         <Fab
                           size="small"
                           color="primary"
@@ -147,7 +197,7 @@ const ProfileBox = () => {
                       </label>
                     }
                   >
-                    <LargeAvatar alt="Ido Yudhatama" src={picture_profile} />
+                    <LargeAvatar alt="Ido Yudhatama" src={profile.url_photo === null ? picture_profile : profile.url_photo} />
                   </Badge>
                 </PictContainer>
               </ProfileWrapper>
@@ -169,17 +219,6 @@ const ProfileBox = () => {
                 setOpen={setOpenDialogVerify}
                 // handleNotify={handleNotify}
             />
-            {/* <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            /> */}
         </div>
     )
 }
