@@ -5,6 +5,7 @@ import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import SyncLoader from "react-spinners/SyncLoader";
 import { 
     Badge,
     Button, 
@@ -33,6 +34,7 @@ const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
     const [openDialogGender, setOpenDialogGender] = useState(false);
     const [openDialogVerify, setOpenDialogVerify] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false)
 
     const editFullname = () => {
       setOpenDialogFullname(true);
@@ -48,6 +50,7 @@ const ProfileBox = () => {
 
     const handleImageUpload = async (event) => {
       try {
+        setImageLoading(true)
         var formData = new FormData()
         formData.append('images', event.target.files[0])
         let token = localStorage.getItem("tkn_id")
@@ -63,33 +66,13 @@ const ProfileBox = () => {
         }
         let response = await axios(config)
         handleNotify(response.status, response.data.message)
+        setImageLoading(false)
       } catch (error) {
         console.log(error)
         handleNotify(400, "Can't update photo")
+        setImageLoading(false)
       }
     }
-
-    // const handleImageUpload = async (event) => { 
-    //   try {
-    //     let formData = new FormData()
-    //     formData.append('images', event.target.files[0])
-    //     console.log(event.target.files[0])
-    //     let token = localStorage.getItem("tkn_id")
-    //     let config = {
-    //       method: 'post',
-    //       url: URL_API + '/profile/update-photo',
-    //       data: formData,
-    //       headers: {
-    //         Authorization: `Bearer ${token}`
-    //       }
-    //     }
-    //     let response = await axios(config)
-    //     handleNotify(response.status, response.data.message)
-    //   } catch (error) {
-    //     console.log(error)
-    //     handleNotify(400, "Can't update photo")
-    //   }
-    // }
 
     const handleNotify = (status, message) => {
       if (status === 200) {
@@ -108,8 +91,6 @@ const ProfileBox = () => {
         profile: authReducer.profile
       }
     })
-
-    console.log(profile)
 
     return (
         <div>
@@ -132,7 +113,6 @@ const ProfileBox = () => {
                       {profile.fullname}
                       <StyledButton
                         size="small"
-                        color="primary"
                         onClick={editFullname}
                         style={{ textTransform: "lowercase", marginLeft: "5px" }}
                       >
@@ -145,7 +125,6 @@ const ProfileBox = () => {
                     <Typography variant="subtitle1">{profile.gender}</Typography>
                     <StyledButton
                       size="small"
-                      color="primary"
                       onClick={editGender}
                       style={{ textTransform: "lowercase", marginLeft: "5px" }}
                     >
@@ -178,6 +157,7 @@ const ProfileBox = () => {
                       vertical: "bottom",
                       horizontal: "right",
                     }}
+                    invisible={imageLoading}
                     badgeContent={
                       <label htmlFor="icon-button-file">
                         <Input 
@@ -197,7 +177,16 @@ const ProfileBox = () => {
                       </label>
                     }
                   >
-                    <LargeAvatar alt="Ido Yudhatama" src={profile.url_photo === null ? picture_profile : profile.url_photo} />
+                    <LargeAvatar 
+                      alt="Ido Yudhatama" 
+                      src={profile.url_photo === null ? picture_profile : `${URL_API}/static/images/${profile.url_photo}`}
+                      loading={imageLoading}
+                    />
+                    <SyncLoader 
+                      color={'#FAB629'} 
+                      loading={imageLoading} 
+                      size={10} 
+                    />
                   </Badge>
                 </PictContainer>
               </ProfileWrapper>

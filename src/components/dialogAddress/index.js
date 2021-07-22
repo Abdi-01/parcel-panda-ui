@@ -37,7 +37,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
             setLoading(true)
             let token = localStorage.getItem("tkn_id")
             let config = {}
-            if (data) {
+            if (data && data.id) {
                 console.log("Edit address", values)
                 let temp = values
                 temp.id = data.id
@@ -94,7 +94,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
     }
 
     useEffect(() => {
-        console.log(data)
+        // console.log(data)
         if (data) {
             setValues({...values, 
                 label: data.label,
@@ -107,7 +107,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
         }
     }, [data])
 
-    // console.log(values)
+    // console.log(data, data.id)
 
     return (
         <div>
@@ -119,7 +119,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                 aria-labelledby="fullname"
             >
                 <DialogTitle>
-                    { data ? "Edit Address" : "Add address"}
+                    { data && data.id ? "Edit Address" : "Add address"}
                 </DialogTitle>
                 <DialogContent>
                 <DialogContentText>Type address data</DialogContentText>

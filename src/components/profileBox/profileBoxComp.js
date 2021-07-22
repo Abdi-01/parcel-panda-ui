@@ -6,6 +6,8 @@ export const LargeAvatar = styled.img`
     width: 200px;
     height: 200px;
     display: inline-block;
+    border-radius: 50%;
+    display: ${({loading}) => ( loading === false ? 'block' : 'none')};
 `
 
 export const ProfileContainer = styled.div`
