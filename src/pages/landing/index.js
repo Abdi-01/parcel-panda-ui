@@ -1,5 +1,6 @@
 import React from 'react';
 import CarouselComp from '../../components/carousel';
+import SwiperComp from '../../components/swiper';
 // import NavbarComp from '../../components/navbar';
 
 class LandingPage extends React.Component {
@@ -11,6 +12,7 @@ class LandingPage extends React.Component {
         return ( 
             <div>
                 <CarouselComp/>
+                <SwiperComp />
             </div>
          );
     }

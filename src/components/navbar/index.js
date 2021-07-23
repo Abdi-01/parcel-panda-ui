@@ -8,8 +8,6 @@ import { Link } from "react-router-dom";
 import "./navbarComp.css"
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { URL_API } from "../../helper"
 import { NavLink } from "react-router-dom";
 
 class NavbarComp extends React.Component {
