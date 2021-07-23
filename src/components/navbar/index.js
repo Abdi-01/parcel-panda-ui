@@ -2,16 +2,14 @@ import React from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
-import { Alert, Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { Link } from "react-router-dom";
-import "./navbarComp.css"
+import { NavLink, Link } from "react-router-dom";
+import "../navbar/navbarComp.css"
+import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
-import axios from 'axios';
-import { URL_API } from "../../helper"
-import { NavLink } from "react-router-dom";
-
+  
 class NavbarComp extends React.Component {
     constructor(props) {
         super(props);
@@ -46,9 +44,6 @@ class NavbarComp extends React.Component {
                                         Log in.
                                     </h6>
                                     <h3>Welcome Back!</h3>
-                                    <Alert isOpen={this.props.id && this.props.id === 2 ? true : false} color="warning">
-                                        Please Verify Your Account <span><button className="alert-link" tabindex="0" onClick={() => this.resendOTP()}>Request Verification</button></span>
-                                    </Alert>
                                     <Form>
                                         <FormGroup>
                                             <Label>Username</Label>
@@ -59,8 +54,8 @@ class NavbarComp extends React.Component {
                                             <Input type="password" innerRef={(elemen) => (this.inputPassword = elemen)} />
                                         </FormGroup>
                                     </Form>
-                                    <Button onClick={() => this.onBtLogin()} color="warning" className="btncustom"
-                                        style={{ background: "#FFC107", color: "rgb(236,236,236)", width: "100%", borderRadius: "5%" }}>
+                                    <Button variant="warning" onClick={() => this.onBtLogin()} className="btncustom"
+                                        style={{ background: "#FAB629", color: "black", width: "100%", borderRadius: "5%", marginTop: "15px" }}>
                                         Login
                                     </Button>
                                     <Link to="/forget-pass" className="link1" onClick={() => { this.setState({ modal: !this.state.modal }) }}><p className="b-name">Forgot Password?</p></Link>
@@ -87,7 +82,7 @@ class NavbarComp extends React.Component {
                             <div className="p-field p-fluid div-search">
                                 <div>
                                     <span className="p-input-icon-right">
-                                        <InputText />
+                                        <InputText placeholder="Search"/>
                                         <i className="pi pi-search" />
                                     </span>
                                 </div>
@@ -147,13 +142,13 @@ class NavbarComp extends React.Component {
                 <Navbar >
                     <Container>
                         <Navbar.Brand>
-                            <Button className="btncustom" size="sm" style={{ display: 'flex', background: "#FFC107" }}>
+                            <Button variant="warning" className="btncustom" size="sm" style={{ display: 'flex', background: "#FAB629", color: "black" }}>
                                 <span className="material-icons">
                                     menu
                                 </span>
                                 SHOP BY CATEGORY</Button>
                         </Navbar.Brand>
-                        <Nav className="me-auto my-2 my-lg-0" style={{ maxHeight: '100px' }} navbarScroll>
+                        <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
                             <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
                                 bolt
                             </span>Deals Today</Nav.Link>
