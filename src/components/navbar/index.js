@@ -2,16 +2,14 @@ import React from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
-import { Alert, Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
 import { NavLink, Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
-import { toast } from 'react-toastify';
-
-toast.configure()   
+  
 class NavbarComp extends React.Component {
     constructor(props) {
         super(props);
@@ -21,12 +19,6 @@ class NavbarComp extends React.Component {
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.inputPassword.value)
         this.setState({ modal: false });
-        this.handleNotify()
-    }
-
-
-    handleNotify = () => {
-        toast.success('Hey 👋 Login Success!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
     }
 
     // resendOTP = () => {
