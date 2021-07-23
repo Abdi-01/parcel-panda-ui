@@ -1,12 +1,14 @@
 import React from 'react';
-import { Button, Col, Container, Row, Alert } from 'reactstrap';
+import { Button, Col, Container, Row } from 'reactstrap';
 import regis1 from '../../asset/img/regis1.jpg';
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import "../register/registerPage.css"
 import axios from 'axios';
 import { URL_API } from "../../helper"
+import { toast } from 'react-toastify';
 
+toast.configure()
 class RegisterPage extends React.Component {
     constructor(props) {
         super(props);
@@ -28,34 +30,40 @@ class RegisterPage extends React.Component {
         let password = this.state.pass
         console.log(password)
         if (username === '' || fullname === '' || email === '' || password === '') {
-            this.setState({ alert: !this.state.alert, message: "Lengkapi semua form!", alertType: 'danger' })
-            setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
+            toast.error('Complete all the form!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
-            if (email.includes('@') && email.includes('.com' || '.co.id')) {
-                axios.get(URL_API + `/auth/get?email=${email}`)
-                    .then(res => {
-                        if (res.data.length > 0) {
-                            this.setState({ alert: !this.state.alert, message: "Email sudah terdaftar", alertType: 'warning' })
-                            setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '' }), 3000)
-                            // this.regisUsername.value = null
-                            // this.regisEmail.value = null
-                            // this.regisFullname.value = null
-                        } else {
-                            axios.post(URL_API + `/auth/regis`, { username, fullname, email, password })
-                                .then(res => {
-                                    this.setState({ alert: !this.state.alert, message: "Registrasi akun sukses!", alertType: 'success' })
-                                    setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
-                                    console.log(res.data)
-                                    // this.regisUsername.value = null
-                                    // this.regisEmail.value = null
-                                    // this.regisFullname.value = null
-                                }).catch(err => console.log("Error Register", err))
-                        }
-                    }).catch(error => console.log(error))
+            if (username.length >= 6) {
+                if (email.includes('@') && email.includes('.com' || '.co.id')) {
+                    if (password.length >= 6 && password.match(/[a-z]/ig) && password.match(/[0-9]/ig)) {
+                        axios.get(URL_API + `/auth/get?username=${username}`)
+                            .then(resUname => {
+                                if (resUname.data.length > 0) {
+                                    toast.warn('Username Unavailable!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                } else {
+                                    axios.get(URL_API + `/auth/get?email=${email}`)
+                                        .then(res => {
+                                            if (res.data.length > 0) {
+                                                toast.warn('Email has been registered!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                            } else {
+                                                axios.post(URL_API + `/auth/regis`, { username, fullname, email, password })
+                                                    .then(res => {
+                                                        toast.success('Hey 👋 Registration Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                                        console.log(res.data)
+                                                    }).catch(err => console.log("Error Register", err))
+                                            }
+                                        }).catch(error => console.log(error))
+                                }
+                            }).catch(errUname => console.log(errUname))
+                    } else {
+                        toast.warn('Password must contains min. 6 digit alphabet AND numberic', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                    }
+                } else {
+                    toast.warn('Your Email Invalid', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                }
             } else {
-                this.setState({ alert: !this.state.alert, message: 'Email Anda salah', alertType: 'warning' })
-                setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '' }), 3000)
+                toast.warn('Username must contains min. 6 digit alphabet OR numberic', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             }
+
         }
     }
     render() {
@@ -69,9 +77,9 @@ class RegisterPage extends React.Component {
                         <Col md="6" className="col2">
                             <h4>Get Started.</h4>
                             <br></br>
-                            <Alert isOpen={this.state.alert} color={this.state.alertType}>
+                            {/* <Alert isOpen={this.state.alert} color={this.state.alertType}>
                                 {this.state.message}
-                            </Alert>
+                            </Alert> */}
                             <div className="p-field p-fluid input">
                                 <div>
                                     <label className="p-d-block label">Username</label>
@@ -95,7 +103,7 @@ class RegisterPage extends React.Component {
                                 <div>
                                     <span className="p-input-icon-left">
                                         <i className="pi pi-envelope" />
-                                    <InputText value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} />
+                                        <InputText value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} />
                                     </span>
                                 </div>
                             </div>
@@ -104,11 +112,11 @@ class RegisterPage extends React.Component {
                                 <div>
                                     <span className="p-input-icon-left">
                                         <i className="pi pi-lock" />
-                                    <Password value={this.state.pass} onChange={(e) => this.setState({ pass: e.target.value })} toggleMask />
+                                        <Password value={this.state.pass} onChange={(e) => this.setState({ pass: e.target.value })} toggleMask />
                                     </span>
                                 </div>
                             </div>
-                            <Button onClick={this.onBtRegis} className="btncustom1" style={{ background: "#FFC107", color: "white" }}>
+                            <Button onClick={this.onBtRegis} className="btncustom1" color="warning" style={{ background: "#FAB629", color: "black" }}>
                                 Sign Up
                             </Button>
                         </Col>

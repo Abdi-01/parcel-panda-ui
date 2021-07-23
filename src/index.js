@@ -9,6 +9,7 @@ import "primereact/resources/primereact.min.css"
 import "primeicons/primeicons.css"
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "react-multi-carousel/lib/styles.css";
+import 'react-toastify/dist/ReactToastify.css';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore, applyMiddleware } from "redux";
 import { Reducers } from "./reducers";

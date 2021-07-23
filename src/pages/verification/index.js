@@ -1,10 +1,13 @@
 import React from 'react';
-import { Button, Col, Container, Row, Alert } from 'reactstrap';
+import { Button, Col, Container, Row, } from 'reactstrap';
 import otp1 from '../../asset/img/otp1.jpg';
 import { InputText } from 'primereact/inputtext';
 import "../verification/verificationPage.css"
 import axios from 'axios';
 import { URL_API } from '../../helper';
+import { toast } from 'react-toastify';
+
+toast.configure()
 
 class VerificationPage extends React.Component {
     constructor(props) {
@@ -29,8 +32,7 @@ class VerificationPage extends React.Component {
         }, headers)
             .then(res => {
                 console.log(res.data)
-                this.setState({ alert: !this.state.alert })
-                setTimeout(() => this.setState({ alert: !this.state.alert }), 3000)
+                toast.success('Hey 👋 Verification Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             }).catch(err => {
                 console.log(err)
             })
@@ -47,9 +49,6 @@ class VerificationPage extends React.Component {
                         <Col md="6" className="col2">
                             <h6>Forgot Password</h6>
                             <h4>Account Verification!</h4>
-                            <Alert isOpen={this.state.alert} color="success">
-                                Verification Succes!
-                            </Alert>
                             <br></br>
                             <div className="p-field p-fluid input">
                                 <label className="p-d-block label">Verification Code</label>
@@ -61,7 +60,7 @@ class VerificationPage extends React.Component {
                                 </div>
                             </div>
 
-                            <Button onClick={() => this.verify()} style={{background: '#FFC107'}} className="btncustom3">
+                            <Button onClick={() => this.verify()} style={{background: '#FAB629'}} className="btncustom3" color="warning">
                                 Submit
                             </Button>
                         </Col>
