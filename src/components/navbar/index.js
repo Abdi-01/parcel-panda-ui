@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
 import { NavLink, Link } from "react-router-dom";
@@ -9,11 +10,11 @@ import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
-  
+
 class NavbarComp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { isOpen: false, modal: false }
+        this.state = { isOpen: false, modal: false, password: '' }
     }
 
     onBtLogin = () => {
@@ -51,7 +52,13 @@ class NavbarComp extends React.Component {
                                         </FormGroup>
                                         <FormGroup>
                                             <Label>Password</Label>
-                                            <Input type="password" innerRef={(elemen) => (this.inputPassword = elemen)} />
+                                            <div className="p-field p-fluid">
+                                                <span className="p-input-icon-left">
+                                                    <i className="pi pi-lock" />
+                                                    <Password value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} toggleMask />
+                                                </span>
+                                            </div>
+                                            {/* <Input type="password" innerRef={(elemen) => (this.inputPassword = elemen)} /> */}
                                         </FormGroup>
                                     </Form>
                                     <Button variant="warning" onClick={() => this.onBtLogin()} className="btncustom"
@@ -82,7 +89,7 @@ class NavbarComp extends React.Component {
                             <div className="p-field p-fluid div-search">
                                 <div>
                                     <span className="p-input-icon-right">
-                                        <InputText placeholder="Search"/>
+                                        <InputText placeholder="Search" />
                                         <i className="pi pi-search" />
                                     </span>
                                 </div>

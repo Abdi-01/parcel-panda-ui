@@ -11,6 +11,7 @@ import { URL_API } from './helper';
 import LandingPage from './pages/landing';
 import AdminPage from './pages/admin';
 import UserProfile from './pages/profile';
+import FooterComp from './components/footer';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -66,6 +67,7 @@ class App extends React.Component {
                 <Route path="*" component={LandingPage} exact />
           }
         </Switch>
+        <FooterComp/>
       </div>
     );
   }

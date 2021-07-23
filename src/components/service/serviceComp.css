@@ -1,0 +1,26 @@
+.service {
+    display: flex;
+    border: none;
+    box-shadow: none;
+}
+
+.service1 {
+    display: flex;
+    flex-direction: column;
+    height: 180px;
+}
+
+.service-content {
+    flex: 1 0 auto;
+    text-align: center;
+}
+
+.service-judul {
+    font-family: satisfy;
+    font-size: 30px;
+}
+
+.service-img {
+    width: 50%;
+    height: 50%;
+}
