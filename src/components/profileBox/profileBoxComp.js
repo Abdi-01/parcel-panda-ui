@@ -1,10 +1,13 @@
 import styled from 'styled-components';
 import FormLabel from '@material-ui/core/FormLabel';
+import Button from "@material-ui/core/Button";
 
 export const LargeAvatar = styled.img`
     width: 200px;
     height: 200px;
     display: inline-block;
+    border-radius: 50%;
+    display: ${({loading}) => ( loading === false ? 'block' : 'none')};
 `
 
 export const ProfileContainer = styled.div`
@@ -81,4 +84,13 @@ export const Status = styled.span`
 
 export const Input = styled.input`
     display: none;
+`
+
+export const StyledButton = styled(Button)`
+    background-color: #fff8ea;
+    color: #FAB629;
+
+    &:hover {
+        background-color: #fef0d4;
+    }
 `

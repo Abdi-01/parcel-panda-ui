@@ -2,14 +2,15 @@ import React from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
-import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, } from 'reactstrap';
+import { Alert, Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
 import { Link } from "react-router-dom";
-import "../navbar/navbarComp.css"
+import "./navbarComp.css"
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
-// import axios from 'axios';
-// import { URL_API } from "../../helper"
+import axios from 'axios';
+import { URL_API } from "../../helper"
+import { NavLink } from "react-router-dom";
 
 class NavbarComp extends React.Component {
     constructor(props) {
@@ -45,12 +46,12 @@ class NavbarComp extends React.Component {
                                         Log in.
                                     </h6>
                                     <h3>Welcome Back!</h3>
-                                    {/* <Alert isOpen={this.props.id && this.props.id == 2 ? true : false} color="warning">
-                                        Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span>
-                                    </Alert> */}
+                                    <Alert isOpen={this.props.id && this.props.id === 2 ? true : false} color="warning">
+                                        Please Verify Your Account <span><button className="alert-link" tabindex="0" onClick={() => this.resendOTP()}>Request Verification</button></span>
+                                    </Alert>
                                     <Form>
                                         <FormGroup>
-                                            <Label>Username/Email</Label>
+                                            <Label>Username</Label>
                                             <Input type="text" innerRef={(elemen) => (this.inputUsername = elemen)} />
                                         </FormGroup>
                                         <FormGroup>
@@ -159,6 +160,10 @@ class NavbarComp extends React.Component {
                             <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
                                 sell
                             </span>Special Prices</Nav.Link>
+                            <Nav.Link style={{ display: 'flex' }}>
+                                <span class="material-icons" >bolt</span>
+                                <NavLink to="/user-profile">Profile</NavLink>
+                            </Nav.Link>
                             <NavDropdown title="Fresh" id="navbarScrollingDropdown">
                                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>

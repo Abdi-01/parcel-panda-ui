@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Button,
   Dialog,
@@ -10,22 +11,53 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core/";
+import { toast } from 'react-toastify';
 import { ButtonWrapper, RadioWrapper } from "./dialogGenderComp";
+import { URL_API } from "../../helper";
+import axios from "axios";
+import { getProfile } from "../../actions";
 
-const FormDialogGender = ({ open, setOpen, handleNotify }) => {
-  const [value, setValue] = useState("male");
+toast.configure()
+const FormDialogGender = ({ open, setOpen, value }) => {
+  const [gender, setGender] = useState(value);
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleChange = (event) => {
-    setValue(event.target.value);
+    setGender(event.target.value);
   };
 
-  const handleSave = () => {
-    setOpen(false);
-    handleNotify("gender");
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      let token = localStorage.getItem("tkn_id")
+      let config = {
+        method: 'patch',
+        url: URL_API + '/profile/update-data',
+        data: {
+          "gender": gender
+        },
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      }
+      let response = await axios(config)
+      dispatch(getProfile(token))
+      setLoading(false)
+      setOpen(false);
+      toast.success(`Success, ${response.data.message}!`, {
+        position: toast.POSITION.TOP_CENTER
+      });
+    } catch (error) {
+      console.log(error)
+      toast.error("Error update profile !", {
+        position: toast.POSITION.TOP_CENTER
+      });
+    }
   };
 
   return (
@@ -45,16 +77,16 @@ const FormDialogGender = ({ open, setOpen, handleNotify }) => {
               row
               aria-label="gender"
               name="gender"
-              value={value}
+              value={gender}
               onChange={handleChange}
             >
               <FormControlLabel 
-                value="male" 
+                value="Male" 
                 control={<Radio />} 
                 label="Male" 
               />
               <FormControlLabel
-                value="female"
+                value="Female"
                 control={<Radio />}
                 label="Female"
               />
@@ -64,7 +96,7 @@ const FormDialogGender = ({ open, setOpen, handleNotify }) => {
         <DialogActions>
           <ButtonWrapper>
             <Button onClick={handleSave} variant="contained" color="primary">
-              Save Changes
+              {loading ? "Loading..." : "Save"}
             </Button>
           </ButtonWrapper>
         </DialogActions>
