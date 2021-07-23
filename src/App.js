@@ -55,15 +55,15 @@ class App extends React.Component {
           <Route path="/verification" component={VerificationPage} />
           {
             this.props.role === "admin" ?
-            <>
-              <Route path="/" component={AdminPage} exact />
-              <Route path='/user-profile' component={UserProfile} />
-            </> : this.props.role === "user" ?
-          <>
-            <Route path="/" component={LandingPage} exact />
-            <Route path='/user-profile' component={UserProfile} />
-          </> :
-          <Route path="*" component={LandingPage} exact />
+              <>
+                <Route path="/" component={AdminPage} exact />
+                <Route path='/user-profile' component={UserProfile} />
+              </> : this.props.role === "user" ?
+                <>
+                  <Route path="/" component={LandingPage} exact />
+                  <Route path='/user-profile' component={UserProfile} />
+                </> :
+                <Route path="*" component={LandingPage} exact />
           }
         </Switch>
       </div>

@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import Button from "@material-ui/core/Button";
 
 export const PassContainer = styled.div`
     display: flex;
@@ -26,4 +27,13 @@ export const DataWrapper = styled.div`
 
 export const ButtonWrapper = styled.div`
     width: 100px;
+`
+
+export const StyledButton = styled(Button)`
+    background-color: #FAB629;
+    color: #000;
+
+    &:hover {
+        background-color: #E1A425;
+    }
 `

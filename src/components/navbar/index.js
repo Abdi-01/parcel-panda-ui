@@ -2,16 +2,14 @@ import React from 'react';
 import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
-import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, } from 'reactstrap';
+import { Alert, Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
-// import axios from 'axios';
-// import { URL_API } from "../../helper"
 
 toast.configure()   
 class NavbarComp extends React.Component {
@@ -56,7 +54,7 @@ class NavbarComp extends React.Component {
                                     <h3>Welcome Back!</h3>
                                     <Form>
                                         <FormGroup>
-                                            <Label>Username/Email</Label>
+                                            <Label>Username</Label>
                                             <Input type="text" innerRef={(elemen) => (this.inputUsername = elemen)} />
                                         </FormGroup>
                                         <FormGroup>
@@ -165,6 +163,10 @@ class NavbarComp extends React.Component {
                             <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
                                 sell
                             </span>Special Prices</Nav.Link>
+                            <Nav.Link style={{ display: 'flex' }}>
+                                <span class="material-icons" >bolt</span>
+                                <NavLink to="/user-profile">Profile</NavLink>
+                            </Nav.Link>
                             <NavDropdown title="Fresh" id="navbarScrollingDropdown">
                                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                                 <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>

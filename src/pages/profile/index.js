@@ -21,8 +21,7 @@ if (typeof window !== "undefined") {
   injectStyle();
 }
 
-
-function TabPanel(props) {
+const TabPanel = (props) => {
   const { children, value, index, ...other } = props;
 
   return (
@@ -48,7 +47,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
+const a11yProps = (index) => {
   return {
     id: `full-width-tab-${index}`,
     'aria-controls': `full-width-tabpanel-${index}`,
@@ -70,36 +69,36 @@ const UserProfile = () => {
   return (
     <div>
       <Container>
-      <Box sx={{ bgcolor: 'background.paper' }}>
-        <AppBar position="static">
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            indicatorColor="secondary"
-            textColor="inherit"
-            aria-label="full width tabs example"
+        <Box sx={{ bgcolor: 'background.paper' }}>
+          <AppBar position="static">
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              indicatorColor="secondary"
+              textColor="inherit"
+              aria-label="full width tabs example"
+            >
+              <Tab label="Profile" {...a11yProps(0)} />
+              <Tab label="Address" {...a11yProps(1)} />
+              <Tab label="Password" {...a11yProps(2)} />
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={value}
+            onChangeIndex={handleChangeIndex}
           >
-            <Tab label="Profile" {...a11yProps(0)} />
-            <Tab label="Address" {...a11yProps(1)} />
-            <Tab label="Password" {...a11yProps(2)} />
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={value}
-          onChangeIndex={handleChangeIndex}
-        >
-          <TabPanel value={value} index={0} dir={theme.direction} sx={{ px: 0 }}>
-            <ProfileBox />
-          </TabPanel>
-          <TabPanel value={value} index={1} dir={theme.direction}>
-            <AddressBox />
-          </TabPanel>
-          <TabPanel value={value} index={2} dir={theme.direction}>
-            <PasswordBox />
-          </TabPanel>
-        </SwipeableViews>
-      </Box>
+            <TabPanel value={value} index={0} dir={theme.direction} sx={{ px: 0 }}>
+              <ProfileBox />
+            </TabPanel>
+            <TabPanel value={value} index={1} dir={theme.direction}>
+              <AddressBox />
+            </TabPanel>
+            <TabPanel value={value} index={2} dir={theme.direction}>
+              <PasswordBox />
+            </TabPanel>
+          </SwipeableViews>
+        </Box>
       </Container>
     </div>
   );

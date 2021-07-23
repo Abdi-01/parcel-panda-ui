@@ -8,16 +8,59 @@ export const authLogin = (username, password) => {
                 username, password
             })
             console.log("CEK AUTHLOGIN:", res.data)
-                localStorage.setItem('tkn_id', res.data.token)
-                dispatch({
-                    type: "LOGIN_SUCCESS",
-                    payload: { ...res.data }
-                })
+            localStorage.setItem('tkn_id', res.data.token)
+            await dispatch(getProfile(res.data.token))
+            dispatch({
+                type: "LOGIN_SUCCESS",
+                payload: { ...res.data }
+            })
         } catch (error) {
             console.log(error)
         }
     }
 }
+
+export const getProfile = (token) => {
+    return async (dispatch) => {
+        // console.log("getProfile")
+        try {
+            let config = {
+                method: 'get',
+                url: URL_API + '/profile',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            let response = await axios(config)
+            // console.log("Response profile data action", response.data[0])
+            dispatch({
+                type: "PROFILE_DATA",
+                payload: { ...response.data[0] }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+// export const updateProfile = (value) => {
+//     return async (dispatch) => {
+//         try {
+//             let token = localStorage.getItem("tkn_id")
+//             let config = {
+//                 method: 'patch',
+//                 url: URL_API + '/profile/update-data',
+//                 data: value,
+//                 headers: {
+//                     Authorization: `Bearer ${token}`
+//                 }
+//             }
+//             let response = await axios(config) // How to forward response to update page
+//         } catch (error) {
+
+//         }
+//     }
+// }
 
 export const authLogout = () => {
     localStorage.removeItem("tkn_id")
@@ -30,6 +73,7 @@ export const keepLogin = (data) => {
     return async (dispatch) => {
         try {
             localStorage.setItem("tkn_id", data.token)
+            await dispatch(getProfile(data.token))
             dispatch({
                 type: "LOGIN_SUCCESS",
                 payload: { ...data }
