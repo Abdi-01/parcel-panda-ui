@@ -1,35 +1,24 @@
 import React, { useState } from "react";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { makeStyles } from "@material-ui/core/styles";
+import DialogAlert from "../dialogAlert";
+import ActionProduct from "../dialogActionProduct";
 import {
   Badge,
   Button,
-  Card,
   CardContent,
-  CardMedia,
   Menu,
   MenuItem,
   Typography,
 } from "@material-ui/core/";
-import { EditDelete, Footer } from "./productCardComp";
-import DialogAlert from "../dialogAlert";
-import ActionProduct from "../dialogActionProduct";
-
-const useStyles = makeStyles({
-  root: {
-    width: 200,
-    position: "relative",
-    margin: "10px 0",
-  },
-  media: {
-    height: 200,
-  },
-});
+import { 
+  EditDelete, 
+  Footer, 
+  StyledCard, 
+  StyledCardMedia 
+} from "./productCardComp";
 
 const ProductCard = ({data}) => {
-  const classes = useStyles();
-
   const [anchorEl, setAnchorEl] = useState(null);
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -52,10 +41,9 @@ const ProductCard = ({data}) => {
     setAnchorEl(null);
   };
 
-  // console.log(data)
 
   return (
-    <Card className={classes.root}>
+    <StyledCard>
       <div>
         <ActionProduct
           open={openEditProduct}
@@ -73,7 +61,7 @@ const ProductCard = ({data}) => {
           <MenuItem onClick={handleClickOpenEdit}>Edit</MenuItem>
           <MenuItem onClick={handleClickOpenAlert}>Delete</MenuItem>
         </Menu>
-        <CardMedia className={classes.media} image={`https://drive.google.com/uc?export=view&id=${data.url}`} title={data.name} />
+        <StyledCardMedia image={`https://drive.google.com/uc?export=view&id=${data.url}`} title={data.name} />
         <CardContent>
           <Typography gutterBottom variant="body1">
             {data.name}
@@ -86,9 +74,9 @@ const ProductCard = ({data}) => {
       <div>
         <Footer>
           <Button size="medium" color="primary">
-            {data.price}
+            IDR {data.price.toLocaleString()}
           </Button>
-          <Badge badgeContent={5} color="primary">
+          <Badge badgeContent={data.stock} color={data.stock > 5 ? "primary" : "secondary"}>
             <LocalShippingIcon />
           </Badge>
           <EditDelete aria-label="settings" onClick={handleClick}>
@@ -96,7 +84,7 @@ const ProductCard = ({data}) => {
           </EditDelete>
         </Footer>
       </div>
-    </Card>
+    </StyledCard>
   );
 };
 

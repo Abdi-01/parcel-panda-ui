@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   List,
   ListItem,
@@ -8,28 +8,41 @@ import {
 } from "@material-ui/core/";
 
 const options = [
-  "Price: Low to High",
-  "Price: High to Low",
+  "Name: Ascending",
+  "Name: Descending",
   "Stock: Low to High",
   "Stock: High to Low",
 ];
 
-const SortProductAdmin = () => {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+const SortProductAdmin = ({ sort, setSort }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleClickListItem = (event) => {
     setAnchorEl(event.currentTarget);
-  };
+  }
+
+  const selectedSort = (index) => {
+    if (index === 0) {
+      setSort({...sort, column: "name", order: "ASC"})
+    } else if (index === 1) {
+      setSort({...sort, column: "name", order: "DESC"})
+    } else if (index === 2) {
+      setSort({...sort, column: "stock", order: "ASC"})
+    } else if (index === 3) {
+      setSort({...sort, column: "stock", order: "DESC"})
+    }
+  }
 
   const handleMenuItemClick = (event, index) => {
     setSelectedIndex(index);
+    selectedSort(index)
     setAnchorEl(null);
-  };
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
+  }
 
   return (
     <div>
