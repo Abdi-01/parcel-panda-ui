@@ -5,7 +5,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
@@ -18,7 +18,7 @@ class NavbarComp extends React.Component {
     }
 
     onBtLogin = () => {
-        this.props.authLogin(this.inputUsername.value, this.inputPassword.value)
+        this.props.authLogin(this.inputUsername.value, this.state.password)
         this.setState({ modal: false });
     }
 
@@ -39,7 +39,7 @@ class NavbarComp extends React.Component {
                                     <h3>Welcome Back!</h3>
                                     <Form>
                                         <FormGroup>
-                                            <Label>Username</Label>
+                                            <Label>Username/Email</Label>
                                             <Input type="text" innerRef={(elemen) => (this.inputUsername = elemen)} />
                                         </FormGroup>
                                         <FormGroup>

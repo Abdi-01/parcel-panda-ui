@@ -65,7 +65,7 @@ class App extends React.Component {
             this.props.role === "admin" ?
               <>
                 {/* <Route path="/" component={AdminPage} exact /> */}
-                <Route path='/user-profile' component={UserProfile} />
+                {/* <Route path='/user-profile' component={UserProfile} /> */}
                 <Route path='/product-management' component={ProductManagement} exact />
                 <Route path='/transaction-management' component={TransactionManagement} />
                 <Route path='/sales-report' component={SalesReport} />

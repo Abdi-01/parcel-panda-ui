@@ -18,7 +18,7 @@ import {
   StyledCardMedia 
 } from "./productCardComp";
 
-const ProductCard = ({data}) => {
+const ProductCard = ({data, getProductData}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openEditProduct, setOpenEditProduct] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -50,7 +50,7 @@ const ProductCard = ({data}) => {
           setOpen={setOpenEditProduct}
           action={"edit"}
         />
-        <DialogAlert open={openAlert} setOpen={setOpenAlert} />
+        <DialogAlert open={openAlert} setOpen={setOpenAlert} id={data.id} getProductData={getProductData}/>
         <Menu
           id="sub-menu"
           anchorEl={anchorEl}

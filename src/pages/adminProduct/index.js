@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+// import { useDispatch, useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import { BarLoader, ClipLoader } from "react-spinners";
 import { URL_API } from "../../helper";
@@ -24,6 +25,8 @@ import {
   SpinnerContainer,
   ProductContainer,
 } from "./adminProduct";
+// import { getProductDataX } from "../../actions/adminActions";
+
 
 const ProductManagement = () => {
     const [page, setPage] = useState(1);
@@ -35,6 +38,7 @@ const ProductManagement = () => {
         column: "name",
         order: "ASC"
     })
+    // const dispatch = useDispatch()
 
     const handleChange = (event, value) => {
         setPage(value)
@@ -57,7 +61,7 @@ const ProductManagement = () => {
             console.log(error)
         }
     }
-
+    
     const getProductData = async () => {
         try {
             let token = localStorage.getItem("tkn_id");
@@ -78,10 +82,10 @@ const ProductManagement = () => {
 
     const printCard = () => {
         if (cardData !== null) {
-        // console.log(Math.ceil(cardData.length/20))
-        return cardData.map((item) => {
-            return <ProductCard data={item} />
-        })
+            // console.log(Math.ceil(cardData.length/20))
+            return cardData.map((item) => {
+                return <ProductCard data={item} getProductData={getProductData}/>
+            })
         }
     }
     
@@ -92,11 +96,14 @@ const ProductManagement = () => {
             behavior: 'smooth'
         });
     }
-
+    
     useEffect(() => {
         getProduct()
         getProductData()
+        // dispatch(getProductDataX(page, sort.order, sort.column))
     }, [page, sort])
+    
+    
 
     return (
         <div>

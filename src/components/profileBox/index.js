@@ -100,7 +100,7 @@ const ProfileBox = () => {
   
     }, [imageLoading])
 
-    console.log(profile)
+    // console.log(profile)
 
     return (
         <div>
