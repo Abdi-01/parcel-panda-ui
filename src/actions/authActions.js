@@ -23,6 +23,7 @@ export const authLogin = (username, password) => {
                 payload: { ...res.data }
             })
         } catch (error) {
+            toast.error('Login Failed!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
             console.log(error)
         }
     }

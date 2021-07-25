@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
 import { NavLink, Link } from "react-router-dom";
@@ -13,21 +14,13 @@ import { connect } from 'react-redux';
 class NavbarComp extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { isOpen: false, modal: false }
+        this.state = { isOpen: false, modal: false, password: '' }
     }
 
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.inputPassword.value)
         this.setState({ modal: false });
     }
-
-    // resendOTP = () => {
-    //     axios.patch(URL_API + `/auth/reverif`, {
-    //         username: this.inputUsername.value, password: this.inputPassword.value
-    //     }).then(res => {
-    //         console.log(res.data)
-    //     }).catch(err => console.log(err))
-    // }
 
     printLogin = () => {
         return (
@@ -51,7 +44,13 @@ class NavbarComp extends React.Component {
                                         </FormGroup>
                                         <FormGroup>
                                             <Label>Password</Label>
-                                            <Input type="password" innerRef={(elemen) => (this.inputPassword = elemen)} />
+                                            <div className="p-field p-fluid">
+                                                <span className="p-input-icon-left">
+                                                    <i className="pi pi-lock" />
+                                                    <Password value={this.state.password} onChange={(e) => this.setState({ password: e.target.value })} toggleMask />
+                                                </span>
+                                            </div>
+                                            {/* <Input type="password" innerRef={(elemen) => (this.inputPassword = elemen)} /> */}
                                         </FormGroup>
                                     </Form>
                                     <Button variant="warning" onClick={() => this.onBtLogin()} className="btncustom"
@@ -136,58 +135,6 @@ class NavbarComp extends React.Component {
                                         Login
                                     </Button>
                             }
-                        </Nav>
-                    </Container>
-                </Navbar>
-                <Navbar >
-                    <Container>
-                        <Navbar.Brand>
-                            <Button variant="warning" className="btncustom" size="sm" style={{ display: 'flex', background: "#FAB629", color: "black" }}>
-                                <span className="material-icons">
-                                    menu
-                                </span>
-                                SHOP BY CATEGORY</Button>
-                        </Navbar.Brand>
-                        <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                bolt
-                            </span>Deals Today</Nav.Link>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sell
-                            </span>Special Prices</Nav.Link>
-                            <Nav.Link style={{ display: 'flex' }}>
-                                <span class="material-icons" >bolt</span>
-                                <NavLink to="/user-profile">Profile</NavLink>
-                            </Nav.Link>
-                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                        <Nav>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sync
-                            </span>Recently Viewed</Nav.Link>
                         </Nav>
                     </Container>
                 </Navbar>

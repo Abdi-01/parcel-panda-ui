@@ -1,4 +1,5 @@
 import React from 'react';
+import AboutComp from '../../components/about';
 import CarouselComp from '../../components/carousel';
 import SwiperComp from '../../components/swiper';
 // import NavbarComp from '../../components/navbar';

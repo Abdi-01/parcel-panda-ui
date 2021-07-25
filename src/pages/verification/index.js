@@ -35,6 +35,7 @@ class VerificationPage extends React.Component {
                 toast.success('Hey 👋 Verification Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             }).catch(err => {
                 console.log(err)
+                toast.error('Verification Failed!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             })
     }
     render() {

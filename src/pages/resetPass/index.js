@@ -45,6 +45,7 @@ class ResetPassPage extends React.Component {
                     }
                 }).catch(err => {
                     console.log(err)
+                    toast.error('Reset Password Failed!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                 })
         } else {
             toast.warn('Your Email Invalid', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })

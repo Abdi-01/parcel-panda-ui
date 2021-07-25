@@ -9,8 +9,12 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { URL_API } from './helper';
 import LandingPage from './pages/landing';
-import AdminPage from './pages/admin';
 import UserProfile from './pages/profile';
+import FooterComp from './components/footer';
+import ProductManagement from './pages/adminProduct';
+import AdminAppBar from './components/adminAppBar';
+import TransactionManagement from './pages/adminTransaction';
+import SalesReport from './pages/adminSales';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -47,17 +51,24 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <NavbarComp />
+        {
+          this.props.role === "admin" ? <AdminAppBar /> : <NavbarComp />
+        }
         <Switch>
-          <Route path="/" component={LandingPage} exact />
+          <Route 
+            path="/" 
+            component={ this.props.role !== "admin" ? LandingPage : ProductManagement } exact />
           <Route path="/regis" component={RegisterPage} />
           <Route path="/forget-pass" component={ResetPassPage} />
           <Route path="/verification" component={VerificationPage} />
           {
             this.props.role === "admin" ?
               <>
-                <Route path="/" component={AdminPage} exact />
+                {/* <Route path="/" component={AdminPage} exact /> */}
                 <Route path='/user-profile' component={UserProfile} />
+                <Route path='/product-management' component={ProductManagement} exact />
+                <Route path='/transaction-management' component={TransactionManagement} />
+                <Route path='/sales-report' component={SalesReport} />
               </> : this.props.role === "user" ?
                 <>
                   <Route path="/" component={LandingPage} exact />
@@ -66,6 +77,7 @@ class App extends React.Component {
                 <Route path="*" component={LandingPage} exact />
           }
         </Switch>
+        <FooterComp/>
       </div>
     );
   }
