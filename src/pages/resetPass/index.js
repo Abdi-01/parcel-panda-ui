@@ -6,7 +6,9 @@ import { InputText } from 'primereact/inputtext';
 import "../resetPass/resetPassPage.css"
 import axios from 'axios';
 import { URL_API } from '../../helper';
+import { toast } from 'react-toastify';
 
+toast.configure()
 
 class ResetPassPage extends React.Component {
     constructor(props) {
@@ -32,21 +34,20 @@ class ResetPassPage extends React.Component {
                         if (newPass === confirmPass) {
                             axios.patch(URL_API + `/auth/update-pass`, { email: email, password: newPass })
                                 .then(res => {
-                                    this.setState({ alert: !this.state.alert, message: "Your account has been updated!", alertType: 'success' })
-                                    setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
+                                    toast.success('Hey 👋 Your account has been updated!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                     console.log(res.data)
                                 }).catch(errPatch => console.log(errPatch))
                         } else {
-                            this.setState({ alert: !this.state.alert, message: "Password Invalid!", alertType: 'danger' })
-                            setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
+                            toast.error('Password Invalid!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                         }
                     } else {
-                        this.setState({ alert: !this.state.alert, message: "Email Unregistered, Register First!", alertType: 'danger' })
-                        setTimeout(() => this.setState({ alert: !this.state.alert, message: '', alertType: '', }), 3000)
+                        toast.error('Email Unregistered, Register First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                     }
                 }).catch(err => {
                     console.log(err)
                 })
+        } else {
+            toast.warn('Your Email Invalid', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         }
     }
 
@@ -92,7 +93,7 @@ class ResetPassPage extends React.Component {
                                     </span>
                                 </div>
                             </div>
-                            <Button onClick={this.forgetPass} className="btncustom2" style={{ background: "#FFC107", color: "white" }}>
+                            <Button onClick={this.forgetPass} className="btncustom2" style={{ background: "#FAB629", color: "black" }} color="warning">
                                 Submit
                             </Button>
                         </Col>

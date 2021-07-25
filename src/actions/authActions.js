@@ -1,6 +1,13 @@
 import axios from "axios"
 import { URL_API } from "../helper"
+import { toast } from 'react-toastify';
 
+
+toast.configure()   
+
+const handleNotify = () => {
+    toast.success('Hey 👋 Login Success!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
+}
 export const authLogin = (username, password) => {
     return async (dispatch) => {
         try {
@@ -10,6 +17,7 @@ export const authLogin = (username, password) => {
             console.log("CEK AUTHLOGIN:", res.data)
             localStorage.setItem('tkn_id', res.data.token)
             await dispatch(getProfile(res.data.token))
+            handleNotify()
             dispatch({
                 type: "LOGIN_SUCCESS",
                 payload: { ...res.data }

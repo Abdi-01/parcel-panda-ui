@@ -17,8 +17,7 @@
 }
 
 .btncustom {
-    background: rgb(255,79,90);
-    color: rgb(236,236,236);
+    color: black;
     width: 100%;
     border-radius: 5%;
 }
