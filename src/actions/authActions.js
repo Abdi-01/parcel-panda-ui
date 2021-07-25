@@ -52,25 +52,6 @@ export const getProfile = (token) => {
     }
 }
 
-// export const updateProfile = (value) => {
-//     return async (dispatch) => {
-//         try {
-//             let token = localStorage.getItem("tkn_id")
-//             let config = {
-//                 method: 'patch',
-//                 url: URL_API + '/profile/update-data',
-//                 data: value,
-//                 headers: {
-//                     Authorization: `Bearer ${token}`
-//                 }
-//             }
-//             let response = await axios(config) // How to forward response to update page
-//         } catch (error) {
-
-//         }
-//     }
-// }
-
 export const authLogout = () => {
     localStorage.removeItem("tkn_id")
     return {

@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
 import axios from 'axios';
 import { URL_API } from '../../helper'
 import picture_profile from "../../asset/img/profile-user.png";
@@ -28,6 +29,7 @@ import {
 import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
+import { getProfile } from '../../actions';
 // import { getProfile } from '../../actions';
 
 const ProfileBox = () => {
@@ -35,6 +37,7 @@ const ProfileBox = () => {
     const [openDialogGender, setOpenDialogGender] = useState(false);
     const [openDialogVerify, setOpenDialogVerify] = useState(false);
     const [imageLoading, setImageLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const editFullname = () => {
       setOpenDialogFullname(true);
@@ -65,6 +68,7 @@ const ProfileBox = () => {
           }
         }
         let response = await axios(config)
+        dispatch(getProfile(token))
         handleNotify(response.status, response.data.message)
         setImageLoading(false)
       } catch (error) {
@@ -91,6 +95,12 @@ const ProfileBox = () => {
         profile: authReducer.profile
       }
     })
+
+    useEffect(() => {
+  
+    }, [imageLoading])
+
+    console.log(profile)
 
     return (
         <div>
@@ -178,7 +188,7 @@ const ProfileBox = () => {
                     }
                   >
                     <LargeAvatar 
-                      alt="Ido Yudhatama" 
+                      alt="profile" 
                       src={profile.url_photo === null ? picture_profile : `${URL_API}/static/images/${profile.url_photo}`}
                       loading={imageLoading}
                     />
