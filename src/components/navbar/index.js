@@ -18,8 +18,9 @@ class NavbarComp extends React.Component {
     }
 
     onBtLogin = () => {
-        this.props.authLogin(this.inputUsername.value, this.inputPassword.value)
-        this.setState({ modal: false });
+        this.props.authLogin(this.inputUsername.value, this.state.password)
+        this.setState({ modal: false, });
+        this.setState({ password: ''})
     }
 
     printLogin = () => {
@@ -39,7 +40,7 @@ class NavbarComp extends React.Component {
                                     <h3>Welcome Back!</h3>
                                     <Form>
                                         <FormGroup>
-                                            <Label>Username</Label>
+                                            <Label>Username/Email</Label>
                                             <Input type="text" innerRef={(elemen) => (this.inputUsername = elemen)} />
                                         </FormGroup>
                                         <FormGroup>
