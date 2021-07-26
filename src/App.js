@@ -14,6 +14,7 @@ import UserProfile from './pages/profile';
 import FooterComp from './components/footer';
 import ParcelPage from './pages/parcel';
 import ProductsPage from './pages/product';
+import ProductDetailPage from './pages/productDetail';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -59,7 +60,8 @@ class App extends React.Component {
           <Route path="/forget-pass" component={ResetPassPage} />
           <Route path="/verification" component={VerificationPage} />
           <Route path="/parcel" component={ParcelPage} />
-          <Route path="/product"component={ProductsPage} />
+          <Route path="/product" component={ProductsPage} />
+          <Route path="/product-detail" component={ProductDetailPage} />
           {
             this.props.role === "admin" ?
               <>
