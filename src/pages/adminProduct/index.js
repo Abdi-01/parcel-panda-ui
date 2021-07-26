@@ -80,7 +80,7 @@ const ProductManagement = () => {
         if (cardData !== null) {
         // console.log(Math.ceil(cardData.length/20))
         return cardData.map((item) => {
-            return <ProductCard data={item} />
+            return <ProductCard data={item} getProductData={getProductData}/>
         })
         }
     }
