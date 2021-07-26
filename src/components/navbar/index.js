@@ -157,12 +157,12 @@ class NavbarComp extends React.Component {
                                 SHOP BY CATEGORY</Button>
                         </Navbar.Brand>
                         <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
+                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span className="material-icons">
                                 bolt
-                            </span>Deals Today</Nav.Link>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
+                            </span>Parcel</Nav.Link>
+                            <Nav.Link href="/product" style={{ display: 'flex' }}><span className="material-icons">
                                 sell
-                            </span>Special Prices</Nav.Link>
+                            </span>Product</Nav.Link>
                             <Nav.Link style={{ display: 'flex' }}>
                                 <span class="material-icons" >bolt</span>
                                 <NavLink to="/user-profile">Profile</NavLink>

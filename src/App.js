@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './pages/register';
 import ResetPassPage from './pages/resetPass';
 import VerificationPage from './pages/verification';
-import { keepLogin } from "./actions"
+import { keepLogin, getProductActions, getParcelActions} from "./actions"
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { URL_API } from './helper';
@@ -12,6 +12,8 @@ import LandingPage from './pages/landing';
 import AdminPage from './pages/admin';
 import UserProfile from './pages/profile';
 import FooterComp from './components/footer';
+import ParcelPage from './pages/parcel';
+import ProductsPage from './pages/product';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -25,6 +27,8 @@ class App extends React.Component {
 
   componentDidMount() {
     this.reLogin()
+    this.props.getProductActions()
+    this.props.getParcelActions()
   }
 
   reLogin = () => {
@@ -54,6 +58,8 @@ class App extends React.Component {
           <Route path="/regis" component={RegisterPage} />
           <Route path="/forget-pass" component={ResetPassPage} />
           <Route path="/verification" component={VerificationPage} />
+          <Route path="/parcel" component={ParcelPage} />
+          <Route path="/product"component={ProductsPage} />
           {
             this.props.role === "admin" ?
               <>
@@ -79,4 +85,4 @@ const mapsStateToProps = ({ authReducer }) => {
   }
 }
 
-export default connect(mapsStateToProps, { keepLogin })(App);
+export default connect(mapsStateToProps, { keepLogin, getProductActions, getParcelActions })(App);
