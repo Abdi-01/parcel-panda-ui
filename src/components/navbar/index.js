@@ -23,14 +23,6 @@ class NavbarComp extends React.Component {
         this.setState({ password: ''})
     }
 
-    // resendOTP = () => {
-    //     axios.patch(URL_API + `/auth/reverif`, {
-    //         username: this.inputUsername.value, password: this.inputPassword.value
-    //     }).then(res => {
-    //         console.log(res.data)
-    //     }).catch(err => console.log(err))
-    // }
-
     printLogin = () => {
         return (
             <div>
@@ -81,7 +73,7 @@ class NavbarComp extends React.Component {
         return (
             <div>
                 {this.printLogin()}
-                <Navbar expand="md" >
+                <Navbar expand="md">
                     <Container>
                         <Navbar.Brand href="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />
