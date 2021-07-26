@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
 import axios from 'axios';
 import { URL_API } from '../../helper'
-import profile from "../../asset/img/profile-user.png";
+import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import SyncLoader from "react-spinners/SyncLoader";
 import { 
     Badge,
     Button, 
@@ -12,6 +15,7 @@ import {
 } from "@material-ui/core/";
 import {
     EditContainer,
+    Form,
     Input,
     Label,
     LargeAvatar,
@@ -19,45 +23,84 @@ import {
     ProfileContainer,
     ProfileHeader,
     ProfileWrapper,
-    Form,
     Status,
+    StyledButton,
 } from "./profileBoxComp";
 import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
+import { getProfile } from '../../actions';
+// import { getProfile } from '../../actions';
 
 const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
     const [openDialogGender, setOpenDialogGender] = useState(false);
     const [openDialogVerify, setOpenDialogVerify] = useState(false);
+    const [imageLoading, setImageLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const editFullname = () => {
-        setOpenDialogFullname(true);
+      setOpenDialogFullname(true);
     };
 
     const editGender = () => {
-        setOpenDialogGender(true);
+      setOpenDialogGender(true);
     };
 
     const verifyAccount = () => {
-        setOpenDialogVerify(true);
+      setOpenDialogVerify(true);
     };
 
-    const handleNotify = (subject) => {
-        toast.success(`Hey 👋, ${subject} has been updated!`);
-    };
-
-    const handleImageUpload = (event) => {
-      let formData = new FormData()
-      formData.append('images', event.target.files[0])
-      axios.post(URL_API + '/profile/update-photo', formData)
-        .then(response => {
-          console.log(response.data)
-        }).catch(error => {
-          console.log(error)
-        })
-      // setImageUpload(URL.createObjectURL(event.target.files[0]))
+    const handleImageUpload = async (event) => {
+      try {
+        setImageLoading(true)
+        var formData = new FormData()
+        formData.append('images', event.target.files[0])
+        let token = localStorage.getItem("tkn_id")
+        console.log("formdata", [...formData])
+        console.log("images", event.target.files[0])
+        let config = {
+          method: 'patch',
+          url: URL_API + '/profile/update-photo',
+          data: formData,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        let response = await axios(config)
+        dispatch(getProfile(token))
+        handleNotify(response.status, response.data.message)
+        setImageLoading(false)
+      } catch (error) {
+        console.log(error)
+        handleNotify(400, "Can't update photo")
+        setImageLoading(false)
+      }
     }
+
+    const handleNotify = (status, message) => {
+      if (status === 200) {
+          toast.success(`Success, ${message} !`, {
+              position: toast.POSITION.TOP_CENTER, autoClose: 3000
+          });
+      } else {
+          toast.error(`Error, ${message} !`, {
+              position: toast.POSITION.TOP_CENTER, autoClose: 3000
+          });
+      }
+    }
+
+    const { profile } = useSelector(({ authReducer }) => {
+      return {
+        profile: authReducer.profile
+      }
+    })
+
+    useEffect(() => {
+  
+    }, [imageLoading])
+
+    console.log(profile)
 
     return (
         <div>
@@ -65,54 +108,55 @@ const ProfileBox = () => {
               <ProfileHeader>
                 <h3>My Profile</h3>
                 <div>
-                  Manage your profile information to control, protect and secure
-                  your account
+                  Manage your profile information to control, protect and secure your account.
                 </div>
               </ProfileHeader>
               <ProfileWrapper>
                 <Form>
                   <EditContainer>
                     <Label>Username</Label>
-                    <Typography variant="subtitle1">idoyudha</Typography>
+                    <Typography variant="subtitle1">{profile.username}</Typography>
                   </EditContainer>
                   <EditContainer>
                     <Label>Fullname</Label>
                     <Typography variant="subtitle1">
-                      Ido Yudhatama
-                      <Button
+                      {profile.fullname}
+                      <StyledButton
                         size="small"
-                        color="primary"
                         onClick={editFullname}
                         style={{ textTransform: "lowercase", marginLeft: "5px" }}
                       >
                         update
-                      </Button>
+                      </StyledButton>
                     </Typography>
                   </EditContainer>
                   <EditContainer>
                     <Label>Gender</Label>
-                    <Typography variant="subtitle1">Male</Typography>
-                    <Button
+                    <Typography variant="subtitle1">{profile.gender}</Typography>
+                    <StyledButton
                       size="small"
-                      color="primary"
                       onClick={editGender}
                       style={{ textTransform: "lowercase", marginLeft: "5px" }}
                     >
                       update
-                    </Button>
+                    </StyledButton>
                   </EditContainer>
                   <EditContainer>
                     <Label>Email</Label>
                     <Typography variant="subtitle1">
-                      idoyudha@gmail.com<Status> verified</Status>
-                      <Button
-                        size="small"
-                        color="secondary"
-                        onClick={verifyAccount}
-                        style={{ textTransform: "lowercase", marginLeft: "5px" }}
-                      >
-                        verify
-                      </Button>
+                      {profile.email}
+                      { profile.idstatus === 1 ? 
+                        <Status> verified</Status> 
+                      : 
+                        <Button
+                          size="small"
+                          color="secondary"
+                          onClick={verifyAccount}
+                          style={{ textTransform: "lowercase", marginLeft: "5px" }}
+                        >
+                          verify
+                        </Button>
+                      }
                     </Typography>
                   </EditContainer>
                 </Form>
@@ -123,9 +167,15 @@ const ProfileBox = () => {
                       vertical: "bottom",
                       horizontal: "right",
                     }}
+                    invisible={imageLoading}
                     badgeContent={
                       <label htmlFor="icon-button-file">
-                        <Input accept="image/*" id="icon-button-file" type="file" onChange={handleImageUpload}/>
+                        <Input 
+                          accept="image/*" 
+                          id="icon-button-file"
+                          type="file" 
+                          onChange={handleImageUpload}
+                        />
                         <Fab
                           size="small"
                           color="primary"
@@ -137,7 +187,16 @@ const ProfileBox = () => {
                       </label>
                     }
                   >
-                    <LargeAvatar alt="Ido Yudhatama" src={profile} />
+                    <LargeAvatar 
+                      alt="profile" 
+                      src={profile.url_photo === null ? picture_profile : `${URL_API}/static/images/${profile.url_photo}`}
+                      loading={imageLoading}
+                    />
+                    <SyncLoader 
+                      color={'#FAB629'} 
+                      loading={imageLoading} 
+                      size={10} 
+                    />
                   </Badge>
                 </PictContainer>
               </ProfileWrapper>
@@ -145,28 +204,19 @@ const ProfileBox = () => {
             <FormDialogProfile
                 open={openDialogFullname}
                 setOpen={setOpenDialogFullname}
-                handleNotify={handleNotify}
+                // handleNotify={handleNotify}
+                value={profile.fullname}
             />
             <FormDialogGender
                 open={openDialogGender}
                 setOpen={setOpenDialogGender}
-                handleNotify={handleNotify}
+                // handleNotify={handleNotify}
+                value={profile.gender}
             />
             <FormDialogVerify
                 open={openDialogVerify}
                 setOpen={setOpenDialogVerify}
-                handleNotify={handleNotify}
-            />
-            <ToastContainer
-                position="top-center"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
+                // handleNotify={handleNotify}
             />
         </div>
     )

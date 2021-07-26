@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import HomeIcon from '@material-ui/icons/Home';
+import { useSelector } from "react-redux";
 import {
     Button,
+    Dialog,
+    DialogActions, 
+    DialogContent,   
+    DialogContentText, 
+    DialogTitle, 
     Typography,
 } from '@material-ui/core/';
 import { 
@@ -13,75 +22,162 @@ import {
     ButtonWrapper,
     DataWrapper,
     Label,
+    StyledButton,
 } from './addressBoxComp'
+import FormDialogAddress from '../dialogAddress';
+import axios from 'axios';
+import { URL_API } from '../../helper';
+import { getProfile } from '../../actions';
 
+toast.configure()
 const AddressBox = () => {
+    const [openDialogAddress, setOpenDialogAddress] = useState(false)
+    const [openDialogDelete, setOpenDialogDelete] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [item, setItem] = useState(null)
+    const [idDelete, setIdDelete] = useState(null)
+    const dispatch = useDispatch()
+
+    const printAddress = () => {
+        // console.log("My Address Page", address)
+        if (address.length > 0) {
+            return address.map((item) => {
+                return  <Container>
+                            <div>
+                                <DataWrapper>
+                                    <Label>Label</Label>
+                                    <Typography variant="subtitle1">{item.label}</Typography>
+                                </DataWrapper>
+                                <DataWrapper>
+                                    <Label>Recipient name</Label>
+                                    <Typography variant="subtitle1">{item.recipient_name}</Typography>
+                                </DataWrapper>
+                                <DataWrapper>
+                                    <Label>Phone number</Label>
+                                    <Typography variant="subtitle1">{item.phone_number}</Typography>
+                                </DataWrapper>
+                                <DataWrapper>
+                                    <Label>Address</Label>
+                                    <Typography variant="subtitle1">{item.address}, {item.city}, {item.postal_code}</Typography>
+                                </DataWrapper>
+                            </div>
+                            <ButtonWrapper>
+                                <Button onClick={() => dialogAddress(item)} variant="outlined" color="primary" fontSize="inherit" startIcon={<EditIcon />}>
+                                    Edit
+                                </Button>
+                                <Button onClick={() => deleteAddress(item.id)} variant="outlined" color="secondary" fontSize="inherit" startIcon={<DeleteIcon />}>
+                                    Delete
+                                </Button>
+                            </ButtonWrapper>
+                        </Container>
+            })
+        }
+    }
+
+    const dialogAddress = (item) => {
+        if (item) {
+            setItem(item)
+        }
+        setOpenDialogAddress(true)
+    }
+
+    const deleteAddress = (id) => {
+        setOpenDialogDelete(true)
+        setIdDelete(id)
+    }
+
+    const handleDeleteAddress = async () => {
+        try {
+            setLoading(true)
+            let token = localStorage.getItem("tkn_id");
+            let config = {
+                method: 'delete',
+                url: URL_API + `/profile/delete-address/${idDelete}`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            let response = await axios(config)
+            dispatch(getProfile(token))
+            setLoading(false)
+            setOpenDialogDelete(false)
+            handleNotify(response.status, response.data.message)
+        } catch (error) {
+            console.log(error)
+            setLoading(false)
+            setOpenDialogDelete(false)
+            handleNotify(400, "Can't add address")
+        }
+    }
+
+    const handleNotify = (status, message) => {
+        if (status === 200) {
+            toast.success(`Success, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
+        } else {
+            toast.error(`Error, ${message} !`, {
+                position: toast.POSITION.TOP_CENTER, autoClose: 3000
+            });
+        }
+    }
+
+    const handleCloseDelete = () => {
+        setOpenDialogDelete(false);
+    };
+
+    const { address } = useSelector(({ authReducer }) => {
+        return {
+            address: authReducer.profile.address
+        }
+    })
+
+    useEffect(() => {
+        
+    }, [item])
+
     return (
         <div>
             <AddressContainer>
                 <AddressHeader>
                     <h3>My Address</h3>
-                    <Button variant="contained" color="secondary" startIcon={<HomeIcon />}>
+                    <StyledButton 
+                        variant="contained" 
+                        color="secondary" 
+                        startIcon={<HomeIcon />}
+                        onClick={dialogAddress}
+                    >
                         Add New Address
-                    </Button>
+                    </StyledButton>
                 </AddressHeader>
-                <Container>
-                    <div>
-                        <DataWrapper>
-                            <Label>Label</Label>
-                            <Typography variant="subtitle1">Home</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Recipient name</Label>
-                            <Typography variant="subtitle1">Jerry</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Phone number</Label>
-                            <Typography variant="subtitle1">021200200</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Address</Label>
-                            <Typography variant="subtitle1">Jl. HR. Rasuna Said, 12345, Jakarta</Typography>
-                        </DataWrapper>
-                    </div>
-                    <ButtonWrapper>
-                        <Button variant="outlined" color="primary" fontSize="inherit" startIcon={<EditIcon />}>
-                            Edit
-                        </Button>
-                        <Button variant="outlined" color="secondary" fontSize="inherit" startIcon={<DeleteIcon />}>
-                            Delete
-                        </Button>
-                    </ButtonWrapper>
-                </Container>
-                <Container>
-                    <div>
-                        <DataWrapper>
-                            <Label>Label</Label>
-                            <Typography variant="subtitle1">Home</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Recipient name</Label>
-                            <Typography variant="subtitle1">Jerry</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Phone number</Label>
-                            <Typography variant="subtitle1">021200200</Typography>
-                        </DataWrapper>
-                        <DataWrapper>
-                            <Label>Address</Label>
-                            <Typography variant="subtitle1">Jl. HR. Rasuna Said, 12345, Jakarta</Typography>
-                        </DataWrapper>
-                    </div>
-                    <ButtonWrapper>
-                        <Button variant="outlined" color="primary" fontSize="inherit" startIcon={<EditIcon />}>
-                            Edit
-                        </Button>
-                        <Button variant="outlined" color="secondary" fontSize="inherit" startIcon={<DeleteIcon />}>
-                            Delete
-                        </Button>
-                    </ButtonWrapper>
-                </Container>
+                {printAddress()}
             </AddressContainer>
+            <Dialog
+                open={openDialogDelete}
+                onClose={handleCloseDelete}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure want to delete this address"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Deleting this address can't be undone after click agree.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDelete}>Disagree</Button>
+                    <Button onClick={handleDeleteAddress} color="secondary">
+                        {loading ? "Loading..." : "Agree"}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <FormDialogAddress 
+                open={openDialogAddress}
+                setOpen={setOpenDialogAddress}
+                data={item}
+            />
         </div>
     )
 }

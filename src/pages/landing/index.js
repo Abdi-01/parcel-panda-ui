@@ -1,6 +1,8 @@
 import React from 'react';
+import AboutComp from '../../components/about';
 import CarouselComp from '../../components/carousel';
-import NavbarComp from '../../components/navbar';
+import SwiperComp from '../../components/swiper';
+// import NavbarComp from '../../components/navbar';
 
 class LandingPage extends React.Component {
     constructor(props) {
@@ -10,8 +12,8 @@ class LandingPage extends React.Component {
     render() { 
         return ( 
             <div>
-                <NavbarComp />
                 <CarouselComp/>
+                <SwiperComp />
             </div>
          );
     }

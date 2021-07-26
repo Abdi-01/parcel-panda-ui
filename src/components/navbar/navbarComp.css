@@ -1,0 +1,50 @@
+
+.img-log {
+    object-fit: fill;
+    border-radius: 15px 0px 0px 15px;
+    width: 100px;
+    height: 100px;
+}
+
+.link1 {
+    text-decoration: none;
+    color: black;
+}
+
+.b-name {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btncustom {
+    color: black;
+    width: 100%;
+    border-radius: 5%;
+}
+
+.p-regis {
+    margin-top: 10%;
+    text-align: center;
+}
+
+.div-search {
+    width: 450px;
+}
+
+.support {
+    font-size: 12px;
+    color: gray;
+}
+
+.btncustm {
+    display: flex;
+    background: rgb(228,74,84);
+}
+
+.navlink {
+    display: flex;
+}
+
+.nav {
+    max-height: 100px;
+}
