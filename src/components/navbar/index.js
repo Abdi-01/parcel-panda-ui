@@ -5,7 +5,7 @@ import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
@@ -16,11 +16,10 @@ class NavbarComp extends React.Component {
         super(props);
         this.state = { isOpen: false, modal: false, password: '' }
     }
-
+    
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.state.password)
-        this.setState({ modal: false, });
-        this.setState({ password: ''})
+        this.setState({ modal: false, password: '' });
     }
 
     printLogin = () => {
@@ -82,7 +81,7 @@ class NavbarComp extends React.Component {
                             <div className="p-field p-fluid div-search">
                                 <div>
                                     <span className="p-input-icon-right">
-                                        <InputText placeholder="Search"/>
+                                        <InputText placeholder="Search" />
                                         <i className="pi pi-search" />
                                     </span>
                                 </div>

@@ -8,6 +8,7 @@ toast.configure()
 const handleNotify = () => {
     toast.success('Hey 👋 Login Success!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
 }
+
 export const authLogin = (username, password) => {
     return async (dispatch) => {
         try {
@@ -31,7 +32,6 @@ export const authLogin = (username, password) => {
 
 export const getProfile = (token) => {
     return async (dispatch) => {
-        // console.log("getProfile")
         try {
             let config = {
                 method: 'get',

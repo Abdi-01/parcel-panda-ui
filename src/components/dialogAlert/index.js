@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { toast } from 'react-toastify';
 import {
   Button,
   Dialog,
@@ -7,11 +8,45 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core/";
+import { URL_API } from "../../helper";
+import axios from "axios";
 
-const DialogAlert = ({ open, setOpen }) => {
+toast.configure()
+const DialogAlert = ({ open, setOpen, id, getProductData }) => {
+  const [loading, setLoading] = useState(false)
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true)
+      let token = localStorage.getItem("tkn_id");
+      let config = {
+        method: 'delete',
+        url: URL_API + `/product-manage/delete/${id}`,
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      }
+      let response = await axios(config)
+      getProductData()
+      toast.success(`Success, ${response.data.message}!`, {
+        position: toast.POSITION.TOP_CENTER
+      });
+      setLoading(false)
+      setOpen(false)
+    } catch (error) {
+      console.log(error)
+      toast.error("Error delete product !", {
+        position: toast.POSITION.TOP_CENTER
+      });
+      setLoading(false)
+      setOpen(false)
+    }
+  }
+
 
   return (
     <div>
@@ -34,8 +69,8 @@ const DialogAlert = ({ open, setOpen }) => {
           <Button onClick={handleClose} variant="contained" color="neutral">
             Disagree
           </Button>
-          <Button onClick={handleClose} variant="contained" color="secondary">
-            Agree
+          <Button onClick={handleDelete} variant="contained" color="secondary">
+            {loading ? "Loading..." : "Agree"}
           </Button>
         </DialogActions>
       </Dialog>
