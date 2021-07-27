@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
@@ -140,53 +140,13 @@ class NavbarComp extends React.Component {
                 </Navbar>
                 <Navbar >
                     <Container>
-                        <Navbar.Brand>
-                            <Button variant="warning" className="btncustom" size="sm" style={{ display: 'flex', background: "#FAB629", color: "black" }}>
-                                <span className="material-icons">
-                                    menu
-                                </span>
-                                SHOP BY CATEGORY</Button>
-                        </Navbar.Brand>
-                        {/* <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
+                        <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
                             <Nav.Link href="/parcel" style={{ display: 'flex' }}><span className="material-icons">
                                 bolt
                             </span>Parcel</Nav.Link>
                             <Nav.Link href="/product" style={{ display: 'flex' }}><span className="material-icons">
                                 sell
                             </span>Product</Nav.Link>
-                            <Nav.Link style={{ display: 'flex' }}>
-                                <span class="material-icons" >bolt</span>
-                                <NavLink to="/user-profile">Profile</NavLink>
-                            </Nav.Link>
-                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav> */}
-                        <Nav>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sync
-                            </span>Recently Viewed</Nav.Link>
                         </Nav>
                     </Container>
                 </Navbar>

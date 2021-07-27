@@ -30,7 +30,6 @@ import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
 import { getProfile } from '../../actions';
-// import { getProfile } from '../../actions';
 
 const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
