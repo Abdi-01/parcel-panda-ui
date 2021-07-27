@@ -147,7 +147,7 @@ class NavbarComp extends React.Component {
                                 </span>
                                 SHOP BY CATEGORY</Button>
                         </Navbar.Brand>
-                        <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
+                        {/* <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
                             <Nav.Link href="/parcel" style={{ display: 'flex' }}><span className="material-icons">
                                 bolt
                             </span>Parcel</Nav.Link>
@@ -182,7 +182,7 @@ class NavbarComp extends React.Component {
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
                             </NavDropdown>
-                        </Nav>
+                        </Nav> */}
                         <Nav>
                             <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
                                 sync

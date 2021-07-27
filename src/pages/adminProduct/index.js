@@ -98,8 +98,6 @@ const ProductManagement = () => {
         // dispatch(getProductDataX(page, sort.order, sort.column))
     }, [page, sort])
 
-
-
     return (
         <div>
             <Container>

@@ -4,6 +4,7 @@ import { Container } from "react-bootstrap";
 import { URL_API } from '../../helper';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
+import Skeleton from '@material-ui/lab/Skeleton';
 import { 
     Button,
     Table,
@@ -65,21 +66,31 @@ const TransactionManagement = () => {
     const [data, setData] = useState(null)
     const [openImage, setOpenImage] = useState(false)
     const [imageURL, setImageURL] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [page, setPage] = useState(1)
+    const [countPage, setCountPage] = useState(1)
     const classes = useStyles();
+
+    const handleChange = (event, value) => {
+        setPage(value)
+    };
 
     const getTransaction = async () => {
         try {
+            setLoading(true)
             let token = localStorage.getItem("tkn_id");
             let config = {
                 method: 'get',
-                url: URL_API + `/transaction-manage/`,
+                url: URL_API + `/transaction-manage/5/${5 * (page - 1)}`,
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
             let response = await axios(config)
-            console.log(response.data)
-            setData(response.data)
+            // console.log("Response", response.data.count[0])
+            setCountPage(Math.ceil(response.data.count / 5))
+            setData(response.data.values)
+            setLoading(false)
         } catch (error) {
             console.log(error)
         }
@@ -122,7 +133,7 @@ const TransactionManagement = () => {
 
     useEffect(() => {
         getTransaction()
-    }, [])
+    }, [page])
 
     return (
         <div>
@@ -145,12 +156,25 @@ const TransactionManagement = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {(data !== null) ? printRowTable() : null}
+                            {/* {(data !== null) ? printRowTable() : null} */}
+                            {loading ? 
+                                <TableCell colSpan={10}>
+                                    <Skeleton height={150} width="100%" animation="wave" />
+                                </TableCell> : 
+                                printRowTable()
+                            }
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <PaginationWrapper>
-                    <Pagination count={10} variant="outlined" shape="rounded" color="primary" />
+                    <Pagination 
+                        count={countPage} 
+                        page={page}
+                        onChange={handleChange}
+                        variant="outlined" 
+                        shape="rounded" 
+                        color="primary" 
+                    />
                 </PaginationWrapper>
             </Container>
             <DialogImagePayment openImage={openImage} setOpenImage={setOpenImage} imageURL={imageURL}/>
