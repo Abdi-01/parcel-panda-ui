@@ -10,20 +10,20 @@ import ActionProduct from "../../components/dialogActionProduct";
 import Pagination from "@material-ui/lab/Pagination";
 // import MenuIcon from "@material-ui/icons/Menu";
 // import SearchIcon from "@material-ui/icons/Search";
-import { 
-  Button, 
-//   IconButton,
-//   InputBase,
+import {
+    Button,
+    //   IconButton,
+    //   InputBase,
 } from "@material-ui/core/";
 import {
-  ButtonWrapper,
-//   PaperWrapper,
-  PaginationWrapper,
-  ProductWrapper,
-  SortingBar,
-  SortWrapper,
-  SpinnerContainer,
-  ProductContainer,
+    ButtonWrapper,
+    //   PaperWrapper,
+    PaginationWrapper,
+    ProductWrapper,
+    SortingBar,
+    SortWrapper,
+    SpinnerContainer,
+    ProductContainer,
 } from "./adminProduct";
 // import { getProductDataX } from "../../actions/adminActions";
 
@@ -56,18 +56,18 @@ const ProductManagement = () => {
                 url: URL_API + `/product-manage/`
             }
             let response = await axios(config)
-            setPageN(Math.ceil(response.data.length/20))
+            setPageN(Math.ceil(response.data.length / 20))
         } catch (error) {
             console.log(error)
         }
     }
-    
+
     const getProductData = async () => {
         try {
             let token = localStorage.getItem("tkn_id");
             let config = {
                 method: 'get',
-                url: URL_API + `/product-manage/read/20/${20*(page-1)}?sort=${sort.order}&column=${sort.column}`,
+                url: URL_API + `/product-manage/read/20/${20 * (page - 1)}?sort=${sort.order}&column=${sort.column}`,
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -84,26 +84,26 @@ const ProductManagement = () => {
         if (cardData !== null) {
             // console.log(Math.ceil(cardData.length/20))
             return cardData.map((item) => {
-                return <ProductCard data={item} getProductData={getProductData}/>
+                return <ProductCard data={item} getProductData={getProductData} />
             })
         }
     }
-    
-    const scrollToTop = () =>{
+
+    const scrollToTop = () => {
         setLoading(true)
         window.scrollTo({
-            top: 0, 
+            top: 0,
             behavior: 'smooth'
         });
     }
-    
+
     useEffect(() => {
         getProduct()
         getProductData()
         // dispatch(getProductDataX(page, sort.order, sort.column))
     }, [page, sort])
-    
-    
+
+
 
     return (
         <div>
@@ -114,16 +114,16 @@ const ProductManagement = () => {
                     action={"add"}
                 />
                 <SortWrapper>
-                <ButtonWrapper>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={handleClickOpen}
-                    >
-                    Add Product
-                    </Button>
-                </ButtonWrapper>
-                {/* <PaperWrapper component="form">
+                    <ButtonWrapper>
+                        <Button
+                            variant="outlined"
+                            color="primary"
+                            onClick={handleClickOpen}
+                        >
+                            Add Product
+                        </Button>
+                    </ButtonWrapper>
+                    {/* <PaperWrapper component="form">
                     <IconButton sx={{ p: "10px" }} aria-label="menu">
                     <MenuIcon />
                     </IconButton>
@@ -138,40 +138,40 @@ const ProductManagement = () => {
                     <SearchIcon />
                     </IconButton>
                 </PaperWrapper> */}
-                <SortingBar>
-                    <SortProductAdmin 
-                        sort={sort}
-                        setSort={setSort} 
-                    />
-                </SortingBar>
+                    <SortingBar>
+                        <SortProductAdmin
+                            sort={sort}
+                            setSort={setSort}
+                        />
+                    </SortingBar>
                 </SortWrapper>
                 <ProductContainer>
-                {
-                    loading ? 
-                    <SpinnerContainer>
-                        <ClipLoader color={"#0275d8"} loading={loading} size={100} />
-                    </SpinnerContainer> :
-                    <ProductWrapper>
-                        {printCard()}
-                    </ProductWrapper>
-                }
+                    {
+                        loading ?
+                            <SpinnerContainer>
+                                <ClipLoader color={"#0275d8"} loading={loading} size={100} />
+                            </SpinnerContainer> :
+                            <ProductWrapper>
+                                {printCard()}
+                            </ProductWrapper>
+                    }
                 </ProductContainer>
                 <PaginationWrapper>
                     {
                         loading ?
-                        <SpinnerContainer>
-                            <BarLoader color={"#0275d8"} loading={loading} width={700} height={10} />
-                        </SpinnerContainer> :
-                        <div>
-                            <Pagination
-                                // count={Math.ceil(cardData.length/20)}
-                                count={pageN}
-                                page={page}
-                                onChange={handleChange}
-                                showFirstButton
-                                showLastButton
-                            />
-                        </div>
+                            <SpinnerContainer>
+                                <BarLoader color={"#0275d8"} loading={loading} width={700} height={10} />
+                            </SpinnerContainer> :
+                            <div>
+                                <Pagination
+                                    // count={Math.ceil(cardData.length/20)}
+                                    count={pageN}
+                                    page={page}
+                                    onChange={handleChange}
+                                    showFirstButton
+                                    showLastButton
+                                />
+                            </div>
                     }
                 </PaginationWrapper>
             </Container>

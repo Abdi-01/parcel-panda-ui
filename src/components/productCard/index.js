@@ -17,6 +17,7 @@ import {
   StyledCard, 
   StyledCardMedia 
 } from "./productCardComp";
+import { URL_API } from "../../helper";
 
 const ProductCard = ({data, getProductData}) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -41,7 +42,6 @@ const ProductCard = ({data, getProductData}) => {
     setAnchorEl(null);
   };
 
-
   return (
     <StyledCard>
       <div>
@@ -49,6 +49,8 @@ const ProductCard = ({data, getProductData}) => {
           open={openEditProduct}
           setOpen={setOpenEditProduct}
           action={"edit"}
+          data={data}
+          getProductData={getProductData}
         />
         <DialogAlert open={openAlert} setOpen={setOpenAlert} id={data.id} getProductData={getProductData}/>
         <Menu
@@ -61,7 +63,7 @@ const ProductCard = ({data, getProductData}) => {
           <MenuItem onClick={handleClickOpenEdit}>Edit</MenuItem>
           <MenuItem onClick={handleClickOpenAlert}>Delete</MenuItem>
         </Menu>
-        <StyledCardMedia image={`https://drive.google.com/uc?export=view&id=${data.url}`} title={data.name} />
+        <StyledCardMedia image={`${URL_API}/static/images/${data.url}`} title={data.name} />
         <CardContent>
           <Typography gutterBottom variant="body1">
             {data.name}
