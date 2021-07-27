@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 export const authReducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case "LOGIN_SUCCESS":
-            delete action.payload.password;
+            // delete action.payload.password;
             // console.log("CEK AUTHREDUCER:", action.payload)
             return { ...state, ...action.payload };
         case "PROFILE_DATA":

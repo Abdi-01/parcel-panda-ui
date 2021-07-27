@@ -72,7 +72,7 @@ class NavbarComp extends React.Component {
         return (
             <div>
                 {this.printLogin()}
-                <Navbar expand="md" >
+                <Navbar expand="md">
                     <Container>
                         <Navbar.Brand href="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />

@@ -127,6 +127,22 @@ class ParcelPage extends React.Component {
         window.location.reload()
     }
 
+    resendOTP = () => {
+        console.log(this.props.username, this.props.password)
+        axios.patch(URL_API + `/auth/reverif`, {
+            username: this.props.username, password: this.props.password
+        }).then(res => {
+            console.log(res.data)
+            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        }).catch(err => console.log(err))
+    }
+
+    customToastWithLink = () => (
+        <div>
+          <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
+        </div>
+    );
+
     onBtCart = (item) => {
         if (this.props.id) {
             if (this.props.idstatus === 1) {
@@ -146,7 +162,7 @@ class ParcelPage extends React.Component {
                         // this.props.getCart(res.data)
                     }).catch(err => console.log("add cart", err))
             } else {
-                toast.error('Verification your account!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             }
         } else {
             toast.error('Login First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -273,9 +289,8 @@ class ParcelPage extends React.Component {
 
 const mapStateToProps = ({ parcelReducers, authReducer }) => {
     return {
-        id: authReducer.id,
-        idstatus: authReducer.idstatus,
-        parcel: parcelReducers.parcel_list
+        ...authReducer,
+        parcel: parcelReducers.parcel_list,
     }
 }
 
