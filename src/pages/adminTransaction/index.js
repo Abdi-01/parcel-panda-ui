@@ -102,7 +102,7 @@ const TransactionManagement = () => {
     };
 
     const printRowTable = () => {
-        if (data.length > 0) {
+        if (data !== null) {
             return data.map((item) => {
                 return <StyledTableRow key={item.id}>
                     <StyledTableCell align="right">{item.id}</StyledTableCell>
