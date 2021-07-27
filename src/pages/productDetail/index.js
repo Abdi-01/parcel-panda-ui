@@ -5,6 +5,7 @@ import { Button, Container, Input } from 'reactstrap';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
+import { getCart } from "../../actions"
 
 toast.configure()
 
@@ -23,6 +24,8 @@ class ProductDetailPage extends React.Component {
 
     componentDidMount() {
         this.getProductDetail()
+        this.props.getCart()
+        this.getParcelType()
     }
 
 
@@ -49,7 +52,131 @@ class ProductDetailPage extends React.Component {
         }
     }
 
+    getParcelType = () => {
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        axios.get(URL_API + `/transaction/getcart`, headers)
+            .then(res => {
+                this.setState({ cart: res.data, idcart: res.data[res.data.length-1].idcart, detailCart: res.data[res.data.length-1].detail })
+                axios.get(URL_API + `/product-manage/getParcel-type?idparcel_type=${res.data[res.data.length-1].idparcel_type}`)
+                    .then(res => {
+                        console.log(res.data)
+                        this.setState({ type: res.data })
+                        console.log("TYPE", this.state.type)
+                    }).catch(err => console.log(err))
+            }).catch(err => console.log("get cart", err))
+    }
+
+    onBtAddToParcel = () => {
+        this.state.type.map((item, index) => {
+            if (item.idcategory === this.state.detail.idcategory) {
+                if (this.state.qty > item.max_qty) {
+                    toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                } else {
+                    // Dicart category itu masih 0
+                    if (this.state.detailCart.length === 0) {
+                        let token = localStorage.getItem("tkn_id")
+                        const headers = {
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        }
+                        let idcart = this.state.idcart
+                        let idproduct = this.state.detail.id
+                        let idcategory = this.state.detail.idcategory
+                        let amount = this.state.qty
+                        let subtotal = this.state.qty * this.state.detail.price
+                        console.log(idcart, idproduct, idcategory, amount, subtotal)
+                        axios.post(URL_API + `/transaction/addParcel`, {
+                            idcart, idproduct, idcategory, amount, subtotal
+                        }, headers)
+                            .then(res => {
+                                console.log(res.data)
+                                this.props.getCart(this.props.id)
+                                toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                            }).catch(err => console.log(err))
+                    } else {
+                        // Dicart kategory itu > 0
+                        let qty_beli = []
+                        this.state.detailCart.map(item => {
+                            if (item.idcategory === this.state.detail.idcategory) {
+                                qty_beli.push(item.amount)
+                            }
+                        })
+
+                        // di cart kategori itu
+                        if (qty_beli.length === 0) {
+                            let token = localStorage.getItem("tkn_id")
+                            const headers = {
+                                headers: {
+                                    'Authorization': `Bearer ${token}`
+                                }
+                            }
+                            let idcart = this.state.idcart
+                            let idproduct = this.state.detail.id
+                            let idcategory = this.state.detail.idcategory
+                            let amount = this.state.qty
+                            let subtotal = this.state.qty * this.state.detail.price
+                            console.log(idcart, idproduct, idcategory, amount, subtotal)
+                            axios.post(URL_API + `/transaction/addParcel`, {
+                                idcart, idproduct, idcategory, amount, subtotal
+                            }, headers)
+                                .then(res => {
+                                    console.log(res.data)
+                                    this.props.getCart(this.props.id)
+                                    toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                }).catch(err => console.log(err))
+                        } else {
+                            let qty_beli = []
+                            this.state.detailCart.map(item => {
+                                if (item.idcategory === this.state.detail.idcategory) {
+                                    qty_beli.push(item.amount)
+                                }
+                            })
+                            let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                                return val + sum
+                            })
+                            console.log("SUM", sum_qty_beli)
+                            if (sum_qty_beli + this.state.qty > item.max_qty) {
+                                toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                            } else if (sum_qty_beli === item.max_qty) {
+                                toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                            } else {
+                                let token = localStorage.getItem("tkn_id")
+                                const headers = {
+                                    headers: {
+                                        'Authorization': `Bearer ${token}`
+                                    }
+                                }
+                                let idcart = this.state.idcart
+                                let idproduct = this.state.detail.id
+                                let idcategory = this.state.detail.idcategory
+                                let amount = this.state.qty
+                                let subtotal = this.state.qty * this.state.detail.price
+                                console.log(idcart, idproduct, idcategory, amount, subtotal)
+                                axios.post(URL_API + `/transaction/addParcel`, {
+                                    idcart, idproduct, idcategory, amount, subtotal
+                                }, headers)
+                                    .then(res => {
+                                        console.log(res.data)
+                                        this.props.getCart(this.props.id)
+                                        toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                    }).catch(err => console.log(err))
+                            }
+                        }
+                    }
+
+                }
+            } 
+        })
+    }
+
     render() {
+        console.log(this.props.cart.length)
         return (
             <div>
                 <Container>
@@ -96,7 +223,7 @@ class ProductDetailPage extends React.Component {
                                 </Button>
                             </div>
                             <Link className="btn btn-warning" onClick={this.onBtAddToParcel}
-                                // to={`/cart/${this.props.id}`}
+                                to={`/cart/${this.props.id}`}
                                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '70%' }}>
                                 <span class="material-icons" >
                                     shopping_cart
@@ -117,4 +244,4 @@ const mapStateToProps = ({ authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, {})(ProductDetailPage);
+export default connect(mapStateToProps, { getCart })(ProductDetailPage);

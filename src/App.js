@@ -15,6 +15,7 @@ import FooterComp from './components/footer';
 import ParcelPage from './pages/parcel';
 import ProductsPage from './pages/product';
 import ProductDetailPage from './pages/productDetail';
+import CartPages from './pages/cart';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -62,6 +63,7 @@ class App extends React.Component {
           <Route path="/parcel" component={ParcelPage} />
           <Route path="/product" component={ProductsPage} />
           <Route path="/product-detail" component={ProductDetailPage} />
+          <Route path="/cart/:id" component={CartPages} />
           {
             this.props.role === "admin" ?
               <>
