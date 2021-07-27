@@ -176,7 +176,7 @@ class ProductDetailPage extends React.Component {
     }
 
     render() {
-        console.log(this.props.cart.length)
+        console.log(this.props.id)
         return (
             <div>
                 <Container>
@@ -239,7 +239,7 @@ class ProductDetailPage extends React.Component {
 
 const mapStateToProps = ({ authReducer }) => {
     return {
-        id: authReducer.idtb_user,
+        id: authReducer.id,
         cart: authReducer.cart
     }
 }

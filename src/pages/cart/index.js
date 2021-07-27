@@ -128,7 +128,9 @@ class CartPages extends React.Component {
                                     <p style={{ fontSize: '10px', fontStyle: 'italic' }}><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span> <span>(belum termasuk ongkir)</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    <Button color="warning" block style={{ fontSize: '16px', letterSpacing: '1px', lineHeight: '20px' }}>Checkout</Button>
+                                    <Link className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
+                                        PROCEED TO CHECKOUT
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +143,7 @@ class CartPages extends React.Component {
 
 const mapStateToProps = ({ authReducer }) => {
     return {
-        id: authReducer.idtb_user,
+        id: authReducer.id,
         cart: authReducer.cart
     }
 }
