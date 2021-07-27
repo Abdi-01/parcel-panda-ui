@@ -8,16 +8,11 @@ import ProductCard from "../../components/productCard";
 import SortProductAdmin from "../../components/sortProductAdmin";
 import ActionProduct from "../../components/dialogActionProduct";
 import Pagination from "@material-ui/lab/Pagination";
-// import MenuIcon from "@material-ui/icons/Menu";
-// import SearchIcon from "@material-ui/icons/Search";
 import {
     Button,
-    //   IconButton,
-    //   InputBase,
 } from "@material-ui/core/";
 import {
     ButtonWrapper,
-    //   PaperWrapper,
     PaginationWrapper,
     ProductWrapper,
     SortingBar,
@@ -124,20 +119,20 @@ const ProductManagement = () => {
                         </Button>
                     </ButtonWrapper>
                     {/* <PaperWrapper component="form">
-                    <IconButton sx={{ p: "10px" }} aria-label="menu">
-                    <MenuIcon />
-                    </IconButton>
-                        <InputBase
-                            sx={{ ml: 1, flex: 1 }}
-                                placeholder={"Search product"}
-                                inputProps={{
-                                    "aria-label": "Search product",
-                            }}
-                        />
-                    <IconButton sx={{ p: "10px" }} aria-label="search">
-                    <SearchIcon />
-                    </IconButton>
-                </PaperWrapper> */}
+                        <IconButton sx={{ p: "10px" }} aria-label="menu">
+                        <MenuIcon />
+                        </IconButton>
+                            <InputBase
+                                sx={{ ml: 1, flex: 1 }}
+                                    placeholder={"Search product"}
+                                    inputProps={{
+                                        "aria-label": "Search product",
+                                }}
+                            />
+                        <IconButton sx={{ p: "10px" }} aria-label="search">
+                        <SearchIcon />
+                        </IconButton>
+                    </PaperWrapper> */}
                     <SortingBar>
                         <SortProductAdmin
                             sort={sort}
