@@ -53,29 +53,27 @@ class ParcelPage extends React.Component {
         return this.props.parcel.map((item, index) => {
             return <div className="col-md-3 mt-5">
                 <Card >
-                    <Link to={`/product?${item.category.join("&")}`} style={{ textDecoration: "none", color: "black" }} >
-                        {
-                            item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
-                                <CardImg style={{ height: '170px' }} src={URL_API + '/static/images/' + item.url} alt="img" /> :
-                                <CardImg style={{ height: '170px' }} src={'https://drive.google.com/uc?export=view&id=' + item.url} alt="img" />
-                        }
-                        <CardContent>
-                            <Typography gutterBottom component="div">
-                                Parcel {item.id}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary" style={{ color: 'gray' }}>
-                                {item.title}
-                            </Typography>
-                            <Typography gutterBottom component="div">
-                                Rp. {item.price.toLocaleString()}
-                            </Typography>
-                        </CardContent>
-                        <CardActions>
-                            <Link onClick={() => { this.setState({ modal: !this.state.modal, selectedIndex: index, }) }} className="btn btn-warning">
-                                Add to Cart
-                            </Link>
-                        </CardActions>
-                    </Link>
+                    {
+                        item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
+                            <CardImg style={{ height: '170px' }} src={URL_API + '/static/images/' + item.url} alt="img" /> :
+                            <CardImg style={{ height: '170px' }} src={'https://drive.google.com/uc?export=view&id=' + item.url} alt="img" />
+                    }
+                    <CardContent>
+                        <Typography gutterBottom component="div">
+                            Parcel {item.id}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" style={{ color: 'gray' }}>
+                            {item.title}
+                        </Typography>
+                        <Typography gutterBottom component="div">
+                            Rp. {item.price.toLocaleString()}
+                        </Typography>
+                    </CardContent>
+                    <CardActions>
+                        <Link onClick={() => { this.setState({ modal: !this.state.modal, selectedIndex: index, }) }} className="btn btn-warning">
+                            Add to Cart
+                        </Link>
+                    </CardActions>
                 </Card>
             </div>
         })
@@ -139,7 +137,7 @@ class ParcelPage extends React.Component {
 
     customToastWithLink = () => (
         <div>
-          <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
+            <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
         </div>
     );
 

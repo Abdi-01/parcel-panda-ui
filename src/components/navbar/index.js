@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, NavDropdown, Badge } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { NavLink, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
@@ -88,9 +88,9 @@ class NavbarComp extends React.Component {
                             </div>
                         </Nav>
                         <Nav>
-                            <div>
+                            {/* <div>
                                 <h6>8 800 332 65-66 <br></br><span className="support">Support 24/7</span></h6>
-                            </div>
+                            </div> */}
                             {
                                 this.props.username ?
                                     <div style={{ display: 'flex', alignItems: "center" }}>
@@ -125,9 +125,14 @@ class NavbarComp extends React.Component {
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-                                        <Nav.Link><span className="material-icons">
-                                            shopping_cart
-                                        </span></Nav.Link>
+                                        <Nav.Link href={`/cart/${this.props.iduser}`}>
+                                            <span className="material-icons">
+                                                shopping_cart
+                                            </span>
+                                            <Badge bg="primary" text="dark">
+                                                Warning
+                                            </Badge>
+                                        </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
                                         this.setState({ modal: !this.state.modal });
@@ -141,12 +146,45 @@ class NavbarComp extends React.Component {
                 <Navbar >
                     <Container>
                         <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
-                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span className="material-icons">
+                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
                                 bolt
                             </span>Parcel</Nav.Link>
-                            <Nav.Link href="/product" style={{ display: 'flex' }}><span className="material-icons">
+                            <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
                                 sell
                             </span>Product</Nav.Link>
+                            <Nav.Link href="/user-profile" style={{ display: 'flex' }}>
+                                <span class="material-icons" >bolt</span>
+                                Profile
+                            </Nav.Link>
+                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+                            </NavDropdown>
+                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
+                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
+                                <NavDropdown.Divider />
+                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
+                            </NavDropdown>
+                        </Nav>
+                        <Nav>
+                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
+                                sync
+                            </span>Recently Viewed</Nav.Link>
                         </Nav>
                     </Container>
                 </Navbar>
@@ -158,7 +196,9 @@ class NavbarComp extends React.Component {
 const mapStateToProps = ({ authReducer }) => {
     return {
         id: authReducer.idstatus,
-        username: authReducer.username
+        username: authReducer.username,
+        cart: authReducer.cart,
+        iduser: authReducer.id
     }
 }
 
