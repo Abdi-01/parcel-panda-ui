@@ -10,7 +10,7 @@ const DialogImagePayment = ({ openImage, setOpenImage, imageURL }) => {
         setOpenImage(false);
     };
 
-    console.log("Dialog", imageURL)
+    // console.log("Dialog", imageURL)
 
     return (
         <div>

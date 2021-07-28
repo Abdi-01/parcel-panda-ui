@@ -1,11 +1,6 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSelector } from "react-redux";
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import { Button, CardActionArea, CardActions } from '@material-ui/core';
 
 // Import Swiper styles
 import "swiper/swiper.min.css";
