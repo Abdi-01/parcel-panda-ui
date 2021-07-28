@@ -29,7 +29,7 @@ const DialogActionTransaction = ({ openAction, setOpenAction, selectedItem }) =>
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Do your agree to ${selectedItem.action} this ${selectedItem.item.invoice} payment?`}
+          {`Do your agree to ${selectedItem.action} this payment?`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
