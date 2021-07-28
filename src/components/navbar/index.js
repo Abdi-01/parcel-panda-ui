@@ -77,16 +77,6 @@ class NavbarComp extends React.Component {
                         <Navbar.Brand href="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />
                         </Navbar.Brand>
-                        <Nav >
-                            <div className="p-field p-fluid div-search">
-                                <div>
-                                    <span className="p-input-icon-right">
-                                        <InputText placeholder="Search" />
-                                        <i className="pi pi-search" />
-                                    </span>
-                                </div>
-                            </div>
-                        </Nav>
                         <Nav>
                             {/* <div>
                                 <h6>8 800 332 65-66 <br></br><span className="support">Support 24/7</span></h6>
@@ -152,39 +142,6 @@ class NavbarComp extends React.Component {
                             <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
                                 sell
                             </span>Product</Nav.Link>
-                            <Nav.Link href="/user-profile" style={{ display: 'flex' }}>
-                                <span class="material-icons" >bolt</span>
-                                Profile
-                            </Nav.Link>
-                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                        <Nav>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sync
-                            </span>Recently Viewed</Nav.Link>
                         </Nav>
                     </Container>
                 </Navbar>
