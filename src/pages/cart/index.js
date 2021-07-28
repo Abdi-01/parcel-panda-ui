@@ -5,7 +5,10 @@ import { URL_API } from '../../helper';
 import { Button, Table, Input } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { getCart } from "../../actions"
+import { getCart, getProfile } from "../../actions"
+import { toast } from 'react-toastify';
+
+toast.configure()
 
 class CartPages extends React.Component {
     constructor(props) {
@@ -29,9 +32,6 @@ class CartPages extends React.Component {
                     </td> */}
                     <td>
                         <div style={{ fontWeight: "bolder", textAlign: 'center' }}>Parcel {item.idparcel_type}</div>
-                        {/* <div>{item.kategori}</div> */}
-                        {/* <div>{item.type}</div>
-                        <div><h4 style={{ fontWeight: "bolder" }}>{item.harga.toLocaleString()}</h4></div> */}
                     </td>
                     <td>
                         {
@@ -74,9 +74,9 @@ class CartPages extends React.Component {
 
     totalQty = () => {
         return this.props.cart.map((item, index) => {
-            item.detail.map((val, idx) => {
+            return item.detail.map((val, idx) => {
                 return val.amount
-            })
+            }).reduce((a, b) => a + b, 0)
         }).reduce((a, b) => a + b, 0)
     }
 
@@ -84,6 +84,15 @@ class CartPages extends React.Component {
         return this.props.cart.map((item, index) => {
             return item.subtotal
         }).reduce((a, b) => a + b, 0)
+    }
+
+    handleToCheckOut =() => {
+        if(this.totalQty() < this.props.cart.length * 5){
+            toast.warn('Kuantity anda kurang, pilih produk lagi!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        } 
+        else {
+            this.props.getCart(this.props.id)
+        }
     }
 
 
@@ -118,7 +127,7 @@ class CartPages extends React.Component {
                                 <div style={{ display: 'flex', borderBottom: '1px dashed #DDDDDD', justifyContent: 'space-between' }}>
                                     <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>Total Parcel(s)</h6>
 
-                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>{this.props.cart.length}</h6>
+                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>{this.totalQty()}</h6>
                                 </div>
                                 <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -128,7 +137,7 @@ class CartPages extends React.Component {
                                     <p style={{ fontSize: '10px', fontStyle: 'italic' }}><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span> <span>(belum termasuk ongkir)</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    <Link className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
+                                    <Link onClick={() => this.handleToCheckOut()} to={`/checkout/${this.props.id}`} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
                                         PROCEED TO CHECKOUT
                                     </Link>
                                 </div>
@@ -148,4 +157,4 @@ const mapStateToProps = ({ authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, { getCart })(CartPages);
+export default connect(mapStateToProps, { getCart, getProfile})(CartPages);

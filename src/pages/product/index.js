@@ -129,9 +129,10 @@ class ProductsPage extends React.Component {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
 
-                let dataFilter = this.state.product.filter((item) =>
-                    item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
-                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                let dataFilter = res.data.filter((item) =>
+                    item.name.toLowerCase().includes(this.state.filterName?.toLowerCase()))
+                this.setState({ product: dataFilter, pageCount: Math.ceil(dataFilter.length / this.state.perPage) })
+                console.log("TES", Math.ceil(res.data.length / this.state.perPage))
             }).catch(err => console.log(err))
     }
 

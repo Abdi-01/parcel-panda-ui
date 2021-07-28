@@ -18,7 +18,8 @@ class ProductDetailPage extends React.Component {
             cart: [],
             type: [],
             idcart: [],
-            detailCart: []
+            detailCart: [],
+            idparcel_type: []
         }
     }
 
@@ -61,8 +62,11 @@ class ProductDetailPage extends React.Component {
         }
         axios.get(URL_API + `/transaction/getcart`, headers)
             .then(res => {
-                this.setState({ cart: res.data, idcart: res.data[res.data.length-1].idcart, detailCart: res.data[res.data.length-1].detail })
-                axios.get(URL_API + `/product-manage/getParcel-type?idparcel_type=${res.data[res.data.length-1].idparcel_type}`)
+                this.setState({
+                    cart: res.data, idcart: res.data[res.data.length - 1].idcart,
+                    detailCart: res.data[res.data.length - 1].detail, idparcel_type: res.data[res.data.length - 1].idparcel_type
+                })
+                axios.get(URL_API + `/product-manage/getParcel-type?idparcel_type=${res.data[res.data.length - 1].idparcel_type}`)
                     .then(res => {
                         console.log(res.data)
                         this.setState({ type: res.data })
@@ -85,6 +89,7 @@ class ProductDetailPage extends React.Component {
                                 'Authorization': `Bearer ${token}`
                             }
                         }
+                        let idparcel_type = this.state.idparcel_type
                         let idcart = this.state.idcart
                         let idproduct = this.state.detail.id
                         let idcategory = this.state.detail.idcategory
@@ -92,7 +97,7 @@ class ProductDetailPage extends React.Component {
                         let subtotal = this.state.qty * this.state.detail.price
                         console.log(idcart, idproduct, idcategory, amount, subtotal)
                         axios.post(URL_API + `/transaction/addParcel`, {
-                            idcart, idproduct, idcategory, amount, subtotal
+                            idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                         }, headers)
                             .then(res => {
                                 console.log(res.data)
@@ -108,7 +113,7 @@ class ProductDetailPage extends React.Component {
                             }
                         })
 
-                        // di cart kategori itu
+                        // di cart kategori itu qtynya udah belum ada
                         if (qty_beli.length === 0) {
                             let token = localStorage.getItem("tkn_id")
                             const headers = {
@@ -116,6 +121,7 @@ class ProductDetailPage extends React.Component {
                                     'Authorization': `Bearer ${token}`
                                 }
                             }
+                            let idparcel_type = this.state.idparcel_type
                             let idcart = this.state.idcart
                             let idproduct = this.state.detail.id
                             let idcategory = this.state.detail.idcategory
@@ -123,7 +129,7 @@ class ProductDetailPage extends React.Component {
                             let subtotal = this.state.qty * this.state.detail.price
                             console.log(idcart, idproduct, idcategory, amount, subtotal)
                             axios.post(URL_API + `/transaction/addParcel`, {
-                                idcart, idproduct, idcategory, amount, subtotal
+                                idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                             }, headers)
                                 .then(res => {
                                     console.log(res.data)
@@ -152,6 +158,7 @@ class ProductDetailPage extends React.Component {
                                         'Authorization': `Bearer ${token}`
                                     }
                                 }
+                                let idparcel_type = this.state.idparcel_type
                                 let idcart = this.state.idcart
                                 let idproduct = this.state.detail.id
                                 let idcategory = this.state.detail.idcategory
@@ -159,7 +166,7 @@ class ProductDetailPage extends React.Component {
                                 let subtotal = this.state.qty * this.state.detail.price
                                 console.log(idcart, idproduct, idcategory, amount, subtotal)
                                 axios.post(URL_API + `/transaction/addParcel`, {
-                                    idcart, idproduct, idcategory, amount, subtotal
+                                    idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                                 }, headers)
                                     .then(res => {
                                         console.log(res.data)
@@ -171,7 +178,7 @@ class ProductDetailPage extends React.Component {
                     }
 
                 }
-            } 
+            }
         })
     }
 
