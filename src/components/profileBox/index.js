@@ -30,7 +30,6 @@ import FormDialogProfile from '../dialogFullname';
 import FormDialogGender from '../dialogGender';
 import FormDialogVerify from '../dialogVerify';
 import { getProfile } from '../../actions';
-// import { getProfile } from '../../actions';
 
 const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
@@ -57,8 +56,8 @@ const ProfileBox = () => {
         var formData = new FormData()
         formData.append('images', event.target.files[0])
         let token = localStorage.getItem("tkn_id")
-        console.log("formdata", [...formData])
-        console.log("images", event.target.files[0])
+        // console.log("formdata", [...formData])
+        // console.log("images", event.target.files[0])
         let config = {
           method: 'patch',
           url: URL_API + '/profile/update-photo',

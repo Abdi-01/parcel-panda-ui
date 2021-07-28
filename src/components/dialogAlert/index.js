@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { toast } from 'react-toastify';
+import { URL_API } from "../../helper";
+import axios from "axios";
 import {
   Button,
   Dialog,
@@ -8,8 +10,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core/";
-import { URL_API } from "../../helper";
-import axios from "axios";
+
 
 toast.configure()
 const DialogAlert = ({ open, setOpen, id, getProductData }) => {

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
+import { getProfile } from '../../actions';
+import { URL_API } from '../../helper';
+import axios from 'axios';
 import {
     Dialog,
     DialogActions,
@@ -9,11 +13,7 @@ import {
     Grid,
     TextField,
 } from "@material-ui/core/";
-import { toast } from 'react-toastify';
 import { ButtonWrapper, StyledButton } from "./dialogAddressComp";
-import { URL_API } from '../../helper';
-import axios from 'axios';
-import { getProfile } from '../../actions';
 
 toast.configure()
 const FormDialogAddress = ({ open, setOpen, data }) => {
