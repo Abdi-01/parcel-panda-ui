@@ -17,7 +17,8 @@ import {
     TableRow,
     Paper,
 } from '@material-ui/core';
-import { PaginationWrapper } from './adminTransaction';
+import { ButtonWrapper, PaginationWrapper } from './adminTransaction';
+import DialogActionTransaction from '../../components/dialogActionTransaction';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -71,6 +72,7 @@ const TransactionManagement = () => {
     const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1)
     const [countPage, setCountPage] = useState(1)
+    const [openAction, setOpenAction] = useState(false)
     const [paymentStatus, setPaymentStatus] = useState({
         ongoing: false,
         accepted: false,
@@ -80,7 +82,18 @@ const TransactionManagement = () => {
         from: null,
         to: null,
     });
+    const [selectedItem, setSelectedItem] = useState({
+        item: null,
+        action: null
+    })
     const classes = useStyles();
+
+    const handleClickOpenAction = (data, string) => {
+        if (data && string) {
+            setSelectedItem({...selectedItem, item: data, action: string})
+        }
+        setOpenAction(true);
+    };
 
     const resetFilter = () => {
         setPaymentStatus({...paymentStatus, ongoing: false, accepted: false, rejected: false})
@@ -113,12 +126,26 @@ const TransactionManagement = () => {
                         </Button>
                     </StyledTableCell>
                     <StyledTableCell>
-                        <Button variant="contained" size="small" color="primary">
-                            Accept
-                        </Button>
-                        <Button variant="contained" size="small" color="secondary">
-                            Reject
-                        </Button>
+                        <ButtonWrapper>
+                            {
+                                item.payment_status === 'accepted' ?
+                                    <Button variant="contained" size="small" color="primary" disabled>
+                                        Accepted
+                                    </Button> :
+                                item.payment_status === 'rejected' ?
+                                    <Button variant="contained" size="small" color="secondary" disabled>
+                                        Rejected
+                                    </Button> :
+                                    <div>
+                                        <Button variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'accept')} color="primary">
+                                            Accept
+                                        </Button>
+                                        <Button variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'reject')} color="secondary">
+                                            Reject
+                                        </Button>
+                                    </div>
+                            }
+                        </ButtonWrapper>
                     </StyledTableCell>
                 </StyledTableRow>
             })
@@ -182,7 +209,7 @@ const TransactionManagement = () => {
     return (
         <div>
             <Container>
-                <h1>Transaction Management</h1>
+                {/* <h1>Transaction Management</h1> */}
                 <FilterTransactionManagement 
                     paymentStatus={paymentStatus}
                     setPaymentStatus={setPaymentStatus}
@@ -230,6 +257,7 @@ const TransactionManagement = () => {
                 </PaginationWrapper>
             </Container>
             <DialogImagePayment openImage={openImage} setOpenImage={setOpenImage} imageURL={imageURL}/>
+            <DialogActionTransaction openAction={openAction} setOpenAction={setOpenAction} selectedItem={selectedItem}/>
         </div>
     )
 }

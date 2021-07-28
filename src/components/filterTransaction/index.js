@@ -33,10 +33,7 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
     };
 
     const handleChangePaymentStatus = (event) => {
-        setPaymentStatus({
-          ...paymentStatus,
-          [event.target.name]: event.target.checked,
-        });
+        setPaymentStatus({...paymentStatus, [event.target.name]: event.target.checked});
     };
 
     const renderCustomInput = ({ ref }) => (
@@ -83,6 +80,22 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
           </DateFilterWrapper>
         </div>
     );
+
+    const resetButton = () => {
+        let bool = true 
+        let time = true 
+        for (let n in paymentStatus) {
+            if (paymentStatus[n] === true) {
+                bool = false
+            }
+        }
+        for (let n in selectedDayRange) {
+            if (selectedDayRange[n] !== null) {
+                time = false
+            }
+        }
+        return bool && time
+    }
 
     useEffect(() => {
         // filterTransaction()
@@ -171,6 +184,7 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
                     color="secondary"
                     onClick={resetFilter}
                     size="large"
+                    disabled={resetButton()}
                 >
                     Reset Filter
                 </Button>
