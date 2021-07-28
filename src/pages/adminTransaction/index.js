@@ -127,7 +127,7 @@ const TransactionManagement = () => {
 
     const setQueryPaymentFilter = () => {
         if (paymentStatus.ongoing || paymentStatus.accepted || paymentStatus.rejected) {
-            let query = '?payment='
+            let query = 'payment='
             let values = []
             for (let payment in paymentStatus) {
                 if (paymentStatus[payment] === true) {
@@ -137,18 +137,30 @@ const TransactionManagement = () => {
             return query + values.join(",")
         }
     }
+
+    const setQueryDateFilter = () => {
+        if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
+            let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
+            console.log("Date filter", query)
+            return query
+        }
+    }
     
     const getTransaction = async () => {
         try {
             setLoading(true)
-            let query = ''
+            let queryPayment = ''
+            let queryDate = ''
             if (setQueryPaymentFilter() !== undefined) {
-                query = setQueryPaymentFilter()
+                queryPayment = setQueryPaymentFilter()
+            }
+            if (setQueryDateFilter() !== undefined) {
+                queryDate = setQueryDateFilter()
             }
             let token = localStorage.getItem("tkn_id");
             let config = {
                 method: 'get',
-                url: URL_API + `/transaction-manage/5/${5 * (page - 1)}${query}`,
+                url: URL_API + `/transaction-manage/5/${5 * (page - 1)}?${queryPayment}&${queryDate}`,
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
