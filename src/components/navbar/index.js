@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, Badge } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
-import { InputText } from 'primereact/inputtext';
+// import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
@@ -19,7 +19,8 @@ class NavbarComp extends React.Component {
 
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.state.password)
-        this.setState({ modal: false, password: '' });
+        this.setState({ modal: false, });
+        this.setState({ password: '' })
     }
 
     printLogin = () => {
@@ -68,6 +69,14 @@ class NavbarComp extends React.Component {
         )
     }
 
+    totalQty = () => {
+        return this.props.cart.map((item, index) => {
+            return item.detail.map((val, idx) => {
+                return val.amount
+            }).reduce((a, b) => a + b, 0)
+        }).reduce((a, b) => a + b, 0)
+    }
+
     render() {
         return (
             <div>
@@ -77,20 +86,10 @@ class NavbarComp extends React.Component {
                         <Navbar.Brand href="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />
                         </Navbar.Brand>
-                        <Nav >
-                            <div className="p-field p-fluid div-search">
-                                <div>
-                                    <span className="p-input-icon-right">
-                                        <InputText placeholder="Search" />
-                                        <i className="pi pi-search" />
-                                    </span>
-                                </div>
-                            </div>
-                        </Nav>
                         <Nav>
-                            <div>
+                            {/* <div>
                                 <h6>8 800 332 65-66 <br></br><span className="support">Support 24/7</span></h6>
-                            </div>
+                            </div> */}
                             {
                                 this.props.username ?
                                     <div style={{ display: 'flex', alignItems: "center" }}>
@@ -103,31 +102,69 @@ class NavbarComp extends React.Component {
                                                     {this.props.username}
                                                 </DropdownToggle>
                                                 <DropdownMenu right>
-                                                    <DropdownItem>
-                                                        <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
-                                                            <span class="material-icons">
-                                                                account_circle
-                                                            </span>
-                                                            Profile
-                                                        </Link>
-                                                    </DropdownItem>
-                                                    <DropdownItem onClick={this.props.authLogout}>
-                                                        <Link className="nav-link" style={{ display: 'flex' }}>
-                                                            <span class="material-icons">
-                                                                logout
-                                                            </span>
-                                                            Log Out
-                                                        </Link>
-                                                    </DropdownItem>
+                                                    {
+                                                        this.props.role === "user" ?
+                                                            <>
+                                                                <DropdownItem>
+                                                                    <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            account_circle
+                                                                        </span>
+                                                                        Profile
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                                <DropdownItem>
+                                                                    <Link to={`/user-transaction/${this.props.id}`} className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            shopping_bag
+                                                                        </span>
+                                                                        My Order
+                                                                    </Link>
+
+                                                                </DropdownItem>
+                                                                <DropdownItem onClick={this.props.authLogout}>
+                                                                    <Link className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            logout
+                                                                        </span>
+                                                                        Log Out
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                            </> :
+                                                            <>
+                                                                <DropdownItem>
+                                                                    <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            account_circle
+                                                                        </span>
+                                                                        Profile
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                                <DropdownItem onClick={this.props.authLogout}>
+                                                                    <Link className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            logout
+                                                                        </span>
+                                                                        Log Out
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                            </>
+                                                    }
+
                                                 </DropdownMenu>
                                             </UncontrolledDropdown>
                                         </Nav.Link>
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-                                        <Nav.Link><span className="material-icons">
-                                            shopping_cart
-                                        </span></Nav.Link>
+                                        {/* <Button color="secondary" outline>
+                                            Notifications <Badge color="warning">4</Badge>
+                                        </Button> */}
+                                        <Nav.Link href={`/cart/${this.props.iduser}`}>
+                                            <span className="material-icons">
+                                                shopping_cart
+                                            </span><Badge style={{ color: "black", backgroundColor: '#FAB629'}}>{this.totalQty()}</Badge>
+                                        </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
                                         this.setState({ modal: !this.state.modal });
@@ -140,53 +177,13 @@ class NavbarComp extends React.Component {
                 </Navbar>
                 <Navbar >
                     <Container>
-                        <Navbar.Brand>
-                            <Button variant="warning" className="btncustom" size="sm" style={{ display: 'flex', background: "#FAB629", color: "black" }}>
-                                <span className="material-icons">
-                                    menu
-                                </span>
-                                SHOP BY CATEGORY</Button>
-                        </Navbar.Brand>
                         <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
-                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span className="material-icons">
+                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
                                 bolt
                             </span>Parcel</Nav.Link>
-                            <Nav.Link href="/product" style={{ display: 'flex' }}><span className="material-icons">
+                            <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
                                 sell
                             </span>Product</Nav.Link>
-                            <Nav.Link style={{ display: 'flex' }}>
-                                <span class="material-icons" >bolt</span>
-                                <NavLink to="/user-profile">Profile</NavLink>
-                            </Nav.Link>
-                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                        <Nav>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sync
-                            </span>Recently Viewed</Nav.Link>
                         </Nav>
                     </Container>
                 </Navbar>
@@ -198,7 +195,10 @@ class NavbarComp extends React.Component {
 const mapStateToProps = ({ authReducer }) => {
     return {
         id: authReducer.idstatus,
-        username: authReducer.username
+        username: authReducer.username,
+        cart: authReducer.cart,
+        iduser: authReducer.id,
+        role: authReducer.role
     }
 }
 
