@@ -2,10 +2,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
     column-gap: 30px;
     row-gap: 15px;
-    margin: 30px 0;
+    /* margin: 30px 0; */
 `
 
 export const Card = styled.div`
@@ -46,6 +46,7 @@ export const TextHeadWrapper = styled.div`
 export const TextHeadCategory = styled.div`
     font-size: 16px;
     color: #9a9a9a;
+    text-align: right;
 `
 
 export const TextHeaderNumb = styled.div`

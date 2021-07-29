@@ -22,21 +22,19 @@ import {
   ChartFilterWrapper, 
   DateFilterWrapper, 
   FilterWrapper, 
-  DateWrapper 
+  DateWrapper, 
+  DisplayWrapper
 } from "./chartRevenue";
 
 
-const ChartRevenue = ({ values }) => {
+const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
     const [dataX, setData] = useState(null)
     const [revenue, setRevenue] = useState({
         day: 0,
         month: 0,
-        total: 0
+        total: 0,
+        filtered: 0
     })
-    const [selectedDayRange, setSelectedDayRange] = useState({
-        from: null,
-        to: null,
-    });
 
     const renderCustomInput = ({ ref }) => (
         <div>
@@ -101,7 +99,8 @@ const ChartRevenue = ({ values }) => {
                     ...revenue,
                     day: values.day,
                     month: values.month,
-                    total: values.total
+                    total: values.total,
+                    filtered: values.filtered
                 })
             }
         }
@@ -110,35 +109,37 @@ const ChartRevenue = ({ values }) => {
 
     return (
         <div>
+          <DisplayWrapper>
             <RevenueCard data={revenue}/>
             <ChartFilterWrapper>
               <FilterWrapper>
                 <h5>Revenue Analytics</h5>
                 <DateWrapper>
+                  <DatePicker
+                        value={selectedDayRange}
+                        onChange={setSelectedDayRange}
+                        renderInput={renderCustomInput}
+                        inputPlaceholder="Select a date"
+                        colorPrimary="#0fbcf9"
+                        colorPrimaryLight="rgba(75, 207, 250, 0.4)"
+                        shouldHighlightWeekends
+                    />
                   <Button 
                       variant="contained"
                       color="secondary"
                       onClick={resetFilter}
                       size="large"
+                      disabled={selectedDayRange.from === null && selectedDayRange.to === null}
                       // disabled={resetButton()}
                   >
                       Reset Filter
                   </Button>
-                  <DatePicker
-                      value={selectedDayRange}
-                      onChange={setSelectedDayRange}
-                      renderInput={renderCustomInput}
-                      inputPlaceholder="Select a date"
-                      colorPrimary="#0fbcf9"
-                      colorPrimaryLight="rgba(75, 207, 250, 0.4)"
-                      shouldHighlightWeekends
-                  />
                 </DateWrapper>
               </FilterWrapper>
-              <ResponsiveContainer width="100%" height={400}>
+              <ResponsiveContainer width="100%" height={550}>
                 <LineChart
                   // width={900}
-                  // height={400}
+                  // height={800}
                   data={dataX}
                   margin={{
                       top: 20,
@@ -158,6 +159,7 @@ const ChartRevenue = ({ values }) => {
                 </LineChart>
               </ResponsiveContainer>
             </ChartFilterWrapper>
+          </DisplayWrapper>
         </div>
     )
 };
