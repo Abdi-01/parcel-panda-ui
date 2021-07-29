@@ -3,9 +3,10 @@ import { Button, Container, Modal, ModalBody, Input, Table } from 'reactstrap';
 import { Link } from "react-router-dom";
 import truck from "../../asset/img/truck.png"
 import { connect } from 'react-redux';
-import { getProfile, getCart } from "../../actions"
+import { getProfile, getCart, getTransaction } from "../../actions"
 import axios from 'axios';
 import { URL_API } from '../../helper';
+
 class CheckoutPage extends React.Component {
     constructor(props) {
         super(props);
@@ -118,7 +119,6 @@ class CheckoutPage extends React.Component {
         return this.props.cart.map((item, index) => {
             return (
                 <tr >
-
                     <td>
                         <div style={{ fontWeight: "bolder", textAlign: 'center' }}>Parcel {item.idparcel_type}</div>
                     </td>
@@ -205,6 +205,7 @@ class CheckoutPage extends React.Component {
         .then(res => {
             console.log("POST", res.data)
             this.props.getCart(this.props.id)
+            this.props.getTransaction(this.props.id)
         }).catch(err => console.log("post trans", err))
     }
 
@@ -235,7 +236,7 @@ class CheckoutPage extends React.Component {
                         </ModalBody>
                     </Modal>
 
-                    <div className="row f-flex">
+                    <div className="row d-flex">
                         {/* ALAMAT */}
                         <div className="col-md-9">
                             <div className="mt-5" style={{ border: '1px solid #DDDDDD', borderRadius: '10px', margin: '0 0 20px 0', padding: '15px 15px 15px 15px', }}>
@@ -318,8 +319,8 @@ class CheckoutPage extends React.Component {
                                     <p style={{ fontSize: '10px', fontStyle: 'italic' }}><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    <Link onClick={this.onBtCheckOut} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
-                                        PROCEED TO CHECKOUT
+                                    <Link onClick={this.onBtCheckOut} to={`/user-transaction/${this.props.id}`} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
+                                        PLACE ORDER
                                     </Link>
                                 </div>
                             </div>
@@ -340,4 +341,4 @@ const mapStateToProps = ({ authReducer, productReducers }) => {
     }
 }
 
-export default connect(mapStateToProps, { getProfile, getCart })(CheckoutPage);
+export default connect(mapStateToProps, { getProfile, getCart, getTransaction })(CheckoutPage);

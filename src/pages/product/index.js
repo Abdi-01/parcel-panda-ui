@@ -1,11 +1,13 @@
 import React from 'react';
-import { Container, Input, Label, Button, CardImg } from 'reactstrap';
+import { Container, Input, Label,  CardImg, Button} from 'reactstrap';
+// import { Button } from "react-bootstrap"
 import { InputText } from 'primereact/inputtext';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 // import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+// import Badge from 'react-bootstrap/Badge'
 import { connect } from 'react-redux';
 // import { makeStyles } from '@material-ui/core/styles';
 // import Pagination from '@material-ui/lab/Pagination';
@@ -65,6 +67,7 @@ class ProductsPage extends React.Component {
                         <CardContent>
                             <Typography variant="body2" color="text.secondary" style={{ color: 'gray' }}>
                                 {item.category}
+                                
                             </Typography>
                             <Typography gutterBottom component="div" style={{ height: '55px' }}>
                                 {item.name}
@@ -129,10 +132,9 @@ class ProductsPage extends React.Component {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
 
-                let dataFilter = res.data.filter((item) =>
-                    item.name.toLowerCase().includes(this.state.filterName?.toLowerCase()))
-                this.setState({ product: dataFilter, pageCount: Math.ceil(dataFilter.length / this.state.perPage) })
-                console.log("TES", Math.ceil(res.data.length / this.state.perPage))
+                let dataFilter = this.state.product.filter((item) =>
+                    item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
+                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
             }).catch(err => console.log(err))
     }
 
@@ -255,6 +257,12 @@ class ProductsPage extends React.Component {
                                 <Button onClick={this.handleFilter} color="warning" style={{ background: "#FAB629", color: "black", marginLeft: '15px' }}>
                                     Apply
                                 </Button>
+                                {/* <Button variant="primary">
+                                    Primary<Badge style={{ color: "yellow" }}>9</Badge>
+                                </Button>
+                                <Badge bg="warning" text="dark">
+                                    Warning
+                                </Badge> */}
                             </div>
                         </div>
                     </div>
