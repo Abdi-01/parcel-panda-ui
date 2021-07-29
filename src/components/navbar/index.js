@@ -1,9 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
 import { Button, Container, Form, Nav, Navbar, Badge } from 'react-bootstrap';
-=======
-import { Button, Container, Form, Nav, Navbar, NavDropdown, Badge } from 'react-bootstrap';
->>>>>>> upstream/develop
 import logo from "../../asset/img/logo.png"
 // import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -161,7 +157,6 @@ class NavbarComp extends React.Component {
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-<<<<<<< HEAD
                                         {/* <Button color="secondary" outline>
                                             Notifications <Badge color="warning">4</Badge>
                                         </Button> */}
@@ -169,15 +164,6 @@ class NavbarComp extends React.Component {
                                             <span className="material-icons">
                                                 shopping_cart
                                             </span><Badge style={{ color: "black", backgroundColor: '#FAB629'}}>{this.totalQty()}</Badge>
-=======
-                                        <Nav.Link href={`/cart/${this.props.iduser}`}>
-                                            <span className="material-icons">
-                                                shopping_cart
-                                            </span>
-                                            <Badge bg="primary" text="dark">
-                                                Warning
-                                            </Badge>
->>>>>>> upstream/develop
                                         </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
@@ -198,42 +184,6 @@ class NavbarComp extends React.Component {
                             <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
                                 sell
                             </span>Product</Nav.Link>
-<<<<<<< HEAD
-=======
-                            <Nav.Link href="/user-profile" style={{ display: 'flex' }}>
-                                <span class="material-icons" >bolt</span>
-                                Profile
-                            </Nav.Link>
-                            <NavDropdown title="Fresh" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Frozen" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Demos" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                            <NavDropdown title="Shop" id="navbarScrollingDropdown">
-                                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                                <NavDropdown.Item href="#action4">Another action</NavDropdown.Item>
-                                <NavDropdown.Divider />
-                                <NavDropdown.Item href="#action5">Something else here</NavDropdown.Item>
-                            </NavDropdown>
-                        </Nav>
-                        <Nav>
-                            <Nav.Link style={{ display: 'flex' }}><span className="material-icons">
-                                sync
-                            </span>Recently Viewed</Nav.Link>
->>>>>>> upstream/develop
                         </Nav>
                     </Container>
                 </Navbar>
@@ -247,12 +197,8 @@ const mapStateToProps = ({ authReducer }) => {
         id: authReducer.idstatus,
         username: authReducer.username,
         cart: authReducer.cart,
-<<<<<<< HEAD
         iduser: authReducer.id,
         role: authReducer.role
-=======
-        iduser: authReducer.id
->>>>>>> upstream/develop
     }
 }
 
