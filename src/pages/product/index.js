@@ -257,12 +257,8 @@ class ProductsPage extends React.Component {
                                 <Button onClick={this.handleFilter} color="warning" style={{ background: "#FAB629", color: "black", marginLeft: '15px' }}>
                                     Apply
                                 </Button>
-                                {/* <Button variant="primary">
-                                    Primary<Badge style={{ color: "yellow" }}>9</Badge>
-                                </Button>
-                                <Badge bg="warning" text="dark">
-                                    Warning
-                                </Badge> */}
+                                
+                                
                             </div>
                         </div>
                     </div>

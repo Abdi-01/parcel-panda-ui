@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar, Badge} from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, Badge } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
 // import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
@@ -69,6 +69,14 @@ class NavbarComp extends React.Component {
         )
     }
 
+    totalQty = () => {
+        return this.props.cart.map((item, index) => {
+            return item.detail.map((val, idx) => {
+                return val.amount
+            }).reduce((a, b) => a + b, 0)
+        }).reduce((a, b) => a + b, 0)
+    }
+
     render() {
         return (
             <div>
@@ -112,6 +120,7 @@ class NavbarComp extends React.Component {
                                                                         </span>
                                                                         My Order
                                                                     </Link>
+
                                                                 </DropdownItem>
                                                                 <DropdownItem onClick={this.props.authLogout}>
                                                                     <Link className="nav-link" style={{ display: 'flex' }}>
@@ -154,10 +163,7 @@ class NavbarComp extends React.Component {
                                         <Nav.Link href={`/cart/${this.props.iduser}`}>
                                             <span className="material-icons">
                                                 shopping_cart
-                                            </span>
-                                            <Badge bg="warning" text="dark">
-                                                Warning
-                                            </Badge>
+                                            </span><Badge style={{ color: "black", backgroundColor: '#FAB629'}}>{this.totalQty()}</Badge>
                                         </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
