@@ -48,7 +48,8 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
   const handleFile = (event) => {
     console.log("Files", event.target.files)
     if (event.target.files[0]) {
-      setValues({...values,
+      setValues({
+        ...values,
         fileName: event.target.files[0].name,
         fileUpload: event.target.files[0]
       })
@@ -59,39 +60,77 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
     try {
       setLoading(true)
       let token = localStorage.getItem("tkn_id")
-      let fd = new FormData()
-      let tmp = {
-        id: values.id,
-        name: values.name,
-        idcategory: values.idcategory,
-        stock: values.stock,
-        price: values.price,
-      }
-      fd.append('data', JSON.stringify(tmp))
-      fd.append('images', values.fileUpload)
-      let config = {
-        method: 'patch',
-        url: URL_API + '/product-manage/edit-product',
-        data: fd,
-        headers: {
-          Authorization: `Bearer ${token}`
+      if (action === "add") {
+        let fd = new FormData()
+        let tmpAdd = {
+          // id: values.id,
+          name: values.name,
+          idcategory: values.idcategory,
+          stock: values.stock,
+          price: values.price,
         }
+        fd.append('data', JSON.stringify(tmpAdd))
+        fd.append('images', values.fileUpload)
+        let config = {
+          method: 'post',
+          url: URL_API + '/product-manage/add-product',
+          data: fd,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        let response = await axios(config)
+        // getProductData()
+        setLoading(false)
+        setOpen(false)
+        setValues({
+          // ...values,
+          id: null,
+          name: null,
+          idcategory: null,
+          stock: null,
+          price: null,
+          fileName: "File upload (click on icon left)",
+        })
+        toast.success(`Success, ${response.data.message} !`, {
+          position: toast.POSITION.TOP_CENTER, autoClose: 3000
+        });
+      } else {
+        let fd = new FormData()
+        let tmp = {
+          id: values.id,
+          name: values.name,
+          idcategory: values.idcategory,
+          stock: values.stock,
+          price: values.price,
+        }
+        fd.append('data', JSON.stringify(tmp))
+        fd.append('images', values.fileUpload)
+        let config = {
+          method: 'patch',
+          url: URL_API + '/product-manage/edit-product',
+          data: fd,
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        let response = await axios(config)
+        getProductData()
+        setLoading(false)
+        setOpen(false)
+        setValues({
+          ...values,
+          id: null,
+          name: null,
+          idcategory: null,
+          stock: null,
+          price: null,
+          fileName: "File upload (click on icon left)",
+        })
+        toast.success(`Success, ${response.data.message} !`, {
+          position: toast.POSITION.TOP_CENTER, autoClose: 3000
+        });
       }
-      let response = await axios(config)
-      getProductData()
-      setLoading(false)
-      setOpen(false)
-      setValues({...values,
-        id: null,
-        name: null,
-        idcategory: null,
-        stock: null,
-        price: null,
-        fileName: "File upload (click on icon left)",
-      })
-      toast.success(`Success, ${response.data.message} !`, {
-        position: toast.POSITION.TOP_CENTER, autoClose: 3000
-      });
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -101,10 +140,11 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
       });
     }
   }
-  
+
   useEffect(() => {
     if (data) {
-      setValues({...values,
+      setValues({
+        ...values,
         id: data.id,
         name: data.name,
         idcategory: data.idcategory,
@@ -138,11 +178,11 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
                 <LocalMallIcon color="primary" />
               </Grid>
               <Grid item xs={11}>
-                <TextField 
-                  fullWidth 
-                  value={values.name}
-                  id="name" 
-                  label="Product name" 
+                <TextField
+                  fullWidth
+                  value={action === "add" ? null : values.name}
+                  id="name"
+                  label="Product name"
                   onChange={(event) =>
                     setValues({ ...values, name: event.target.value })
                   }
@@ -180,7 +220,7 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
                   id="stock"
                   type="number"
                   label="Initial stock"
-                  value={values.stock}
+                  value={action === "add" ? null : values.stock}
                   onChange={(event) =>
                     setValues({ ...values, stock: event.target.value })
                   }
@@ -201,7 +241,7 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
                   id="price"
                   type="number"
                   label="Product price (IDR)"
-                  value={values.price}
+                  value={action === "add" ? null : values.price}
                   onChange={(event) =>
                     setValues({ ...values, price: event.target.value })
                   }
