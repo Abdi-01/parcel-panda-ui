@@ -8,3 +8,13 @@ export const PaginationWrapper = styled.div`
     justify-content: center;
     align-items: center;
 `
+
+export const SkeletonWrapper = styled.div`
+    width: 100%;
+    height: 150px;
+`
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+`

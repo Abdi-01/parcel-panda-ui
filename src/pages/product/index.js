@@ -55,9 +55,12 @@ class ProductsPage extends React.Component {
                 <Card>
                     <Link to={`/product-detail?p.id=${item.id}`} style={{ textDecoration: "none", color: "black" }}>
                         {
-                            item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
-                                <CardImg src={URL_API + '/static/images/' + item.url} /> :
-                                <CardImg src={'https://drive.google.com/uc?export=view&id=' + item.url} />
+                            item.url ?
+                                item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
+                                    <CardImg src={URL_API + '/static/images/' + item.url} /> :
+                                    <CardImg src={'https://drive.google.com/uc?export=view&id=' + item.url} />
+                                :
+                                <CardImg alt="img" />
                         }
                         <CardContent>
                             <Typography variant="body2" color="text.secondary" style={{ color: 'gray' }}>
@@ -68,7 +71,7 @@ class ProductsPage extends React.Component {
                             </Typography>
                         </CardContent>
                         <CardActions>
-                            <Link className="btn btn-outlined-warning btn-sm"
+                            {/* <Link className="btn btn-outlined-warning btn-sm"
                                 style={{ fontWeight: 'bolder', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                                 to={
                                     {
@@ -77,7 +80,7 @@ class ProductsPage extends React.Component {
                                 <span class="material-icons" >
                                     visibility
                                 </span>
-                            </Link>
+                            </Link> */}
                         </CardActions>
                     </Link>
                 </Card>
@@ -126,9 +129,10 @@ class ProductsPage extends React.Component {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
 
-                let dataFilter = this.state.product.filter((item) =>
-                    item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
-                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                let dataFilter = res.data.filter((item) =>
+                    item.name.toLowerCase().includes(this.state.filterName?.toLowerCase()))
+                this.setState({ product: dataFilter, pageCount: Math.ceil(dataFilter.length / this.state.perPage) })
+                console.log("TES", Math.ceil(res.data.length / this.state.perPage))
             }).catch(err => console.log(err))
     }
 

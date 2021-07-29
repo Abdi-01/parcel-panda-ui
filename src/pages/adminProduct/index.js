@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-// import { useDispatch, useSelector } from "react-redux";
 import { Container } from "react-bootstrap";
 import { BarLoader, ClipLoader } from "react-spinners";
 import { URL_API } from "../../helper";
+import axios from "axios";
 import ProductCard from "../../components/productCard";
 import SortProductAdmin from "../../components/sortProductAdmin";
 import ActionProduct from "../../components/dialogActionProduct";
@@ -20,7 +19,6 @@ import {
     SpinnerContainer,
     ProductContainer,
 } from "./adminProduct";
-// import { getProductDataX } from "../../actions/adminActions";
 
 
 const ProductManagement = () => {
@@ -33,7 +31,6 @@ const ProductManagement = () => {
         column: "name",
         order: "ASC"
     })
-    // const dispatch = useDispatch()
 
     const handleChange = (event, value) => {
         setPage(value)
@@ -43,19 +40,6 @@ const ProductManagement = () => {
     const handleClickOpen = () => {
         setOpenAddProduct(true);
     };
-
-    const getProduct = async () => {
-        try {
-            let config = {
-                method: 'get',
-                url: URL_API + `/product-manage/`
-            }
-            let response = await axios(config)
-            setPageN(Math.ceil(response.data.length / 20))
-        } catch (error) {
-            console.log(error)
-        }
-    }
 
     const getProductData = async () => {
         try {
@@ -69,7 +53,8 @@ const ProductManagement = () => {
             }
             let response = await axios(config)
             setLoading(false)
-            setCardData(response.data)
+            setPageN(Math.ceil(response.data.count / 20))
+            setCardData(response.data.values)
         } catch (error) {
             console.log(error)
         }
@@ -77,7 +62,6 @@ const ProductManagement = () => {
 
     const printCard = () => {
         if (cardData !== null) {
-            // console.log(Math.ceil(cardData.length/20))
             return cardData.map((item) => {
                 return <ProductCard data={item} getProductData={getProductData} />
             })
@@ -93,12 +77,8 @@ const ProductManagement = () => {
     }
 
     useEffect(() => {
-        getProduct()
         getProductData()
-        // dispatch(getProductDataX(page, sort.order, sort.column))
     }, [page, sort])
-
-
 
     return (
         <div>

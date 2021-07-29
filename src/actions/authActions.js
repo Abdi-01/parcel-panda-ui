@@ -18,6 +18,7 @@ export const authLogin = (username, password) => {
             console.log("CEK AUTHLOGIN:", res.data)
             localStorage.setItem('tkn_id', res.data.token)
             await dispatch(getProfile(res.data.token))
+            await dispatch(getCart(res.data))
             handleNotify()
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -67,6 +68,27 @@ export const keepLogin = (data) => {
             dispatch({
                 type: "LOGIN_SUCCESS",
                 payload: { ...data }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const getCart = (data) => {
+    return async (dispatch) => {
+        try {
+            let token = localStorage.getItem("tkn_id")
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            let res = await axios.get(URL_API + `/transaction/getcart`, headers)
+            console.log("CARTTT:", res.data)
+            dispatch({
+                type: "UPDATE_CART",
+                payload: res.data
             })
         } catch (error) {
             console.log(error)
