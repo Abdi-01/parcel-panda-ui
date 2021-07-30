@@ -26,8 +26,12 @@ import {
   DisplayWrapper
 } from "./chartRevenue";
 
+const options = [
+  'revenue',
+  'item',
+];
 
-const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
+const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedIndex }) => {
     const [dataX, setData] = useState(null)
     const [revenue, setRevenue] = useState({
         day: 0,
@@ -83,7 +87,9 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
 
     const resetFilter = () => {
       setSelectedDayRange({...selectedDayRange, from: null, to: null})
-  }
+    }
+
+    console.log(dataX)
 
     useEffect(() => {
         const fetchData = () => {
@@ -110,10 +116,10 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
     return (
         <div>
           <DisplayWrapper>
-            <RevenueCard data={revenue}/>
+            <RevenueCard data={revenue} type={options[selectedIndex]}/>
             <ChartFilterWrapper>
               <FilterWrapper>
-                <h5>Revenue Analytics</h5>
+                <h5>{options[selectedIndex]} analytics</h5>
                 <DateWrapper>
                   <DatePicker
                         value={selectedDayRange}
@@ -138,8 +144,6 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
               </FilterWrapper>
               <ResponsiveContainer width="100%" height={550}>
                 <LineChart
-                  // width={900}
-                  // height={800}
                   data={dataX}
                   margin={{
                       top: 20,
@@ -155,7 +159,7 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
                   <YAxis />
                   <Tooltip />
                   <Legend verticalAlign="top"/>
-                  <Line type="monotone" dataKey="revenue" stroke="#3f50b5" activeDot={{ r: 8 }} />
+                  <Line type="monotone" dataKey="val" stroke="#3f50b5" activeDot={{ r: 8 }} />
                 </LineChart>
               </ResponsiveContainer>
             </ChartFilterWrapper>
