@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Container, Form, Nav, Navbar, NavDropdown, Badge } from 'react-bootstrap';
+import { Button, Container, Form, Nav, Navbar, Badge } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
-import { InputText } from 'primereact/inputtext';
+// import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
@@ -68,6 +68,14 @@ class NavbarComp extends React.Component {
         )
     }
 
+    totalQty = () => {
+        return this.props.cart.map((item, index) => {
+            return item.detail.map((val, idx) => {
+                return val.amount
+            }).reduce((a, b) => a + b, 0)
+        }).reduce((a, b) => a + b, 0)
+    }
+
     render() {
         return (
             <div>
@@ -93,35 +101,68 @@ class NavbarComp extends React.Component {
                                                     {this.props.username}
                                                 </DropdownToggle>
                                                 <DropdownMenu right>
-                                                    <DropdownItem>
-                                                        <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
-                                                            <span class="material-icons">
-                                                                account_circle
-                                                            </span>
-                                                            Profile
-                                                        </Link>
-                                                    </DropdownItem>
-                                                    <DropdownItem onClick={this.props.authLogout}>
-                                                        <Link className="nav-link" style={{ display: 'flex' }}>
-                                                            <span class="material-icons">
-                                                                logout
-                                                            </span>
-                                                            Log Out
-                                                        </Link>
-                                                    </DropdownItem>
+                                                    {
+                                                        this.props.role === "user" ?
+                                                            <>
+                                                                <DropdownItem>
+                                                                    <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            account_circle
+                                                                        </span>
+                                                                        Profile
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                                <DropdownItem>
+                                                                    <Link to={`/user-transaction/${this.props.id}`} className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            shopping_bag
+                                                                        </span>
+                                                                        My Order
+                                                                    </Link>
+
+                                                                </DropdownItem>
+                                                                <DropdownItem onClick={this.props.authLogout}>
+                                                                    <Link className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            logout
+                                                                        </span>
+                                                                        Log Out
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                            </> :
+                                                            <>
+                                                                <DropdownItem>
+                                                                    <Link to="/user-profile" className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            account_circle
+                                                                        </span>
+                                                                        Profile
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                                <DropdownItem onClick={this.props.authLogout}>
+                                                                    <Link className="nav-link" style={{ display: 'flex' }}>
+                                                                        <span class="material-icons">
+                                                                            logout
+                                                                        </span>
+                                                                        Log Out
+                                                                    </Link>
+                                                                </DropdownItem>
+                                                            </>
+                                                    }
+
                                                 </DropdownMenu>
                                             </UncontrolledDropdown>
                                         </Nav.Link>
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
+                                        {/* <Button color="secondary" outline>
+                                            Notifications <Badge color="warning">4</Badge>
+                                        </Button> */}
                                         <Nav.Link href={`/cart/${this.props.iduser}`}>
                                             <span className="material-icons">
                                                 shopping_cart
-                                            </span>
-                                            <Badge bg="primary" text="dark">
-                                                Warning
-                                            </Badge>
+                                            </span><Badge style={{ color: "black", backgroundColor: '#FAB629'}}>{this.totalQty()}</Badge>
                                         </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
@@ -155,7 +196,8 @@ const mapStateToProps = ({ authReducer }) => {
         id: authReducer.idstatus,
         username: authReducer.username,
         cart: authReducer.cart,
-        iduser: authReducer.id
+        iduser: authReducer.id,
+        role: authReducer.role
     }
 }
 

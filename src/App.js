@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './pages/register';
 import ResetPassPage from './pages/resetPass';
 import VerificationPage from './pages/verification';
-import { keepLogin, getProductActions, getParcelActions} from "./actions"
+import { keepLogin, getProductActions, getParcelActions } from "./actions"
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { URL_API } from './helper';
@@ -20,6 +20,7 @@ import ProductsPage from './pages/product';
 import ProductDetailPage from './pages/productDetail';
 import CartPages from './pages/cart';
 import CheckoutPage from './pages/checkout';
+import UserTransactionPage from './pages/userTransaction';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -71,8 +72,6 @@ class App extends React.Component {
           <Route path="/parcel" component={ParcelPage} />
           <Route path="/product" component={ProductsPage} />
           <Route path="/product-detail" component={ProductDetailPage} />
-          <Route path="/cart/:id" component={CartPages} />
-          <Route path="/checkout/:id" component={CheckoutPage} />
           {
             this.props.role === "admin" ?
               <>
@@ -85,11 +84,14 @@ class App extends React.Component {
                 <>
                   <Route path="/" component={LandingPage} exact />
                   <Route path='/user-profile' component={UserProfile} />
+                  <Route path="/cart/:id" component={CartPages} />
+                  <Route path="/checkout/:id" component={CheckoutPage} />
+                  <Route path="/user-transaction/:id" component={UserTransactionPage} />
                 </> :
                 <Route path="*" component={LandingPage} exact />
           }
         </Switch>
-        <FooterComp/>
+        <FooterComp />
       </div>
     );
   }
