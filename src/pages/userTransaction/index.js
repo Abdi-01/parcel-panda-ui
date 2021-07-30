@@ -168,7 +168,7 @@ class UserTransactionPage extends React.Component {
     }
 
     printDetail = () => {
-        return this.state.transaction.map((item, index) => {
+        return this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
             if (this.state.selectedIndex === index) {
                 return (
                     <div>
