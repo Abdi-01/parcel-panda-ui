@@ -113,9 +113,9 @@ const TransactionManagement = () => {
         if (data !== null) {
             return data.map((item) => {
                 return <StyledTableRow key={item.id}>
-                    <StyledTableCell align="right">{item.invoice}</StyledTableCell>
-                    <StyledTableCell align="right">{item.date_transaction.substring(0, 10)}</StyledTableCell>
-                    <StyledTableCell align="right">{item.date_payment === null ? "-" : item.date_payment.substring(0, 10)}</StyledTableCell>
+                    <StyledTableCell align="left">{item.invoice}</StyledTableCell>
+                    <StyledTableCell align="left">{item.date_transaction.substring(0, 10)}</StyledTableCell>
+                    <StyledTableCell align="left">{item.date_payment === null ? "-" : item.date_payment.substring(0, 10)}</StyledTableCell>
                     <StyledTableCell>{item.username}</StyledTableCell>
                     <StyledTableCell align="right">{item.amount}</StyledTableCell>
                     <StyledTableCell align="right">IDR {item.subtotal_parcel.toLocaleString()}</StyledTableCell>
@@ -221,9 +221,9 @@ const TransactionManagement = () => {
                     <Table className={classes.table} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell align="right">Invoice</StyledTableCell>
-                                <StyledTableCell align="right">Date transaction</StyledTableCell>
-                                <StyledTableCell align="right">Date payment</StyledTableCell>
+                                <StyledTableCell align="left">Invoice</StyledTableCell>
+                                <StyledTableCell align="left">Date transaction</StyledTableCell>
+                                <StyledTableCell align="left">Date payment</StyledTableCell>
                                 <StyledTableCell>Username</StyledTableCell>
                                 <StyledTableCell align="right">Amount</StyledTableCell>
                                 <StyledTableCell align="right">Subtotal parcel</StyledTableCell>
@@ -256,8 +256,17 @@ const TransactionManagement = () => {
                     />
                 </PaginationWrapper>
             </Container>
-            <DialogImagePayment openImage={openImage} setOpenImage={setOpenImage} imageURL={imageURL}/>
-            <DialogActionTransaction openAction={openAction} setOpenAction={setOpenAction} selectedItem={selectedItem}/>
+            <DialogImagePayment 
+                openImage={openImage} 
+                setOpenImage={setOpenImage} 
+                imageURL={imageURL}
+            />
+            <DialogActionTransaction 
+                openAction={openAction} 
+                setOpenAction={setOpenAction} 
+                selectedItem={selectedItem}
+                getTransaction={getTransaction}
+            />
         </div>
     )
 }
