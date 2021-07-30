@@ -11,6 +11,8 @@ import {
   Tooltip,
   Legend,
   Label,
+  AreaChart,
+  Area,
 } from "recharts";
 import {
   Button,
@@ -31,7 +33,7 @@ const options = [
   'item',
 ];
 
-const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedIndex }) => {
+const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedIndex, resetFilter }) => {
     const [dataX, setData] = useState(null)
     const [revenue, setRevenue] = useState({
         day: 0,
@@ -85,32 +87,26 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
         </div>
     );
 
-    const resetFilter = () => {
-      setSelectedDayRange({...selectedDayRange, from: null, to: null})
-    }
-
-    console.log(dataX)
-
     useEffect(() => {
-        const fetchData = () => {
-            if (values !== null) {
-                let tmp = values.data
-                const options = { year: 'numeric', month: 'long', day: 'numeric' }
-                for (let prop in tmp) {
-                    tmp[prop].date = new Date(tmp[prop].date).toLocaleDateString('en-GB', options)
-                    // tmp[prop].revenue = tmp[prop].revenue.toLocaleString()
-                }
-                setData(tmp)
-                setRevenue({
-                    ...revenue,
-                    day: values.day,
-                    month: values.month,
-                    total: values.total,
-                    filtered: values.filtered
-                })
-            }
+      const fetchData = () => {
+        if (values !== null) {
+          console.log(values)
+          let tmp = values.data
+          const options = { year: 'numeric', month: 'long', day: 'numeric' }
+          for (let prop in tmp) {
+            tmp[prop].date = new Date(tmp[prop].date).toLocaleDateString('en-GB', options)
+          }
+          setData(tmp)
+          setRevenue({
+            ...revenue,
+            day: values.day,
+            month: values.month,
+            total: values.total,
+            filtered: values.filtered
+          })
         }
-        fetchData()
+      }
+      fetchData()
     }, [values])
 
     return (
@@ -122,28 +118,28 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
                 <h5>{options[selectedIndex]} analytics</h5>
                 <DateWrapper>
                   <DatePicker
-                        value={selectedDayRange}
-                        onChange={setSelectedDayRange}
-                        renderInput={renderCustomInput}
-                        inputPlaceholder="Select a date"
-                        colorPrimary="#0fbcf9"
-                        colorPrimaryLight="rgba(75, 207, 250, 0.4)"
-                        shouldHighlightWeekends
-                    />
+                    value={selectedDayRange}
+                    onChange={setSelectedDayRange}
+                    renderInput={renderCustomInput}
+                    inputPlaceholder="Select a date"
+                    colorPrimary="#0fbcf9"
+                    colorPrimaryLight="rgba(75, 207, 250, 0.4)"
+                    shouldHighlightWeekends
+                  />
                   <Button 
-                      variant="contained"
-                      color="secondary"
-                      onClick={resetFilter}
-                      size="large"
-                      disabled={selectedDayRange.from === null && selectedDayRange.to === null}
-                      // disabled={resetButton()}
+                    variant="contained"
+                    color="secondary"
+                    onClick={resetFilter}
+                    size="large"
+                    disabled={selectedDayRange.from === null && selectedDayRange.to === null}
+                    // disabled={resetButton()}
                   >
-                      Reset Filter
+                    Reset Filter
                   </Button>
                 </DateWrapper>
               </FilterWrapper>
               <ResponsiveContainer width="100%" height={550}>
-                <LineChart
+                {/* <LineChart
                   data={dataX}
                   margin={{
                       top: 20,
@@ -160,7 +156,32 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
                   <Tooltip />
                   <Legend verticalAlign="top"/>
                   <Line type="monotone" dataKey="val" stroke="#3f50b5" activeDot={{ r: 8 }} />
-                </LineChart>
+                </LineChart> */}
+                <AreaChart
+                  width={500}
+                  height={400}
+                  data={dataX}
+                  margin={{
+                    top: 10,
+                    right: 30,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  {
+                    options[selectedIndex] === "revenue" ? <Area type="monotone" dataKey="user_spent" stroke="#82ca9d" fill="#82ca9d" /> : <></>
+                  }
+                  <Area 
+                    type="monotone" 
+                    dataKey={options[selectedIndex] === "item" ? "amount" : "profit"}
+                    stroke="#3f50b5" 
+                    fill="#3f50b5" 
+                  />
+                </AreaChart>
               </ResponsiveContainer>
             </ChartFilterWrapper>
           </DisplayWrapper>

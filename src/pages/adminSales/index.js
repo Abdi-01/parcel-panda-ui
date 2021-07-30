@@ -27,6 +27,7 @@ const SalesReport = () => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [selectedIndex, setSelectedIndex] = useState(0);
     const open = Boolean(anchorEl);
+
     const handleClickListItem = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -40,6 +41,10 @@ const SalesReport = () => {
         setAnchorEl(null);
     };
 
+    const resetFilter = () => {
+        setSelectedDayRange({...selectedDayRange, from: null, to: null})
+    }
+
     useEffect(() => {
         const setQueryDateFilter = () => {
             if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
@@ -49,7 +54,9 @@ const SalesReport = () => {
         }
         const getData = async () => {
             try {
-                setLoading(true)
+                if (selectedDayRange.from !==  null && selectedDayRange.to !== null) {
+                    setLoading(true)
+                }
                 let token = localStorage.getItem("tkn_id")
                 let queryDate = ''
                 if (setQueryDateFilter() !== undefined) {
@@ -96,6 +103,7 @@ const SalesReport = () => {
                     />
                     </ListItem>
                 </List>
+                <hr />
                 <Menu
                     id="lock-menu"
                     anchorEl={anchorEl}
@@ -127,6 +135,7 @@ const SalesReport = () => {
                         selectedDayRange={selectedDayRange}
                         setSelectedDayRange={setSelectedDayRange}
                         selectedIndex={selectedIndex}
+                        resetFilter={resetFilter}
                     />
                 }
             </Container>
