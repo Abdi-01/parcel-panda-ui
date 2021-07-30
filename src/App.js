@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import RegisterPage from './pages/register';
 import ResetPassPage from './pages/resetPass';
 import VerificationPage from './pages/verification';
-import { keepLogin, getProductActions, getParcelActions} from "./actions"
+import { keepLogin, getProductActions, getParcelActions, getCart } from "./actions"
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { URL_API } from './helper';
@@ -20,6 +20,7 @@ import ProductsPage from './pages/product';
 import ProductDetailPage from './pages/productDetail';
 import CartPages from './pages/cart';
 import CheckoutPage from './pages/checkout';
+import userTransaction from './pages/userTransaction';
 // import FinancialReport from './pages/report'
 // import ProductManagement from './pages/product'
 // import TransactionManagement from './pages/transaction'
@@ -35,6 +36,7 @@ class App extends React.Component {
     this.reLogin()
     this.props.getProductActions()
     this.props.getParcelActions()
+    this.props.getCart()
   }
 
   reLogin = () => {
@@ -62,17 +64,15 @@ class App extends React.Component {
           this.props.role === "admin" ? <AdminAppBar /> : <NavbarComp />
         }
         <Switch>
-          <Route 
-            path="/" 
-            component={ this.props.role !== "admin" ? LandingPage : ProductManagement } exact />
+          <Route
+            path="/"
+            component={this.props.role !== "admin" ? LandingPage : ProductManagement} exact />
           <Route path="/regis" component={RegisterPage} />
           <Route path="/forget-pass" component={ResetPassPage} />
           <Route path="/verification" component={VerificationPage} />
           <Route path="/parcel" component={ParcelPage} />
           <Route path="/product" component={ProductsPage} />
           <Route path="/product-detail" component={ProductDetailPage} />
-          <Route path="/cart/:id" component={CartPages} />
-          <Route path="/checkout/:id" component={CheckoutPage} />
           {
             this.props.role === "admin" ?
               <>
@@ -85,11 +85,14 @@ class App extends React.Component {
                 <>
                   <Route path="/" component={LandingPage} exact />
                   <Route path='/user-profile' component={UserProfile} />
+                  <Route path="/cart/:id" component={CartPages} />
+                  <Route path="/checkout/:id" component={CheckoutPage} />
+                  <Route path="/user-transaction/:id" component={userTransaction} />
                 </> :
                 <Route path="*" component={LandingPage} exact />
           }
         </Switch>
-        <FooterComp/>
+        <FooterComp />
       </div>
     );
   }
@@ -101,4 +104,4 @@ const mapsStateToProps = ({ authReducer }) => {
   }
 }
 
-export default connect(mapsStateToProps, { keepLogin, getProductActions, getParcelActions })(App);
+export default connect(mapsStateToProps, { keepLogin, getProductActions, getParcelActions, getCart })(App);

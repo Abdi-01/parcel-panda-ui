@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Input, Label, Button, CardImg } from 'reactstrap';
+import { Container, Input, Label, Button, CardImg, Spinner } from 'reactstrap';
 import { InputText } from 'primereact/inputtext';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -20,6 +20,7 @@ class ProductsPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             offset: 0,
             data: [],
             perPage: 12,
@@ -178,7 +179,7 @@ class ProductsPage extends React.Component {
                 <div className="row" >
                     <div className="col-md-3 mt-3">
                         <div>
-                            <h2 style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '17px' }}>PRODUCT NAME</h2>
+                            <h2 className="h2-sort">PRODUCT NAME</h2>
                             <div className="p-field ">
                                 <div>
                                     <span className="p-input-icon-right">
@@ -187,63 +188,63 @@ class ProductsPage extends React.Component {
                                     </span>
                                 </div>
                             </div>
-                            <h2 className="mt-5" style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '17px' }}>PRODUCT CATEGORY</h2>
+                            <h2 className="mt-5 h2-sort">PRODUCT CATEGORY</h2>
                             {
                                 this.props.location.search === '?idcategory=1' ?
                                     <>
-                                        <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                            <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                            <Label style={{ fontSize: '16px', display: 'inline-block' }}>Food</Label>
+                                        <div className="div-checkbox">
+                                            <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                            <Label className="label-chk">Food</Label>
                                         </div>
-                                        <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                            <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                            <Label style={{ fontSize: '16px', display: 'inline-block' }}>Drinks</Label>
+                                        <div className="div-checkbox">
+                                            <Checkbox disabled className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                            <Label className="label-chk">Drinks</Label>
                                         </div>
-                                        <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                            <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                            <Label style={{ fontSize: '16px', display: 'inline-block' }}>Fruits</Label>
+                                        <div className="div-checkbox">
+                                            <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                            <Label className="label-chk">Fruits</Label>
                                         </div>
                                     </> : this.props.location.search === '?idcategory=2' ?
                                         <>
-                                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Food</Label>
+                                            <div className="div-checkbox">
+                                                <Checkbox disabled className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                <Label className="label-chk">Food</Label>
                                             </div>
-                                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Drinks</Label>
+                                            <div className="div-checkbox">
+                                                <Checkbox disabled className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                <Label className="label-chk">Drinks</Label>
                                             </div>
-                                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Fruits</Label>
+                                            <div className="div-checkbox">
+                                                <Checkbox className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                <Label className="label-chk">Fruits</Label>
                                             </div>
                                         </> : this.props.location.search === '?idcategory=3' ?
                                             <>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Food</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox disabled className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Food</Label>
                                                 </div>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Drinks</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Drinks</Label>
                                                 </div>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox disabled style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Fruits</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Fruits</Label>
                                                 </div>
                                             </> :
                                             <>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Food</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Food</Label>
                                                 </div>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Drinks</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Drinks</Label>
                                                 </div>
-                                                <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                                    <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                                    <Label style={{ fontSize: '16px', display: 'inline-block' }}>Fruits</Label>
+                                                <div className="div-checkbox">
+                                                    <Checkbox className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                    <Label className="label-chk">Fruits</Label>
                                                 </div>
                                             </>
                             }
@@ -259,8 +260,8 @@ class ProductsPage extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-9">
-                        <div style={{ borderBottom: "1px solid #E5E5E5", borderTop: "1px solid #E5E5E5", height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <h2 style={{ fontSize: '24px', letterSpacing: '2px', lineHeight: '17px', }}>PRODUCT</h2>
+                        <div className="div-box-parcel">
+                            <h2 className="h2-produk">PRODUCT</h2>
                             <div style={{ display: "flex", justifyContent: "flex-end", }}>
                                 <h2 style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '17px', color: '#8C8582', display: "inline", padding: '9px 12px 9px 0' }}>SORT</h2>
                                 <Input type="select" onClick={this.handleSort} innerRef={elemen => this.sort = elemen} >
@@ -271,7 +272,16 @@ class ProductsPage extends React.Component {
                             </div>
                         </div>
                         <div className="row">
-                            {this.getData()}
+                            {
+                                this.props.products ?
+                                    <>
+                                        {this.getData()}
+                                    </>
+                                    :
+                                    <>
+                                        <Spinner color="warning" />
+                                    </>
+                            }
                         </div>
                         <ReactPaginate
                             previousLabel={"prev"}

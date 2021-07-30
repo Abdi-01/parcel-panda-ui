@@ -1,0 +1,138 @@
+.box-address {
+    border: 1px solid #FAB629;
+    padding: 15px 15px 15px 15px;
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+.judul-confirm {
+    border-bottom: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.h2-confirm {
+    font-size: 24px;
+    letter-spacing: 2px;
+    line-height: 17px;
+}
+
+.h4-pilihalamat {
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    line-height: 18px;
+}
+
+.div-alamat {
+    display: flex;
+    justify-content: space-between;
+}
+
+.p-alamat {
+    font-size: 14px;
+    line-height: 18px;
+    color: #8C8582;
+}
+
+.box-alamat-fix {
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    margin: 0 0 20px 0;
+    padding: 15px 15px 15px 15px;
+}
+
+.h2-alamat-pengiriman {
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.div-alamat2 {
+    height: 28px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.p-my-address {
+    font-size: 12px;
+    letter-spacing: 1px;
+    line-height: 16px;
+    color: #8C8582;
+} 
+
+.div-get-address {
+    border-bottom: 1px dashed #DDDDDD;
+    padding-top: 8px;
+}
+
+.box-pengiriman {
+    height: 76px;
+    width: 344px;
+    border: 1px solid #FAB629;
+    border-radius: 10px;
+    display: flex;
+    padding: 5px 10px 10px 10px;
+}
+
+.h6-shipping {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.p-estimasi {
+    font-size: 11px;
+    line-height: 17px;
+}
+
+.box-ro {
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+    margin: 0 0 20px 0;
+    padding: 15px 15px 15px 15px;
+}
+
+.h-alamat {
+    height: 40px;
+}
+
+.h2-ro {
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.h4-so {
+    font-size: 16px;
+    letter-spacing: 1px;
+    line-height: 20px;
+}
+
+.div-so-1 {
+    display: flex;
+    border-bottom: 1px dashed #DDDDDD;
+    justify-content: space-between;
+}
+
+.h6-so-subtotal {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+}
+
+.h6-so-subtotal2 {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.div-so-2 {
+    border-bottom: 1px dashed #DDDDDD;
+    padding-top: 8px;
+}
+
+.div2-so-2 {
+    display: flex;
+    justify-content: space-between;
+}

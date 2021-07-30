@@ -1,0 +1,167 @@
+.card-box {
+    padding: 15px 15px 10px 15px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.top-judul {
+    /* style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between', borderBottom: '1px solid #DDDDDD' }} */
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.order {
+    font-size: 14px;
+}
+
+.parcelpanda {
+    /* style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }} */
+    font-weight: bold;
+    border-right: 1px solid #DBDBDB;
+    padding-right: 10px;
+}
+
+.purchase {
+    /* style={{ paddingLeft: '10px' }} */
+    padding-left: 10px;
+}
+
+.total {
+    /* style={{ fontSize: '14px', fontWeight: 'bold' }} */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.history {
+    /* style={{ display: 'flex', alignContent: 'center', paddingTop: '15px' }} */
+    display: flex;
+    align-content: center;
+    padding-top: 15px;
+}
+
+.invoice {
+    /* style={{ fontSize: '15px', letterSpacing: '1.5px', lineHeight: '17px' }} */
+    font-size: 15px;
+    letter-spacing: 1.5px;
+    line-height: 17px;
+}
+
+.date {
+    /* style={{ fontSize: '13px', lineHeight: '17px' }} */
+    font-size: 13px;
+    line-height: 17px;
+}
+
+.btn-payment {
+    /* style={{ marginLeft: '10px' }} */
+    margin-left: 10px;
+}
+
+.delivery {
+    /* style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }} */
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.detail-box {
+    /* style={{ padding: '', border: '', backgroundColor: 'white', borderRadius: '5px' }} */
+    padding: 15px 15px 10px 15px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.amount {
+    padding-left: 10px;
+}
+
+.detail-isi {
+    padding: 15px 15px 10px 15px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.pname {
+    /* style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }} */
+    font-weight: bold;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.elname {
+    /* style={{ fontSize: '16px', lineHeight: '20px', letterSpacing: '0.5px' }} */
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+}
+
+.eltitle {
+    /* style={{ color: 'gray', fontSize: '14px' }} */
+    font-size: 14px;
+    color: gray;
+}
+
+.halaman {
+    /* style={{ backgroundColor: '#f7eaa3', marginBottom: '-50px' }} */
+    background-color: #f7eaa3;
+    margin-bottom: -50px;
+}
+
+.div-hal {
+    /* style={{ padding: '20px 0 20px 0', }} */
+    padding: 20px 0 20px 0;
+}
+
+.div-hal2 {
+    padding: 15px 15px 10px 15px;
+    border: 1px solid #DDDDDD;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.my-order {
+    /* style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '20px', fontWeight: 'bold' }} */
+    font-size: 16px;
+    letter-spacing: 2px;
+    line-height: 20px;
+    font-weight: bold;
+}
+
+.order-status {
+    /* style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '16px', whiteSpace: 'nowrap', color: '#8C8582' }} */
+    font-size: 14px;
+    letter-spacing: 1px;
+    line-height: 16px;
+    white-space: nowrap;
+    color: #8C8582;
+}
+
+.complain {
+    /* style={{ display: 'flex', alignContent: 'center' }} */
+    display: flex;
+    align-content: center;
+}
+
+.ear {
+    /* style={{ marginTop: '8px' }} */
+    margin-top: 8px;
+}
+
+.complain-2 {
+    /* style={{ fontSize: '13px', lineHeight: '16px', padding: '10px 0 0 10px', marginTop: '8px' }} */
+    font-size: 13px;
+    line-height: 16px;
+    padding: 10px 0 0 10px;
+    margin-top: 8px;
+}
+
+.help {
+    /* style={{ color: '#FAB629' }} */
+    color: #FAB629;
+}
