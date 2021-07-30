@@ -19,7 +19,8 @@ class NavbarComp extends React.Component {
 
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.state.password)
-        this.setState({ modal: false, password: '' });
+        this.setState({ modal: false, });
+        this.setState({ password: '' })
     }
 
     printLogin = () => {
