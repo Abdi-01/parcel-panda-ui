@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import { Container } from "react-bootstrap";
 import { URL_API } from '../../helper';
 import DialogImagePayment from '../../components/dialogImage';
 import FilterTransactionManagement from '../../components/filterTransaction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import axios from 'axios'
 import Pagination from "@material-ui/lab/Pagination";
 import Skeleton from '@material-ui/lab/Skeleton';
 import { 
@@ -73,6 +73,7 @@ const TransactionManagement = () => {
     const [page, setPage] = useState(1)
     const [countPage, setCountPage] = useState(1)
     const [openAction, setOpenAction] = useState(false)
+    const [rowsPerPage, setRowsPerPage] = useState(5)
     const [paymentStatus, setPaymentStatus] = useState({
         ongoing: false,
         accepted: false,
@@ -187,35 +188,36 @@ const TransactionManagement = () => {
             let token = localStorage.getItem("tkn_id");
             let config = {
                 method: 'get',
-                url: URL_API + `/transaction-manage/5/${5 * (page - 1)}?${queryPayment}&${queryDate}`,
+                url: URL_API + `/transaction-manage/${rowsPerPage}/${rowsPerPage * (page - 1)}?${queryPayment}&${queryDate}`,
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
             let response = await axios(config)
             // console.log("Response", response.data.count[0])
-            setCountPage(Math.ceil(response.data.count / 5))
+            setCountPage(Math.ceil(response.data.count / rowsPerPage))
             setData(response.data.values)
             setLoading(false)
         } catch (error) {
             console.log(error)
         }
     }
-
+    
     useEffect(() => {
         getTransaction()
-    }, [page, paymentStatus, selectedDayRange])
+    }, [page, paymentStatus, selectedDayRange, rowsPerPage])
 
     return (
         <div>
             <Container>
-                {/* <h1>Transaction Management</h1> */}
                 <FilterTransactionManagement 
                     paymentStatus={paymentStatus}
                     setPaymentStatus={setPaymentStatus}
                     selectedDayRange={selectedDayRange}
                     setSelectedDayRange={setSelectedDayRange}
                     resetFilter={resetFilter}
+                    rowsPerPage={rowsPerPage}
+                    setRowsPerPage={setRowsPerPage}
                 />
                 <TableContainer component={Paper}>
                     <Table className={classes.table} aria-label="customized table">

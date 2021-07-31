@@ -18,7 +18,7 @@ export const authReducer = (state = INITIAL_STATE, action) => {
             // console.log("CEK AUTHREDUCER:", action.payload)
             return { ...state, ...action.payload };
         case "PROFILE_DATA":
-            // console.log("Response profile data reducer", action.payload)
+            console.log("Response profile data reducer", action.payload)
             return { ...state, profile: action.payload };
         case "UPDATE_CART":
             console.log("reducer CART", action.payload)

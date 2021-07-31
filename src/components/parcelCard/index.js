@@ -12,7 +12,7 @@ import {
 } from "./parcelCardComp";
 
 const ParcelCard = ({item}) => {
-  console.log(item)
+  // console.log(item)
   return (
     <StyledCard>
       <div>

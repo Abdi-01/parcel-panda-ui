@@ -42,7 +42,7 @@ export const getProfile = (token) => {
                 }
             }
             let response = await axios(config)
-            // console.log("Response profile data action", response.data[0])
+            console.log("Response profile data action", response.data[0])
             dispatch({
                 type: "PROFILE_DATA",
                 payload: { ...response.data[0] }
