@@ -3,9 +3,10 @@ import styled from 'styled-components'
 export const FilterWrapper = styled.div`
     width: 100%;
     display: flex;
-    /* justify-content: space-evenly; */
+    justify-content: space-between;
     align-items: center;
     margin: 30px 0;
+    /* border: 1px solid black; */
 `
 
 export const FilterDetailWrapper = styled.div`
@@ -18,4 +19,12 @@ export const DateFilterWrapper = styled.div`
     justify-content: space-between;
     width: 500px;
     margin: 0 20px;
+`
+
+export const RowsPaginationWrapper = styled.div`
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid green; */
 `

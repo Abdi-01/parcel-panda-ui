@@ -105,7 +105,7 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange }) => {
             }
         }
         fetchData()
-    }, [values, revenue])
+    }, [values])
 
     return (
         <div>

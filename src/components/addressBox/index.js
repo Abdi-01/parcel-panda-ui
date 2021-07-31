@@ -40,7 +40,7 @@ const AddressBox = () => {
     const dispatch = useDispatch()
 
     const printAddress = () => {
-        // console.log("My Address Page", address)
+        console.log("My Address Page", address)
         if (address.length > 0) {
             return address.map((item) => {
                 return  <Container>
@@ -90,6 +90,7 @@ const AddressBox = () => {
     const handleDeleteAddress = async () => {
         try {
             setLoading(true)
+            console.log("idDelete", idDelete)
             let token = localStorage.getItem("tkn_id");
             let config = {
                 method: 'delete',
@@ -129,7 +130,7 @@ const AddressBox = () => {
 
     const { address } = useSelector(({ authReducer }) => {
         return {
-            address: authReducer.profile.address
+            address: authReducer.profile.address,
         }
     })
 

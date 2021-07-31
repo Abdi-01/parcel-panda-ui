@@ -12,17 +12,33 @@ import {
     Menu,
     MenuItem,
     TextField,
+    Fade,
+    Typography,
 } from "@material-ui/core/";
 import { 
     DateFilterWrapper,
     FilterWrapper, 
-    FilterDetailWrapper 
+    FilterDetailWrapper, 
+    RowsPaginationWrapper
 } from './filterTransaction';
 
 
-const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedDayRange, setSelectedDayRange, resetFilter}) => {
+const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedDayRange, setSelectedDayRange, resetFilter, rowsPerPage, setRowsPerPage}) => {
     const [anchorPayment, setAnchorPayment] = useState(null);
+    const [anchorEl, setAnchorEl] = useState(null);
     const openPayment = Boolean(anchorPayment)
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = (page) => {
+        setAnchorEl(null);
+        if (page !== 'close') {
+            setRowsPerPage(page)
+        }
+    };
 
     const handleClickPayment = (event) => {
         setAnchorPayment(event.currentTarget);
@@ -104,7 +120,9 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
     return (
         <div>
             <FilterWrapper>
-                <h5>Filter</h5>
+                <Typography variant="h5" component="div">
+                   Filter
+                </Typography>
                 <FilterDetailWrapper>
                     <Button
                         aria-controls="category-filter-menu"
@@ -129,9 +147,6 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
                         open={openPayment}
                         onClose={handleClosePayment}
                     >
-                    {/* <MenuItem>
-                        {"Choose transaction"}
-                    </MenuItem> */}
                         <MenuItem>
                             <FormControlLabel
                             control={
@@ -188,6 +203,36 @@ const FilterTransactionManagement = ({paymentStatus, setPaymentStatus, selectedD
                 >
                     Reset Filter
                 </Button>
+                <RowsPaginationWrapper>
+                    <Typography variant="subtitle1" component="div">
+                        Rows per page:
+                    </Typography>
+                    <Button
+                        id="fade-button"
+                        aria-controls="fade-menu"
+                        aria-haspopup="true"
+                        size="medium"
+                        aria-expanded={open ? 'true' : undefined}
+                        onClick={handleClick}
+                        endIcon={<KeyboardArrowDownIcon />}
+                    >
+                        {rowsPerPage}
+                    </Button>
+                    <Menu
+                        id="fade-menu"
+                        MenuListProps={{
+                        'aria-labelledby': 'fade-button',
+                        }}
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={() => handleClose('close')}
+                        TransitionComponent={Fade}
+                    >
+                        <MenuItem onClick={() => handleClose(5)}>5</MenuItem>
+                        <MenuItem onClick={() => handleClose(10)}>10</MenuItem>
+                        <MenuItem onClick={() => handleClose(15)}>15</MenuItem>
+                    </Menu>
+                </RowsPaginationWrapper>
             </FilterWrapper>
         </div>
     )

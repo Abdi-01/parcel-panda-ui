@@ -11,40 +11,38 @@ const SalesReport = () => {
         to: null,
     })
 
-    const setQueryDateFilter = () => {
-        if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
-            let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
-            // console.log("Date filter", query)
-            return query
-        }
-    }
-
-    const getRevenue = async () => {
-        try {
-            let token = localStorage.getItem("tkn_id")
-            let queryDate = ''
-            if (setQueryDateFilter() !== undefined) {
-                queryDate = setQueryDateFilter()
-            }
-            let config = {
-                method: 'get',
-                url: URL_API + `/financial-report/revenue?${queryDate}`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            let response = await axios(config)
-            setValues(response.data)
-            console.log("getRevenue", response.data)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
+        const setQueryDateFilter = () => {
+            if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
+                let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
+                // console.log("Date filter", query)
+                return query
+            }
+        }
+        const getRevenue = async () => {
+            try {
+                let token = localStorage.getItem("tkn_id")
+                let queryDate = ''
+                if (setQueryDateFilter() !== undefined) {
+                    queryDate = setQueryDateFilter()
+                }
+                let config = {
+                    method: 'get',
+                    url: URL_API + `/financial-report/revenue?${queryDate}`,
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                let response = await axios(config)
+                setValues(response.data)
+                console.log("getRevenue", response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
         getRevenue()
-    }, [selectedDayRange])
-
+    }, [selectedDayRange.from, selectedDayRange.to])
+    
     return (
         <div>
             <Container>

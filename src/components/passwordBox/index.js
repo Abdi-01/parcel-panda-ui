@@ -73,6 +73,7 @@ const PasswordBox = () => {
             let response = await axios(config)
             // console.log("Response => ", response)
             setLoading(false)
+            setValues({...values, password:'', newPassword:'', confirmPassword:''})
             toast.success(`Success, ${response.data.message}!`, {
                 position: toast.POSITION.TOP_CENTER
               });
