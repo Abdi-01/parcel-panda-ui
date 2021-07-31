@@ -17,7 +17,6 @@ import {
 } from "./RevenueCard";
 
 const RevenueCard = ({ data, type }) => {
-    console.log("Revenue card", data)
     return (
         <div>
             <Container>

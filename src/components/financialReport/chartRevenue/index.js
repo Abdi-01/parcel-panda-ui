@@ -2,19 +2,6 @@ import React, { useState, useEffect } from "react";
 import DatePicker from "react-modern-calendar-datepicker";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  Label,
-  AreaChart,
-  Area,
-} from "recharts";
-import {
   Button,
   InputAdornment,
   TextField,
@@ -25,8 +12,13 @@ import {
   DateFilterWrapper, 
   FilterWrapper, 
   DateWrapper, 
-  DisplayWrapper
+  DisplayUpperWrapper,
+  DisplayBottomWrapper,
+  DataWrapper,
+  PieChartWrapper
 } from "./chartRevenue";
+import PieChartComponent from "../pieChart";
+import AreaChartComponent from "../areaChart";
 
 const options = [
   'revenue',
@@ -34,7 +26,8 @@ const options = [
 ];
 
 const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedIndex, resetFilter }) => {
-    const [dataX, setData] = useState(null)
+    const [dataAreaChart, setDataAreaChart] = useState(null)
+    const [dataPieChart, setDataPieChart] = useState(null)
     const [revenue, setRevenue] = useState({
         day: 0,
         month: 0,
@@ -96,7 +89,8 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
           for (let prop in tmp) {
             tmp[prop].date = new Date(tmp[prop].date).toLocaleDateString('en-GB', options)
           }
-          setData(tmp)
+          setDataAreaChart(tmp)
+          setDataPieChart(values.top)
           setRevenue({
             ...revenue,
             day: values.day,
@@ -109,9 +103,11 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
       fetchData()
     }, [values])
 
+    // console.log("Values", values)
+
     return (
         <div>
-          <DisplayWrapper>
+          <DisplayUpperWrapper>
             <RevenueCard data={revenue} type={options[selectedIndex]}/>
             <ChartFilterWrapper>
               <FilterWrapper>
@@ -132,59 +128,20 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
                     onClick={resetFilter}
                     size="large"
                     disabled={selectedDayRange.from === null && selectedDayRange.to === null}
-                    // disabled={resetButton()}
                   >
                     Reset Filter
                   </Button>
                 </DateWrapper>
               </FilterWrapper>
-              <ResponsiveContainer width="100%" height={550}>
-                {/* <LineChart
-                  data={dataX}
-                  margin={{
-                      top: 20,
-                      right: 20,
-                      left: 20,
-                      bottom: 20,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date">
-                      <Label value="Date" offset={-10} position="insideBottom" />
-                  </XAxis>
-                  <YAxis />
-                  <Tooltip />
-                  <Legend verticalAlign="top"/>
-                  <Line type="monotone" dataKey="val" stroke="#3f50b5" activeDot={{ r: 8 }} />
-                </LineChart> */}
-                <AreaChart
-                  width={500}
-                  height={400}
-                  data={dataX}
-                  margin={{
-                    top: 10,
-                    right: 30,
-                    left: 0,
-                    bottom: 0,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  {
-                    options[selectedIndex] === "revenue" ? <Area type="monotone" dataKey="user_spent" stroke="#82ca9d" fill="#82ca9d" /> : <></>
-                  }
-                  <Area 
-                    type="monotone" 
-                    dataKey={options[selectedIndex] === "item" ? "amount" : "profit"}
-                    stroke="#3f50b5" 
-                    fill="#3f50b5" 
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
+              <AreaChartComponent data={dataAreaChart} option={options[selectedIndex]}/>
             </ChartFilterWrapper>
-          </DisplayWrapper>
+          </DisplayUpperWrapper>
+          <DisplayBottomWrapper>
+            <h4>Top {options[selectedIndex]}</h4>
+            <PieChartWrapper>
+              <PieChartComponent data={dataPieChart} option={options[selectedIndex]}/>
+            </PieChartWrapper>
+          </DisplayBottomWrapper>
         </div>
     )
 };
