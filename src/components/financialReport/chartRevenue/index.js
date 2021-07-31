@@ -6,7 +6,6 @@ import {
   InputAdornment,
   TextField,
 } from "@material-ui/core/";
-import RevenueCard from "../revenueCard";
 import { 
   ChartFilterWrapper, 
   DateFilterWrapper, 
@@ -14,9 +13,10 @@ import {
   DateWrapper, 
   DisplayUpperWrapper,
   DisplayBottomWrapper,
-  DataWrapper,
+  // DataWrapper,
   PieChartWrapper
 } from "./chartRevenue";
+import RevenueCard from "../revenueCard";
 import PieChartComponent from "../pieChart";
 import AreaChartComponent from "../areaChart";
 
@@ -83,7 +83,7 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
     useEffect(() => {
       const fetchData = () => {
         if (values !== null) {
-          console.log(values)
+          console.log("values", values)
           let tmp = values.data
           const options = { year: 'numeric', month: 'long', day: 'numeric' }
           for (let prop in tmp) {
@@ -104,6 +104,7 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
     }, [values])
 
     // console.log("Values", values)
+    console.log("revenue", revenue)
 
     return (
         <div>
