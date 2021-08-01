@@ -3,7 +3,7 @@ import { URL_API } from '../helper'
 
 export const getProductActions = () => {
     return (dispatch) => {
-        axios.get(URL_API + `/product-manage/`)
+        axios.get(URL_API + `/product`)
         .then (res => {
             console.log("PRODUCT ACTIONS", res.data)
             dispatch({
