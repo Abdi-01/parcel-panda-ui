@@ -23,8 +23,7 @@ import {
     ButtonWrapper, 
     PaginationWrapper, 
     ButtonReject, 
-    ChipRejected 
-} from './adminTransaction';
+    ChipRejected } from './adminTransaction';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -138,7 +137,7 @@ const TransactionManagement = () => {
                                 item.payment_status === 'accepted' ?
                                     <Chip label="accepted" color="primary" /> :
                                 item.payment_status === 'rejected' ?
-                                    <ChipRejected label="rejected" color="secondary" /> :
+                                    <Chip label="rejected" color="secondary" /> :
                                     <div>
                                         <Button variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'accept')} color="primary">
                                             Accept

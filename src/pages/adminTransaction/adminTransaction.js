@@ -22,7 +22,10 @@ export const ButtonWrapper = styled.div`
 `
 
 export const ButtonReject = styled(Button)`
-    background-color: #FF0000;
+    && {
+        background-color: #FF0000;
+
+    }
 
     &:hover {
         background-color: #d32f2f;
@@ -30,5 +33,7 @@ export const ButtonReject = styled(Button)`
 `
 
 export const ChipRejected = styled(Chip)`
-    background-color: #FF0000;
+    && {
+        background-color: #FF0000;
+    }
 `
