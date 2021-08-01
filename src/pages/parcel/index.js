@@ -288,7 +288,7 @@ class ParcelPage extends React.Component {
                                     </>
                             }
                         </div>
-                        {/* <ReactPaginate
+                        <ReactPaginate
                             previousLabel={"prev"}
                             nextLabel={"next"}
                             breakLabel={"..."}
@@ -299,7 +299,7 @@ class ParcelPage extends React.Component {
                             onPageChange={this.handlePageClick}
                             containerClassName={"pagination"}
                             subContainerClassName={"pages pagination"}
-                            activeClassName={"active"} /> */}
+                            activeClassName={"active"} />
                     </div>
                 </div>
             </Container>
