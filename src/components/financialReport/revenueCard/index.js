@@ -63,7 +63,7 @@ const RevenueCard = ({ data }) => {
                         </IconWrapper>
                         <TextHeadWrapper>
                             <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.month.toLocaleString()}</TextHeaderNumb>
+                            <TextHeaderNumb>IDR {data.month === null ? 0 : data.month.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />
