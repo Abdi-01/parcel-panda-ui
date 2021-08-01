@@ -39,10 +39,10 @@ class CheckoutPage extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        axios.get(URL_API + `/profile`, headers)
+        axios.get(URL_API + `/transaction/get-address`, headers)
             .then(res => {
-                console.log(res.data)
-                this.setState({ address: res.data[0]?.address })
+                console.log("ADDRESS", res.data)
+                this.setState({ address: res.data })
             }).catch(err => console.log(err))
     }
 
@@ -248,7 +248,7 @@ class CheckoutPage extends React.Component {
                                     <p className="p-my-address">MY ADDRESS</p>
                                     <Button outline color="warning" size="sm" onClick={() => {
                                         this.setState({ modal: !this.state.modal });
-                                    }}>Pilih alamat lainnya</Button>
+                                    }}>Pilih alamat</Button>
                                 </div>
                                 <div className="div-get-address">
                                     {this.getAddress()}

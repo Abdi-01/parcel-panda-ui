@@ -45,7 +45,7 @@ class ParcelPage extends React.Component {
 
 
     dataParcel = () => {
-        axios.get(URL_API + `/product-manage/get-parcel`)
+        axios.get(URL_API + `/parcel/get-parcel`)
             .then(res => {
                 this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
             }).catch(err => console.log(err))
@@ -182,7 +182,7 @@ class ParcelPage extends React.Component {
         var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
         var filter = display.join("&")
         console.log("fff", display)
-        axios.get(URL_API + `/product-manage/filter-parcel?${filter}`)
+        axios.get(URL_API + `/parcel/filter-parcel?${filter}`)
             .then(res => {
                 console.log("filter", res.data)
                 console.log("nama", this.state.filterName)
@@ -288,7 +288,7 @@ class ParcelPage extends React.Component {
                                     </>
                             }
                         </div>
-                        {/* <ReactPaginate
+                        <ReactPaginate
                             previousLabel={"prev"}
                             nextLabel={"next"}
                             breakLabel={"..."}
@@ -299,7 +299,7 @@ class ParcelPage extends React.Component {
                             onPageChange={this.handlePageClick}
                             containerClassName={"pagination"}
                             subContainerClassName={"pages pagination"}
-                            activeClassName={"active"} /> */}
+                            activeClassName={"active"} />
                     </div>
                 </div>
             </Container>

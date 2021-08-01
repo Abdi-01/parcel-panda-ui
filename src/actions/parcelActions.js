@@ -3,7 +3,7 @@ import { URL_API } from '../helper'
 
 export const getParcelActions = () => {
     return (dispatch) => {
-        axios.get(URL_API + `/product-manage/get-parcel`)
+        axios.get(URL_API + `/parcel/get-parcel`)
         .then (res => {
             console.log("PARCEL ACTIONS", res.data)
             dispatch({

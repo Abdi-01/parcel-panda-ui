@@ -116,7 +116,7 @@ class ProductsPage extends React.Component {
 
     getDataProduct = () => {
         console.log(this.props.location.search)
-        axios.get(URL_API + `/product-manage/filter-product?${this.props.location.search}`)
+        axios.get(URL_API + `/product/filter-product?${this.props.location.search}`)
             .then(res => {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
@@ -127,7 +127,7 @@ class ProductsPage extends React.Component {
         var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
         var filter = display.join("&")
         console.log("fff", display)
-        axios.get(URL_API + `/product-manage/filter-product?${filter}`)
+        axios.get(URL_API + `/product/filter-product?${filter}`)
             .then(res => {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
