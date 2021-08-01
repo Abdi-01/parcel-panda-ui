@@ -16,7 +16,8 @@ import {
   TextHeadCategory,
 } from "./RevenueCard";
 
-const RevenueCard = ({ data }) => {
+const RevenueCard = ({ data, type }) => {
+    console.log("Revenue card data", data,type)
     return (
         <div>
             <Container>
@@ -26,8 +27,8 @@ const RevenueCard = ({ data }) => {
                             <AttachMoneyIcon fontSize="large" style={{fill: "#3f50b5"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
-                            <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.filtered === null ? 0 : data.filtered.toLocaleString()}</TextHeaderNumb>
+                            <TextHeadCategory>{type}</TextHeadCategory>
+                            <TextHeaderNumb>{type === 'item' ? "" : "IDR"} {data.filtered === null ? 0 : data.filtered.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />
@@ -44,8 +45,8 @@ const RevenueCard = ({ data }) => {
                             <LocalAtmIcon fontSize="large" style={{fill: "#3f50b5"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
-                            <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.day === null ? 0 : data.day.toLocaleString()}</TextHeaderNumb>
+                            <TextHeadCategory>{type}</TextHeadCategory>
+                            <TextHeaderNumb>{type === 'item' ? "" : "IDR"} {data.day === null ? 0 : data.day.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />
@@ -62,8 +63,8 @@ const RevenueCard = ({ data }) => {
                             <AccountBalanceWalletIcon fontSize="large" style={{fill: "#3f50b5"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
-                            <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.month.toLocaleString()}</TextHeaderNumb>
+                            <TextHeadCategory>{type}</TextHeadCategory>
+                            <TextHeaderNumb>{type === 'item' ? "" : "IDR"} {data.month === null ? 0 : data.month.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />
@@ -80,8 +81,8 @@ const RevenueCard = ({ data }) => {
                             <AccountBalanceIcon fontSize="large" style={{fill: "#3f50b5"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
-                            <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.total.toLocaleString()}</TextHeaderNumb>
+                            <TextHeadCategory>{type}</TextHeadCategory>
+                            <TextHeaderNumb>{type === 'item' ? "" : "IDR"} {data.total.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />
