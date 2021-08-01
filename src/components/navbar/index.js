@@ -20,7 +20,7 @@ class NavbarComp extends React.Component {
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.state.password)
         this.setState({ modal: false, });
-        this.setState({ password: '' })
+        this.setState({ password: '' });
     }
 
     printLogin = () => {
@@ -79,9 +79,9 @@ class NavbarComp extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{position: 'sticky', top: '0', height: '130px', backgroundColor: 'white'}}>
                 {this.printLogin()}
-                <Navbar expand="md">
+                <Navbar expand="md" >
                     <Container>
                         <Navbar.Brand href="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />

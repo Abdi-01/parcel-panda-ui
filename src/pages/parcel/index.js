@@ -1,21 +1,18 @@
 import React from 'react';
-import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg } from 'reactstrap';
-import { InputText } from 'primereact/inputtext';
+import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg, Spinner } from 'reactstrap';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import "../product/productPage.css"
 import { Checkbox } from '@material-ui/core';
-import food from "../../asset/img/food.jpg";
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
-// import {getCart} from "../../actions"
+import "../parcel/parcelPage.css"
 
 toast.configure()
 
@@ -24,10 +21,8 @@ class ParcelPage extends React.Component {
         super(props);
         this.state = {
             offset: 0,
-            data: [],
-            perPage: 12,
+            perPage: 4,
             currentPage: 0,
-            dataProduct: props.products,
             filterCtg: [],
             checkedCtg: {
                 1: false,
@@ -44,13 +39,21 @@ class ParcelPage extends React.Component {
     }
 
     componentDidMount() {
-        this.getData()
+        this.dataParcel()
         this.handleSort()
     }
 
 
+    dataParcel = () => {
+        axios.get(URL_API + `/product-manage/get-parcel`)
+            .then(res => {
+                this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+            }).catch(err => console.log(err))
+    }
+
     getData = () => {
-        return this.props.parcel.map((item, index) => {
+        console.log(this.state.parcel)
+        return this.state.parcel.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
             return <div className="col-md-3 mt-5">
                 <Card >
                     {
@@ -80,7 +83,7 @@ class ParcelPage extends React.Component {
     }
 
     printConfirm = () => {
-        return this.props.parcel.map((item, index) => {
+        return this.state.parcel.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
             if (this.state.selectedIndex === index) {
                 return (
                     <div>
@@ -179,35 +182,48 @@ class ParcelPage extends React.Component {
         var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
         var filter = display.join("&")
         console.log("fff", display)
-        let dataFilter = this.props.parcel.filter((item =>
-            item.category.includes(display)))
-        this.setState({ parcel: dataFilter })
+        axios.get(URL_API + `/product-manage/filter-parcel?${filter}`)
+            .then(res => {
+                console.log("filter", res.data)
+                console.log("nama", this.state.filterName)
+                this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+            }).catch(err => console.log(err))
     }
 
     handleSort = () => {
         if (this.sort.value === "nama-asc") {
-            this.props.parcel.sort((a, b) => {
+            this.state.parcel.sort((a, b) => {
                 return a.id - b.id
             })
-            console.log(this.props.products)
         } else if (this.sort.value === "nama-desc") {
-            this.props.parcel.sort((a, b) => {
+            this.state.parcel.sort((a, b) => {
                 return b.id - a.id
             })
         } else if (this.sort.value === "harga-asc") {
-            this.props.parcel.sort((a, b) => {
+            this.state.parcel.sort((a, b) => {
                 return a.price - b.price
             })
         } else if (this.sort.value === "harga-desc") {
-            this.props.parcel.sort((a, b) => {
+            this.state.parcel.sort((a, b) => {
                 return b.price - a.price
             })
         } else if (this.sort.value === "id-asc") {
-            return this.props.parcel
+            return this.state.parcel
         }
-        this.setState(this.props.parcel)
+        this.setState(this.state.parcel)
         this.getData()
     }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.getData()
+        });
+    };
 
 
     render() {
@@ -217,27 +233,34 @@ class ParcelPage extends React.Component {
                     {this.printConfirm()}
                     <div className="col-md-3 mt-3">
                         <div>
-                            <h2 style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '17px' }}>PARCEL NAME</h2>
-                            <div className="p-field ">
+                            <h2 className="h2-sort">SORT</h2>
+                            <Input style={{ width: '200px' }} type="select" onClick={this.handleSort} innerRef={elemen => this.sort = elemen} >
+                                <option selected disabled>-</option>
+                                <option value="nama-asc" >A - Z</option>
+                                <option value="nama-desc">Z - A</option>
+                                <option value="harga-asc">Price Low-High</option>
+                                <option value="harga-desc">Price High-Low</option>
+                            </Input>
+                            {/* <div className="p-field ">
                                 <div>
                                     <span className="p-input-icon-right">
                                         <InputText value={this.state.filterName} onChange={(e) => this.setState({ filterName: e.target.value })} />
                                         <i className="pi pi-search" />
                                     </span>
                                 </div>
+                            </div> */}
+                            <h2 className="mt-5 h2-sort">PARCEL CATEGORY</h2>
+                            <div className="div-checkbox" >
+                                <Checkbox className="chkbox" color="primary" name="idcategori=1" onChange={this.checkbox} />
+                                <Label className="label-chk">Food</Label>
                             </div>
-                            <h2 className="mt-5" style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '17px' }}>PARCEL</h2>
-                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Food</Label>
+                            <div className="div-checkbox">
+                                <Checkbox className="chkbox" color="primary" name="idcategori=3" onChange={this.checkbox} />
+                                <Label className="label-chk">Drinks</Label>
                             </div>
-                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Drinks</Label>
-                            </div>
-                            <div style={{ display: 'block', alignItems: 'center', color: 'gray', height: '32px' }}>
-                                <Checkbox style={{ verticalAlign: 'middle' }} color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                <Label style={{ fontSize: '16px', display: 'inline-block' }}>Fruits</Label>
+                            <div className="div-checkbox">
+                                <Checkbox className="chkbox" color="primary" name="idcategori=2" onChange={this.checkbox} />
+                                <Label className="label-chk">Fruits</Label>
                             </div>
                             <div style={{ marginTop: '15px', display: 'flex' }}>
                                 <Button onClick={() => this.resetCheckbox()} color="secondary">
@@ -250,21 +273,20 @@ class ParcelPage extends React.Component {
                         </div>
                     </div>
                     <div className="col-md-9">
-                        <div style={{ borderBottom: "1px solid #E5E5E5", borderTop: "1px solid #E5E5E5", height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <h2 style={{ fontSize: '24px', letterSpacing: '2px', lineHeight: '17px', }}>PARCEL</h2>
-                            <div style={{ display: "flex", justifyContent: "flex-end", }}>
-                                <h2 style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '17px', color: '#8C8582', display: "inline", padding: '9px 12px 9px 0' }}>SORT</h2>
-                                <Input type="select" onClick={this.handleSort} innerRef={elemen => this.sort = elemen} >
-                                    <option selected disabled>-</option>
-                                    <option value="nama-asc" >A - Z</option>
-                                    <option value="nama-desc">Z - A</option>
-                                    <option value="harga-asc">Price Low-High</option>
-                                    <option value="harga-desc">Price High-Low</option>
-                                </Input>
-                            </div>
+                        <div className="div-box-parcel">
+                            <h2 className="h2-produk">PARCEL</h2>
                         </div>
                         <div className="row">
-                            {this.getData()}
+                            {
+                                this.props.parcel ?
+                                    <>
+                                        {this.getData()}
+                                    </>
+                                    :
+                                    <>
+                                        <Spinner color="warning" />
+                                    </>
+                            }
                         </div>
                         {/* <ReactPaginate
                             previousLabel={"prev"}

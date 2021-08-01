@@ -1,11 +1,12 @@
 import React from 'react';
-import { Button, Container, Modal, ModalBody, Input, Table } from 'reactstrap';
+import { Button, Container, Modal, ModalBody, Table } from 'reactstrap';
 import { Link } from "react-router-dom";
 import truck from "../../asset/img/truck.png"
 import { connect } from 'react-redux';
 import { getProfile, getCart, getTransaction } from "../../actions"
 import axios from 'axios';
 import { URL_API } from '../../helper';
+import "../checkout/checkOutPage.css"
 
 class CheckoutPage extends React.Component {
     constructor(props) {
@@ -62,7 +63,7 @@ class CheckoutPage extends React.Component {
     handleOtherAddress = () => {
         return this.state.address.map((item, index) => {
             return (
-                <div style={{ border: '1px solid #FAB629', padding: '15px 15px 15px 15px', borderRadius: '10px', marginTop: '5px' }}>
+                <div className="box-address">
                     <h4 style={{ fontSize: '12px', letterSpacing: '1px', lineHeight: '16px', color: '#8C8582' }}>MY ADDRESS</h4>
                     <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>
                         <span style={{ fontWeight: 'bold' }}>{item.recipient_name}, </span>
@@ -216,20 +217,20 @@ class CheckoutPage extends React.Component {
         return (
             <div>
                 <Container>
-                    <div style={{ borderBottom: "1px solid #E5E5E5", borderTop: "1px solid #E5E5E5", height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <h2 style={{ fontSize: '24px', letterSpacing: '2px', lineHeight: '17px', }}>CONFIRMATION</h2>
+                    <div className="judul-confirm">
+                        <h2 className="h2-confirm">CONFIRMATION</h2>
                     </div>
                     {/* MODAL ALAMAT */}
                     <Modal isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
                         <ModalBody>
                             <Container>
                                 <div>
-                                    <h4 style={{ fontSize: '14px', letterSpacing: '1.5px', lineHeight: '18px' }}>PILIH ALAMAT</h4>
+                                    <h4 className="h4-pilihalamat">PILIH ALAMAT</h4>
                                 </div>
-                                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <p style={{ fontSize: '14px', lineHeight: '18px', color: '#8C8582' }}>
+                                <div className="div-alamat">
+                                    <p className="p-alamat">
                                         alamat tersimpan</p>
-                                    <Link style={{ fontSize: '14px', lineHeight: '18px', color: '#FAB629', textDecoration: 'none' }}>+Tambah Alamat</Link>
+                                    <Link to={`/user-profile`} style={{ fontSize: '14px', lineHeight: '18px', color: '#FAB629', textDecoration: 'none' }}>+Tambah Alamat</Link>
                                 </div>
                                 {this.handleOtherAddress()}
                             </Container>
@@ -239,46 +240,48 @@ class CheckoutPage extends React.Component {
                     <div className="row d-flex">
                         {/* ALAMAT */}
                         <div className="col-md-9">
-                            <div className="mt-5" style={{ border: '1px solid #DDDDDD', borderRadius: '10px', margin: '0 0 20px 0', padding: '15px 15px 15px 15px', }}>
+                            <div className="mt-5 box-alamat-fix" >
                                 <div style={{ height: '40px' }}>
-                                    <h2 style={{ fontSize: '14px', letterSpacing: '2px', }}>ALAMAT PENGIRIMAN</h2>
+                                    <h2 className="h2-alamat-pengiriman">ALAMAT PENGIRIMAN</h2>
                                 </div>
-                                <div style={{ height: '28px', display: 'flex', justifyContent: 'space-between' }}>
-                                    <p style={{ fontSize: '12px', letterSpacing: '1px', lineHeight: '16px', color: '#8C8582' }}>MY ADDRESS</p>
+                                <div className="div-alamat2">
+                                    <p className="p-my-address">MY ADDRESS</p>
                                     <Button outline color="warning" size="sm" onClick={() => {
                                         this.setState({ modal: !this.state.modal });
                                     }}>Pilih alamat lainnya</Button>
                                 </div>
-                                <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
+                                <div className="div-get-address">
                                     {this.getAddress()}
                                 </div>
                                 <div style={{ paddingTop: '8px' }}>
-                                    <Link style={{ textDecoration: 'none solid rgb(34, 34, 34)', fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
+                                    <Link to={`/user-profile`} style={{ textDecoration: 'none solid rgb(34, 34, 34)', fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                         Tambah alamat baru
                                     </Link>
                                 </div>
                             </div>
+
                             {/* METODE PENGIRIMAN */}
-                            <div className="mt-5" style={{ border: '1px solid #DDDDDD', borderRadius: '10px', margin: '0 0 20px 0', padding: '15px 15px 15px 15px', }}>
-                                <div style={{ height: '40px' }}>
-                                    <h2 style={{ fontSize: '14px', letterSpacing: '2px', }}>METODE PENGIRIMAN</h2>
+                            <div className="mt-5 box-alamat-fix">
+                                <div className="h-alamat">
+                                    <h2 className="h2-alamat-pengiriman">METODE PENGIRIMAN</h2>
                                 </div>
-                                <div style={{ height: '76px', width: '344px', border: '1px solid #FAB629', borderRadius: '10px', display: 'flex', padding: '5px 10px 10px 10px' }}>
+                                <div className="box-pengiriman">
                                     <img src={truck} alt="..." width="65px" height="65px" />
                                     <div style={{ paddingLeft: '10px' }}>
-                                        <h6 style={{ fontSize: '14px', lineHeight: '20px' }}>
+                                        <h6 className="h6-shipping">
                                             Regular Shipping
                                         </h6>
-                                        <p style={{ fontSize: '11px', lineHeight: '17px', }}>
+                                        <p className="p-estimasi">
                                             Estimasi Pengiriman: 3-5 hari kerja setelah tanggal konfirmasi pembayaran atau pembayaran sukses.
                                         </p>
                                     </div>
                                 </div>
                             </div>
+
                             {/* RINGKASAN ORDER */}
-                            <div className="mt-5" style={{ border: '1px solid #DDDDDD', borderRadius: '10px', margin: '0 0 20px 0', padding: '15px 15px 15px 15px', }}>
-                                <div style={{ height: '40px' }}>
-                                    <h2 style={{ fontSize: '14px', letterSpacing: '2px', }}>RINGKASAN ORDER</h2>
+                            <div className="mt-5 box-ro">
+                                <div className="h-alamat">
+                                    <h2 className="h2-ro">RINGKASAN ORDER</h2>
                                 </div>
                                 <div>
                                     <Table borderless>
@@ -297,30 +300,39 @@ class CheckoutPage extends React.Component {
                             </div>
 
                         </div>
-                        <div className="col-md-3 mt-5">
-                            <div style={{ border: '1px solid #DDDDDD', margin: '0 0 20px 0', padding: '15px 15px 15px 15px', borderRadius: '10px' }}>
-                                <h4 style={{ fontSize: '16px', letterSpacing: '1px', lineHeight: '20px' }}>SUMMARY ORDER</h4>
-                                <div style={{ display: 'flex', borderBottom: '1px dashed #DDDDDD', justifyContent: 'space-between' }}>
-                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>Subtotal</h6>
 
-                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>Rp. {this.subTotalCart().toLocaleString()}</h6>
+                        {/* SUMMARY ORDER */}
+                        <div className="col-md-3 mt-5">
+                            <div className="box-ro">
+                                <h4 className="h4-so">SUMMARY ORDER</h4>
+                                <div style={{ display: 'flex', borderBottom: '1px dashed #DDDDDD', justifyContent: 'space-between' }}>
+                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>
+                                        Subtotal
+                                    </h6>
+                                    <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>
+                                        Rp. {this.subTotalCart().toLocaleString()}
+                                    </h6>
                                 </div>
                                 <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>Shipping Cost</h6>
-                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>Rp.{this.state.ongkir.toLocaleString()}</h6>
+                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>
+                                        Shipping Cost</h6>
+                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>
+                                        Rp.{this.state.ongkir.toLocaleString()}</h6>
                                     </div>
                                 </div>
                                 <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>TOTAL</h6>
-                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>Rp.{(this.subTotalCart() + this.state.ongkir).toLocaleString()}</h6>
+                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>
+                                            TOTAL</h6>
+                                        <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>
+                                            Rp.{(this.subTotalCart() + this.state.ongkir).toLocaleString()}</h6>
                                     </div>
                                     <p style={{ fontSize: '10px', fontStyle: 'italic' }}><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
                                     <Link onClick={this.onBtCheckOut} to={`/user-transaction/${this.props.id}`} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
-                                        PLACE ORDER
+                                        PROCEED TO CHECKOUT
                                     </Link>
                                 </div>
                             </div>

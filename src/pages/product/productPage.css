@@ -26,3 +26,44 @@
   .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
     border-radius: unset
   }
+
+  .div-checkbox {
+    display: block;
+    align-items: center;
+    color: gray;
+    height: 32px;
+  }
+
+.chkbox {
+  vertical-align: middle;
+}
+
+.label-chk {
+  /* style={{ fontSize: '16px', display: 'inline-block' }} */
+  font-size: 16px;
+  display: inline-block;
+}
+
+.h2-sort {
+  /* style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '17px' }} */
+  font-size: 16px;
+  letter-spacing: 2px;
+  line-height: 17px;
+}
+
+.div-box-parcel {
+  /* style={{ borderBottom: "1px solid #E5E5E5", borderTop: "1px solid #E5E5E5", height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} */
+  border-bottom: 1px solid #E5E5E5;
+  border-top: 1px solid #E5E5E5;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.h2-produk {
+  /* style={{ fontSize: '24px', letterSpacing: '2px', lineHeight: '17px', }} */
+  font-size: 24px;
+  letter-spacing: 2px;
+  line-height: 17px;
+}

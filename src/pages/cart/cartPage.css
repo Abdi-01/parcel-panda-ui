@@ -1,0 +1,121 @@
+.box-cart {
+    border: 1px solid #DDDDDD;
+}
+
+.cart-name {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.td.detail {
+    width: 30%;
+}
+
+.detail-name {
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+}
+
+.det-title {
+    color: gray;
+    width: 170px;
+}
+
+.line2{
+    width: 30%;
+    align-content: center;
+    padding-left: 10px;
+}
+
+.span-det {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    border: 1px solid gray;
+}
+
+.input-qty {
+    width: 60%;
+    display: inline-block;
+}
+
+.det-subtotal {
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cart-judul {
+    border-bottom: 1px solid #E5E5E5;
+    border-top: 1px solid #E5E5E5;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.shopping-cart {
+    font-size: 24px;
+    letter-spacing: 2px;
+    line-height: 17px;
+}
+
+.table-cart {
+    border: 1px solid #DDDDDD;
+    border-radius: 10px;
+}
+
+.th-cart {
+    font-size: 16px;
+    letter-spacing: 1px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.box-sum {
+    border: 1px solid #DDDDDD;
+    margin: 0 0 20px 0;
+    padding: 15px 15px 15px 15px;
+    border-radius: 10px;
+}
+
+.sum-order {
+    font-size: 16px;
+    letter-spacing: 1px;
+    line-height: 20px;
+}
+
+.sum-total {
+    display: flex;
+    border-bottom: 1px dashed #DDDDDD;
+    justify-content: space-between;
+}
+
+.h6-total {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+}
+
+.h6-hasil {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.sum-2 {
+    border-bottom: 1px dashed #DDDDDD;
+    padding-top: 8px;
+}
+
+.sum-2x {
+    display: flex;
+    justify-content: space-between;
+}
+
+.sum-ongkir {
+    font-size: 10px;
+    font-style: italic;
+}

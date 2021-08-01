@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Container, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalBody } from 'reactstrap';
 import earphones from "../../asset/img/earphones.png"
 import { getTransaction } from "../../actions"
+import ReactPaginate from 'react-paginate';
 // import { Dialog } from 'primereact/dialog';
 import { URL_API } from "../../helper"
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import "../userTransaction/userTransactionPage.css"
 
 toast.configure()
 
@@ -14,6 +16,9 @@ class UserTransactionPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            offset: 0,
+            perPage: 2,
+            currentPage: 0,
             displayBasic2: false,
             idpayment_status: [],
             transaction: [],
@@ -25,7 +30,7 @@ class UserTransactionPage extends React.Component {
 
 
     componentDidMount() {
-        this.props.getTransaction()
+        // this.props.getTransaction()
         this.getPaymentStatus()
         this.getUserTransaction()
     }
@@ -49,57 +54,75 @@ class UserTransactionPage extends React.Component {
         axios.get(URL_API + `/transaction`, headers)
             .then(res => {
                 console.log("OK")
-                this.setState({ transaction: res.data })
+                this.setState({ transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
             }).catch(err => {
                 console.log(err)
             })
     }
 
     handleStatus = (id) => {
-        console.log("id", id)
-        let dataFilter = this.state.transaction.filter((item) => item.idpayment_status === id)
-        console.log("cek", dataFilter)
-        if (dataFilter.length === 0) {
-            toast.warn('Hey 👋 Transaksi tidak tersedia!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        } else {
-            toast.success('Hey 👋 Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-
-            // this.setState({ transaction: dataFilter })
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
         }
+        axios.patch(URL_API + `/transaction/filter`, {idpayment_status: id}, headers)
+        .then(res => {
+            console.log("filter ni", res.data)
+            if(res.data.length <= 0){
+                // alert("OK")
+                toast.warn('Transaksi dengan status ini tidak tersedia!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                this.setState({transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage)})
+            } else {
+                this.setState({transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage)})
+            }
+        }).catch(err => console.log(err))
     }
+
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.printUserTransaction()
+        });
+    };
 
 
     printUserTransaction = () => {
         console.log(this.state.transaction)
-        // console.log(this.state.idpayment_status)
-        return this.state.transaction.map((item, index) => {
+        console.log(this.state.idpayment_status)
+        return this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
             return (
-                <div className="mt-3" style={{ padding: '15px 15px 10px 15px', border: '1px solid #DDDDDD', backgroundColor: 'white', borderRadius: '5px' }}>
-                    <div className="row" style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between', borderBottom: '1px solid #DDDDDD' }}>
+                <div className="mt-3 card-box">
+                    <div className="row top-judul" >
                         <div className="col-md-6">
                             <h6>{item.invoice}</h6>
-                            <p style={{ fontSize: '14px' }}>Order at <span style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }}>Parelpanda </span>
-                                <span style={{ paddingLeft: '10px' }}>{item.amount} parcel purchased</span></p>
+                            <p className="order">Order at <span className="parcelpanda">Parelpanda </span>
+                                <span className="purchase">{item.amount} parcel purchased</span></p>
                         </div>
                         <div className="col-md-6">
                             <div className="row d-flex">
                                 <div className="col-md-6">
                                     <p><span>Order Status</span><br />
-                                        <span style={{ fontSize: '14px' }}>{item.title}</span></p>
+                                        <span className="order">{item.title}</span></p>
                                 </div>
                                 <div className="col-md-6">
                                     <p>Total Payment<br />
-                                        <span style={{ fontSize: '14px', fontWeight: 'bold' }}>Rp.{item.total_payment.toLocaleString()}</span></p>
+                                        <span className="total">Rp.{item.total_payment.toLocaleString()}</span></p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row" style={{ display: 'flex', alignContent: 'center', paddingTop: '15px' }}>
+                    <div className="row history">
                         <div className="col-md-6">
                             <div className="row d-flex">
                                 <div className="col-md-8">
-                                    <h6 style={{ fontSize: '15px', letterSpacing: '1.5px', lineHeight: '17px' }}>{item.invoice}</h6>
-                                    <p style={{ fontSize: '13px', lineHeight: '17px' }}><span>Date transaction: {item.date_transaction}</span>
+                                    <h6 className="invoice">{item.invoice}</h6>
+                                    <p className="date"><span>Date transaction: {item.date_transaction}</span>
                                         <br />
                                         <span>amount: {item.amount}</span> <br /><br />
                                         {
@@ -112,11 +135,11 @@ class UserTransactionPage extends React.Component {
                                 <div className="col-md-4">
                                     {
                                         item.idpayment_status !== 2 ?
-                                            <Button style={{ marginLeft: '10px' }} color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
+                                            <Button className="btn-payment" color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
                                             :
                                             <>
                                                 <Button color="warning">Paid</Button>
-                                                <Button style={{ marginLeft: '10px' }} color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
+                                                <Button className="btn-payment" color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
                                             </>
                                     }
                                 </div>
@@ -125,16 +148,16 @@ class UserTransactionPage extends React.Component {
                         <div className="col-md-6">
                             <div className="row d-flex">
                                 <div className="col-md-6">
-                                    <p><span style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }}>Delivery Address</span><br />
-                                        <span style={{ fontSize: '14px' }}>{item.address}</span></p>
-                                    <p><span style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }}>Phone Number</span><br />
-                                        <span style={{ fontSize: '14px' }}>{item.phone_number}</span></p>
+                                    <p><span className="delivery">Delivery Address</span><br />
+                                        <span className="order">{item.address}</span></p>
+                                    <p><span className="delivery">Phone Number</span><br />
+                                        <span className="order">{item.phone_number}</span></p>
                                 </div>
                                 <div className="col-md-6">
-                                    <p><span style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }}>Shipping Cost</span><br />
-                                        <span style={{ fontSize: '14px' }}>Rp. {item.ongkir.toLocaleString()}</span></p>
-                                    <p><span style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }}>Subtotal</span><br />
-                                        <span style={{ fontSize: '14px' }}>Rp.{item.subtotal_parcel.toLocaleString()}</span></p>
+                                    <p><span className="delivery">Shipping Cost</span><br />
+                                        <span className="order">Rp. {item.ongkir.toLocaleString()}</span></p>
+                                    <p><span className="delivery">Subtotal</span><br />
+                                        <span className="order">Rp.{item.subtotal_parcel.toLocaleString()}</span></p>
                                 </div>
                             </div>
                         </div>
@@ -145,18 +168,18 @@ class UserTransactionPage extends React.Component {
     }
 
     printDetail = () => {
-        return this.state.transaction.map((item, index) => {
+        return this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
             if (this.state.selectedIndex === index) {
                 return (
                     <div>
                         <Modal isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
                             <ModalBody>
-                                <div style={{ padding: '15px 15px 10px 15px', border: '1px solid #DDDDDD', backgroundColor: 'white', borderRadius: '5px' }}>
+                                <div className="detail-box">
                                     <h6>{item.invoice}</h6>
-                                    <p style={{ fontSize: '14px' }}>Order at <span style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }}>Parelpanda </span>
-                                        <span style={{ paddingLeft: '10px' }}>{item.amount} parcel purchased</span></p>
+                                    <p className="order">Order at <span style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }}>Parelpanda </span>
+                                        <span className="amount">{item.amount} parcel purchased</span></p>
                                 </div>
-                                <div style={{ padding: '15px 15px 10px 15px', border: '1px solid #DDDDDD', backgroundColor: 'white', borderRadius: '5px', marginTop: '10px' }}>
+                                <div className="detail-isi">
                                     {
                                         item.detail.map((el, idx) => {
                                             return (
@@ -165,10 +188,10 @@ class UserTransactionPage extends React.Component {
                                                         <img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '70px', height: '70px', marginLeft: '15px', marginTop: '5px' }} />
                                                     </div>
                                                     <div className="col-md-9 mt-3">
-                                                        <p><span style={{ fontWeight: 'bold', fontSize: '14px', letterSpacing: '1px' }}>Parcel {el.parcel}</span><br />
-                                                            <span style={{ fontSize: '16px', lineHeight: '20px', letterSpacing: '0.5px' }}>{el.name}</span><br />
-                                                            <span style={{ color: 'gray', fontSize: '14px' }}>{el.title}</span><br />
-                                                            <span style={{ color: 'gray', fontSize: '14px' }}>Quantity: {el.amount}</span></p>
+                                                        <p><span className="pname">Parcel {el.parcel}</span><br />
+                                                            <span className="elname">{el.name}</span><br />
+                                                            <span className="eltitle">{el.title}</span><br />
+                                                            <span className="eltitle">Quantity: {el.amount}</span></p>
                                                     </div>
                                                 </div>
                                             )
@@ -192,23 +215,26 @@ class UserTransactionPage extends React.Component {
 
     render() {
         return (
-            <div style={{ backgroundColor: '#f7eaa3', marginBottom: '-50px' }}>
+            <div className="halaman">
                 <Container>
                     {this.printDetail()}
-                    <div style={{ padding: '20px 0 20px 0', }}>
-                        <div style={{ padding: '15px 15px 10px 15px', border: '1px solid #DDDDDD', backgroundColor: 'white', borderRadius: '5px' }}>
-                            <div style={{ display: 'flex', alignContent: 'center', justifyContent: 'space-between', borderBottom: '1px solid #DDDDDD' }}>
-                                <p style={{ fontSize: '16px', letterSpacing: '2px', lineHeight: '20px', fontWeight: 'bold' }}>
+                    <div className="div-hal">
+                        <div className="div-hal2">
+                            <div className="top-judul">
+                                <p className="my-order">
                                     MY ORDER</p>
                                 <div style={{ display: 'flex' }}>
                                     <UncontrolledDropdown>
-                                        <DropdownToggle DropdownToggle nav caret style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '16px', whiteSpace: 'nowrap', color: '#8C8582' }}>
+                                        <DropdownToggle DropdownToggle nav caret className="order-status" style={{color: '#8C8582'}}>
                                             Order Status
                                         </DropdownToggle>
                                         <DropdownMenu right>
                                             {
                                                 this.state.payment_status.map((item, index) => {
                                                     return (
+                                                        // <DropdownItem onClick={() => { this.setState({ idpayment_status: item.id }) }}>
+                                                        //     {item.title}
+                                                        // </DropdownItem>
                                                         <DropdownItem onClick={() => this.handleStatus(item.id)}>
                                                             {item.title}
                                                         </DropdownItem>
@@ -223,14 +249,26 @@ class UserTransactionPage extends React.Component {
                                     </Button>
                                 </div>
                             </div>
-                            <div style={{ display: 'flex', alignContent: 'center' }}>
-                                <img style={{ marginTop: '8px' }} src={earphones} alt="..." width="35px" height="35px" />
-                                <p style={{ fontSize: '13px', lineHeight: '16px', padding: '10px 0 0 10px', marginTop: '8px' }}>
-                                    Jika mengalami kendala dengan orderan kamu, hubungi <span style={{ color: '#FAB629' }}>Help Center</span> kami.
+                            <div className="complain">
+                                <img className="ear" src={earphones} alt="..." width="35px" height="35px" />
+                                <p className="complain-2">
+                                    Jika mengalami kendala dengan orderan kamu, hubungi <span className="help">Help Center</span> kami.
                                 </p>
                             </div>
                         </div>
                         {this.printUserTransaction()}
+                        <ReactPaginate
+                            previousLabel={"prev"}
+                            nextLabel={"next"}
+                            breakLabel={"..."}
+                            breakClassName={"break-me"}
+                            pageCount={this.state.pageCount}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={this.handlePageClick}
+                            containerClassName={"pagination"}
+                            subContainerClassName={"pages pagination"}
+                            activeClassName={"active"} />
                     </div>
                 </Container>
             </div>
