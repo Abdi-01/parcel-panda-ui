@@ -8,6 +8,7 @@ toast.configure()
 const handleNotify = () => {
     toast.success('Hey 👋 Login Success!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
 }
+
 export const authLogin = (username, password) => {
     return async (dispatch) => {
         try {
@@ -17,6 +18,7 @@ export const authLogin = (username, password) => {
             console.log("CEK AUTHLOGIN:", res.data)
             localStorage.setItem('tkn_id', res.data.token)
             await dispatch(getProfile(res.data.token))
+            await dispatch(getCart(res.data))
             handleNotify()
             dispatch({
                 type: "LOGIN_SUCCESS",
@@ -31,7 +33,6 @@ export const authLogin = (username, password) => {
 
 export const getProfile = (token) => {
     return async (dispatch) => {
-        // console.log("getProfile")
         try {
             let config = {
                 method: 'get',
@@ -41,7 +42,7 @@ export const getProfile = (token) => {
                 }
             }
             let response = await axios(config)
-            // console.log("Response profile data action", response.data[0])
+            console.log("Response profile data action", response.data[0])
             dispatch({
                 type: "PROFILE_DATA",
                 payload: { ...response.data[0] }
@@ -67,6 +68,27 @@ export const keepLogin = (data) => {
             dispatch({
                 type: "LOGIN_SUCCESS",
                 payload: { ...data }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+export const getCart = (data) => {
+    return async (dispatch) => {
+        try {
+            let token = localStorage.getItem("tkn_id")
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            let res = await axios.get(URL_API + `/transaction/getcart`, headers)
+            console.log("CARTTT:", res.data)
+            dispatch({
+                type: "UPDATE_CART",
+                payload: res.data
             })
         } catch (error) {
             console.log(error)

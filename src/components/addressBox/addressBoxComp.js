@@ -30,12 +30,14 @@ export const DataWrapper = styled.div`
 `
 
 export const Label = styled(FormLabel)`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 150px;
-    text-align: right;
-    margin-right: 20px;
+    && {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 150px;
+        text-align: right;
+        margin-right: 20px;
+    }
 `
 
 export const ButtonWrapper = styled.div`
@@ -45,8 +47,10 @@ export const ButtonWrapper = styled.div`
 `
 
 export const StyledButton = styled(Button)`
-    background-color: #FAB629;
-    color: #000;
+    && {
+        background-color: #FAB629;
+        color: #000;
+    }
 
     &:hover {
         background-color: #E1A425;

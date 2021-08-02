@@ -22,7 +22,7 @@ export const DataWrapper = styled.div`
     justify-content: space-between;
     width: 400px;
     margin: 20px 100px;
-    height: 250px;
+    height: 300px;
 `
 
 export const ButtonWrapper = styled.div`

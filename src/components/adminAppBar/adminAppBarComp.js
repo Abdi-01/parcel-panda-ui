@@ -4,8 +4,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Box from '@material-ui/core/Box';
 
 export const StyledToolbar = styled(Toolbar)`
-    display: flex;
-    justify-content: space-between;
+    && {
+        display: flex;
+        justify-content: space-between;    
+    }
 `
 
 export const AdminNavWrapper = styled.div`
@@ -16,15 +18,19 @@ export const AdminNavWrapper = styled.div`
 `
 
 export const RightWrapper = styled(Box)`
-    display: flex;
-    justify-content: flex-end;
-    width: 200px;
+    && {
+        display: flex;
+        justify-content: flex-end;
+        width: 200px;
+    }
 `
 
 export const LeftWrapper = styled(Box)`
-    display: flex;
-    justify-content: flex-start;
-    width: 200px;
+    && {
+        display: flex;
+        justify-content: flex-start;
+        width: 200px;
+    }
 `
 
 export const Navigation = styled(NavLink)`

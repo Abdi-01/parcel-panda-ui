@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import {
     FilledInput,
     FormControl,
+    FormHelperText,
     InputAdornment,
     InputLabel,
 } from "@material-ui/core/";
@@ -73,6 +74,7 @@ const PasswordBox = () => {
             let response = await axios(config)
             // console.log("Response => ", response)
             setLoading(false)
+            setValues({...values, password:'', newPassword:'', confirmPassword:''})
             toast.success(`Success, ${response.data.message}!`, {
                 position: toast.POSITION.TOP_CENTER
               });
@@ -83,6 +85,16 @@ const PasswordBox = () => {
                 position: toast.POSITION.TOP_CENTER
             });
         }
+    }
+    
+    const checkPassword = new RegExp("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Za-z])(?=.{6,})")
+
+    const buttonDisabled = () => {
+        let validPassword = checkPassword.test(values.newPassword) && checkPassword.test(values.confirmPassword)
+        let match = values.newPassword === values.confirmPassword
+        let result = validPassword && match && values.password.length > 1
+        console.log(validPassword, match, values.password.length > 1, result)
+        return !result
     }
 
     return (
@@ -118,36 +130,36 @@ const PasswordBox = () => {
                             }
                         />
                     </FormControl>
-                    <FormControl fullWidth variant="filled">
+                    <FormControl error={!checkPassword.test(values.newPassword)} fullWidth variant="filled">
                         <InputLabel htmlFor="newPassword">
                             New Password
                         </InputLabel>
                         <FilledInput 
-                            error={values.newPassword !== values.confirmPassword}
+                            error={!checkPassword.test(values.newPassword)}
                             id="newPassword"
                             type={values.showNewPassword ? "text" : "password"}
                             value={values.newPassword}
                             onChange={handleChange("newPassword")}
                             endAdornment={
                                 <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowNewPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {values.showNewPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowNewPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {values.showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
                                 </InputAdornment>
                             }
                         />
                     </FormControl>
-                    <FormControl fullWidth variant="filled">
+                    <FormControl error={!checkPassword.test(values.confirmPassword)} fullWidth variant="filled">
                         <InputLabel htmlFor="confirmPassword">
                             Password Confirmation
                         </InputLabel>
                         <FilledInput
-                            error={values.newPassword !== values.confirmPassword}
+                            error={!checkPassword.test(values.confirmPassword)}
                             id="confirmPassword"
                             type={values.showConfirmPassword ? "text" : "password"}
                             value={values.confirmPassword}
@@ -165,10 +177,16 @@ const PasswordBox = () => {
                                 </InputAdornment>
                             }
                         />
+                        <FormHelperText 
+                            error={!checkPassword.test(values.newPassword) || !checkPassword.test(values.confirmPassword)}
+                            id="component-helper-text"
+                        >
+                            Password must be alphanumeric, 6 characters minimun, and contain special character.
+                        </FormHelperText>
                     </FormControl>
                     <ButtonWrapper>
                         <StyledButton 
-                            disabled={values.password.length < 1 || values.newPassword.length < 1 || values.confirmPassword.length < 1 || (values.newPassword !== values.confirmPassword)}
+                            disabled={buttonDisabled()}
                             variant="contained" 
                             color="primary"
                             onClick={handleSavePassword}
