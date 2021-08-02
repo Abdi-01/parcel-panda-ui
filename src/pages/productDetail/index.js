@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Container, Input } from 'reactstrap';
+import { Button, Container, Input, Modal, ModalBody } from 'reactstrap';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
 import { connect } from 'react-redux';
@@ -19,19 +19,21 @@ class ProductDetailPage extends React.Component {
             type: [],
             idcart: [],
             detailCart: [],
-            idparcel_type: []
+            idparcel_type: [],
+            modal: false,
+            selectedIndex: null,
         }
     }
 
     componentDidMount() {
         this.getProductDetail()
         this.props.getCart()
-        this.getParcelType()
+        // this.getParcelType()
     }
 
 
     getProductDetail = () => {
-        axios.get(URL_API + `/product-manage/product-detail${this.props.location.search}`)
+        axios.get(URL_API + `/product/product-detail${this.props.location.search}`)
             .then(res => {
                 console.log("detail product", res.data)
                 this.setState({ detail: res.data[0] })
@@ -53,7 +55,7 @@ class ProductDetailPage extends React.Component {
         }
     }
 
-    getParcelType = () => {
+    getParcelType = (index) => {
         let token = localStorage.getItem("tkn_id")
         const headers = {
             headers: {
@@ -63,16 +65,45 @@ class ProductDetailPage extends React.Component {
         axios.get(URL_API + `/transaction/getcart`, headers)
             .then(res => {
                 this.setState({
-                    cart: res.data, idcart: res.data[res.data.length - 1].idcart,
-                    detailCart: res.data[res.data.length - 1].detail, idparcel_type: res.data[res.data.length - 1].idparcel_type
+                    cart: res.data, idcart: res.data[index].idcart,
+                    detailCart: res.data[index].detail, idparcel_type: res.data[index].idparcel_type
                 })
-                axios.get(URL_API + `/product-manage/getParcel-type?idparcel_type=${res.data[res.data.length - 1].idparcel_type}`)
+                axios.get(URL_API + `/parcel/getParcel-type?idparcel_type=${res.data[index].idparcel_type}`)
                     .then(res => {
                         console.log(res.data)
                         this.setState({ type: res.data })
                         console.log("TYPE", this.state.type)
                     }).catch(err => console.log(err))
             }).catch(err => console.log("get cart", err))
+    }
+
+    confirmParcel = () => {
+        console.log(this.props.cart)
+        return this.props.cart.map((item, index) => {
+            return (
+                <div className="detail-box">
+                    <div className="row">
+                        <div className="col-md-9">
+                            <h6>Parcel {item.idparcel_type}</h6>
+                            {
+                                item.detail.map((el, idx) => {
+                                    return (
+                                        <div>
+                                            <p className="order">{el.name}</p>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                        <div className="col-md-3">
+                            <Button outline color="warning" onClick={() => this.getParcelType(index)}>
+                                Select
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )
+        })
     }
 
     onBtAddToParcel = () => {
@@ -300,6 +331,25 @@ class ProductDetailPage extends React.Component {
             <div>
                 <Container>
                     <div>
+                        <Modal isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
+                            <ModalBody>
+                                <Container>
+                                    <h2 style={{ fontSize: '17px', letterSpacing: '1px', fontWeight: '500', marginTop: '10px' }}>
+                                        PLEASE CHOOSE YOUR PARCEL
+                                    </h2>
+                                    {this.confirmParcel()}
+                                    <Link className="btn btn-warning" onClick={this.onBtAddToParcel}
+                                        to={`/cart/${this.props.id}`}
+                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '100%' }}>
+                                        <span class="material-icons" >
+                                            shopping_cart
+                                        </span>
+                                        <span>Add to Parcel</span></Link>
+                                </Container>
+                            </ModalBody>
+                        </Modal>
+                    </div>
+                    <div>
                         <p style={{ display: 'flex', color: 'gray' }}>
                             <Link to="/" style={{ textDecoration: 'none', color: 'gray' }}>Home</Link>
                             <span class="material-icons">
@@ -341,13 +391,16 @@ class ProductDetailPage extends React.Component {
                                     </span>
                                 </Button>
                             </div>
-                            <Link className="btn btn-warning" onClick={this.onBtAddToParcel}
+                            <Button style={{ marginTop: '5%' }} size="sm" color="warning" onClick={() => { this.setState({ modal: !this.state.modal }) }}>
+                                Select
+                            </Button>
+                            {/* <Link className="btn btn-warning" onClick={this.onBtAddToParcel}
                                 to={`/cart/${this.props.id}`}
                                 style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '70%' }}>
                                 <span class="material-icons" >
                                     shopping_cart
                                 </span>
-                                <span> Add to Parcel</span></Link>
+                                <span> Add to Parcel</span></Link> */}
                         </div>
                     </div>
                 </Container>

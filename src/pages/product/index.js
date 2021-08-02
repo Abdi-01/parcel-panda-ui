@@ -47,8 +47,6 @@ class ProductsPage extends React.Component {
         this.getDataProduct()
     }
 
-
-
     getData = () => {
         const product = this.state.product
         const slice = product.slice(this.state.offset, this.state.offset + this.state.perPage)
