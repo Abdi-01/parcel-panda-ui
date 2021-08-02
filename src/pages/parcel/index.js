@@ -13,6 +13,7 @@ import axios from 'axios';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
 import "../parcel/parcelPage.css"
+import ModalParcel from '../../components/parcelConfirmation';
 
 toast.configure()
 
@@ -34,7 +35,9 @@ class ParcelPage extends React.Component {
             dataFilterName: [],
             modal: false,
             selectedIndex: null,
-            parcel: []
+            parcel: [],
+            detailParcel: {},
+            category: []
         }
     }
 
@@ -73,9 +76,9 @@ class ParcelPage extends React.Component {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Link onClick={() => { this.setState({ modal: !this.state.modal, selectedIndex: index, }) }} className="btn btn-warning">
+                        <Button onClick={() => this.setState({ detailParcel: item, modal: !this.state.modal, category: item.category.join("&") })} className="btn btn-warning">
                             Add to Cart
-                        </Link>
+                        </Button>
                     </CardActions>
                 </Card>
             </div>
@@ -137,12 +140,6 @@ class ParcelPage extends React.Component {
             toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         }).catch(err => console.log(err))
     }
-
-    customToastWithLink = () => (
-        <div>
-            <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
-        </div>
-    );
 
     onBtCart = (item) => {
         if (this.props.id) {
@@ -230,7 +227,9 @@ class ParcelPage extends React.Component {
         return (
             <Container>
                 <div className="row" >
-                    {this.printConfirm()}
+                    {/* {this.printConfirm()} */}
+                    <ModalParcel modal={this.state.modal} detailParcel={this.state.detailParcel} category={this.state.category}
+                        btClose={() => this.setState({ modal: !this.state.modal })} />
                     <div className="col-md-3 mt-3">
                         <div>
                             <h2 className="h2-sort">SORT</h2>

@@ -81,32 +81,41 @@ class ProductDetailPage extends React.Component {
         console.log(this.props.cart)
         return this.props.cart.map((item, index) => {
             return (
-                <div className="detail-box">
-                    <div className="row">
-                        <div className="col-md-9">
-                            <h6>Parcel {item.idparcel_type}</h6>
-                            {
-                                item.detail.map((el, idx) => {
-                                    return (
-                                        <div>
-                                            <p className="order">{el.name}</p>
-                                        </div>
-                                    )
-                                })
-                            }
-                        </div>
-                        <div className="col-md-3">
-                            <Button outline color="warning" onClick={() => this.getParcelType(index)}>
-                                Select
-                            </Button>
+                <div style={{marginTop: '10px'}}>
+                    <div className="detail-box">
+                        <div className="row">
+                            <div className="col-md-9">
+                                <h6>Parcel {item.idparcel_type}</h6>
+                                {
+                                    item.detail.map((el, idx) => {
+                                        return (
+                                            <div>
+                                                <p className="order">{el.name}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="col-md-3">
+                                <Button outline color="warning" onClick={() => this.getParcelType(index)}>
+                                    Select
+                                </Button>
+                            </div>
                         </div>
                     </div>
+                    <Link className="btn btn-warning" onClick={() => this.onBtAddToParcel(index)}
+                        to={`/cart/${this.props.id}`}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '100%' }}>
+                        <span class="material-icons" >
+                            shopping_cart
+                        </span>
+                        <span>Add to Parcel</span></Link>
                 </div>
             )
         })
     }
 
-    onBtAddToParcel = () => {
+    onBtAddToParcel = (i) => {
         let idparcel_type = this.state.idparcel_type
         let idcart = this.state.idcart
         let idproduct = this.state.detail.id
@@ -166,9 +175,10 @@ class ProductDetailPage extends React.Component {
                                             qty_beli.push(el.amount)
                                         }
                                     })
-                                    let idx = this.props.cart[this.props.cart.length - 1].detail.findIndex(item => item.idproduct === this.state.detail.id)
+                                    let idx = this.props.cart[i].detail.findIndex(item => item.idproduct === this.state.detail.id)
                                     console.log("INDEX", idx)
                                     if (idx >= 0) {
+                                        this.props.cart[i].detail[idx].amount += this.state.qty
                                         let sum_qty_beli = qty_beli.reduce((val, sum) => {
                                             return val + sum
                                         })
@@ -179,7 +189,7 @@ class ProductDetailPage extends React.Component {
                                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                         } else {
                                             axios.patch(URL_API + `/transaction/update-qty`, {
-                                                amount: sum_qty_beli + this.state.qty, idproduct: idproduct, idcart: idcart
+                                                amount: this.props.cart[i].detail[idx].amount, idproduct: idproduct, idcart: idcart
                                             }, headers)
                                                 .then(res => {
                                                     console.log("Res Cart:", res.data)
@@ -259,9 +269,10 @@ class ProductDetailPage extends React.Component {
                                             qty_beli.push(el.amount)
                                         }
                                     })
-                                    let idx = this.props.cart[this.props.cart.length - 1].detail.findIndex(item => item.idproduct === this.state.detail.id)
+                                    let idx = this.props.cart[i].detail.findIndex(item => item.idproduct === this.state.detail.id)
                                     console.log("INDEX", idx)
                                     if (idx >= 0) {
+                                        this.props.cart[i].detail[idx].amount += this.state.qty
                                         let sum_qty_beli = qty_beli.reduce((val, sum) => {
                                             return val + sum
                                         })
@@ -272,7 +283,7 @@ class ProductDetailPage extends React.Component {
                                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                         } else {
                                             axios.patch(URL_API + `/transaction/update-qty`, {
-                                                amount: sum_qty_beli + this.state.qty, idproduct: idproduct, idcart: idcart
+                                                amount: this.props.cart[i].detail[idx].amount, idproduct: idproduct, idcart: idcart
                                             }, headers)
                                                 .then(res => {
                                                     console.log("Res Cart:", res.data)
@@ -327,13 +338,6 @@ class ProductDetailPage extends React.Component {
                                         PLEASE CHOOSE YOUR PARCEL
                                     </h2>
                                     {this.confirmParcel()}
-                                    <Link className="btn btn-warning" onClick={this.onBtAddToParcel}
-                                        to={`/cart/${this.props.id}`}
-                                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '100%' }}>
-                                        <span class="material-icons" >
-                                            shopping_cart
-                                        </span>
-                                        <span>Add to Parcel</span></Link>
                                 </Container>
                             </ModalBody>
                         </Modal>
@@ -353,8 +357,7 @@ class ProductDetailPage extends React.Component {
                     </div>
                     <div className="row p-5" style={{
                         borderRadius: "15px",
-                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                    }}>
+                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"}}>
                         <div className="col-md-5">
                             <img alt="..." src={URL_API + '/static/images/' + this.state.detail.url}
                                 width="80%" />
