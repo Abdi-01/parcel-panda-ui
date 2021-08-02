@@ -107,30 +107,31 @@ class ProductDetailPage extends React.Component {
     }
 
     onBtAddToParcel = () => {
+        let idparcel_type = this.state.idparcel_type
+        let idcart = this.state.idcart
+        let idproduct = this.state.detail.id
+        let idcategory = this.state.detail.idcategory
+        let amount = this.state.qty
+        let subtotal = this.state.qty * this.state.detail.price
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        console.log(idcart, idproduct, idcategory, amount, subtotal)
         if (this.state.type.length <= 0) {
             toast.warn('Choose Parcel First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
-            this.state.type.map((item, index) => {
-                if (this.state.type.length > 1) {
+            if (this.state.type.length > 1) {
+                this.state.type.map((item, index) => {
                     if (item.idcategory === this.state.detail.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                         } else {
                             // Dicart category itu masih 0
+                            console.log("111111")
                             if (this.state.detailCart.length === 0) {
-                                let token = localStorage.getItem("tkn_id")
-                                const headers = {
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
-                                }
-                                let idparcel_type = this.state.idparcel_type
-                                let idcart = this.state.idcart
-                                let idproduct = this.state.detail.id
-                                let idcategory = this.state.detail.idcategory
-                                let amount = this.state.qty
-                                let subtotal = this.state.qty * this.state.detail.price
-                                console.log(idcart, idproduct, idcategory, amount, subtotal)
                                 axios.post(URL_API + `/transaction/addParcel`, {
                                     idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                                 }, headers)
@@ -147,22 +148,9 @@ class ProductDetailPage extends React.Component {
                                         qty_beli.push(item.amount)
                                     }
                                 })
-
                                 // di cart kategori itu qtynya udah belum ada
                                 if (qty_beli.length === 0) {
-                                    let token = localStorage.getItem("tkn_id")
-                                    const headers = {
-                                        headers: {
-                                            'Authorization': `Bearer ${token}`
-                                        }
-                                    }
-                                    let idparcel_type = this.state.idparcel_type
-                                    let idcart = this.state.idcart
-                                    let idproduct = this.state.detail.id
-                                    let idcategory = this.state.detail.idcategory
-                                    let amount = this.state.qty
-                                    let subtotal = this.state.qty * this.state.detail.price
-                                    console.log(idcart, idproduct, idcategory, amount, subtotal)
+                                    console.log("2222222")
                                     axios.post(URL_API + `/transaction/addParcel`, {
                                         idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                                     }, headers)
@@ -173,67 +161,69 @@ class ProductDetailPage extends React.Component {
                                         }).catch(err => console.log(err))
                                 } else {
                                     let qty_beli = []
-                                    this.state.detailCart.map(item => {
-                                        if (item.idcategory === this.state.detail.idcategory) {
-                                            qty_beli.push(item.amount)
+                                    this.state.detailCart.map(el => {
+                                        if (el.idcategory === this.state.detail.idcategory) {
+                                            qty_beli.push(el.amount)
                                         }
                                     })
-                                    let sum_qty_beli = qty_beli.reduce((val, sum) => {
-                                        return val + sum
-                                    })
-                                    console.log("SUM", sum_qty_beli)
-                                    if (sum_qty_beli + this.state.qty > item.max_qty) {
-                                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                    } else if (sum_qty_beli === item.max_qty) {
-                                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                    let idx = this.props.cart[this.props.cart.length - 1].detail.findIndex(item => item.idproduct === this.state.detail.id)
+                                    console.log("INDEX", idx)
+                                    if (idx >= 0) {
+                                        let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                                            return val + sum
+                                        })
+                                        console.log("SUM PRODUCT SAMA", sum_qty_beli)
+                                        if (sum_qty_beli + this.state.qty > item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else if (sum_qty_beli === item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else {
+                                            axios.patch(URL_API + `/transaction/update-qty`, {
+                                                amount: sum_qty_beli + this.state.qty, idproduct: idproduct, idcart: idcart
+                                            }, headers)
+                                                .then(res => {
+                                                    console.log("Res Cart:", res.data)
+                                                    this.props.getCart(this.props.id)
+                                                }).catch(err => console.log(err))
+                                        }
                                     } else {
-                                        let token = localStorage.getItem("tkn_id")
-                                        const headers = {
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`
-                                            }
+                                        console.log("MASUK KESINI GA")
+                                        let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                                            return val + sum
+                                        })
+                                        console.log("SUM CATEGORY SAMA", sum_qty_beli)
+                                        let totalQTY = sum_qty_beli + this.state.qty
+                                        console.log("CEK", totalQTY, item.max_qty)
+                                        if (totalQTY > item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else {
+                                            console.log("33333")
+                                            axios.post(URL_API + `/transaction/addParcel`, {
+                                                idparcel_type, idcart, idproduct, idcategory, amount, subtotal
+                                            }, headers)
+                                                .then(res => {
+                                                    console.log(res.data)
+                                                    this.props.getCart(this.props.id)
+                                                    toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                                }).catch(err => console.log(err))
                                         }
-                                        let idparcel_type = this.state.idparcel_type
-                                        let idcart = this.state.idcart
-                                        let idproduct = this.state.detail.id
-                                        let idcategory = this.state.detail.idcategory
-                                        let amount = this.state.qty
-                                        let subtotal = this.state.qty * this.state.detail.price
-                                        console.log(idcart, idproduct, idcategory, amount, subtotal)
-                                        axios.post(URL_API + `/transaction/addParcel`, {
-                                            idparcel_type, idcart, idproduct, idcategory, amount, subtotal
-                                        }, headers)
-                                            .then(res => {
-                                                console.log(res.data)
-                                                this.props.getCart(this.props.id)
-                                                toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                            }).catch(err => console.log(err))
                                     }
+
                                 }
                             }
-
                         }
                     }
-                } else {
+
+                })
+            } else {
+                this.state.type.map((item, index) => {
                     if (item.idcategory === this.state.detail.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                         } else {
                             // Dicart category itu masih 0
+                            console.log("444444")
                             if (this.state.detailCart.length === 0) {
-                                let token = localStorage.getItem("tkn_id")
-                                const headers = {
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
-                                }
-                                let idparcel_type = this.state.idparcel_type
-                                let idcart = this.state.idcart
-                                let idproduct = this.state.detail.id
-                                let idcategory = this.state.detail.idcategory
-                                let amount = this.state.qty
-                                let subtotal = this.state.qty * this.state.detail.price
-                                console.log(idcart, idproduct, idcategory, amount, subtotal)
                                 axios.post(URL_API + `/transaction/addParcel`, {
                                     idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                                 }, headers)
@@ -250,22 +240,9 @@ class ProductDetailPage extends React.Component {
                                         qty_beli.push(item.amount)
                                     }
                                 })
-
                                 // di cart kategori itu qtynya udah belum ada
                                 if (qty_beli.length === 0) {
-                                    let token = localStorage.getItem("tkn_id")
-                                    const headers = {
-                                        headers: {
-                                            'Authorization': `Bearer ${token}`
-                                        }
-                                    }
-                                    let idparcel_type = this.state.idparcel_type
-                                    let idcart = this.state.idcart
-                                    let idproduct = this.state.detail.id
-                                    let idcategory = this.state.detail.idcategory
-                                    let amount = this.state.qty
-                                    let subtotal = this.state.qty * this.state.detail.price
-                                    console.log(idcart, idproduct, idcategory, amount, subtotal)
+                                    console.log("5555")
                                     axios.post(URL_API + `/transaction/addParcel`, {
                                         idparcel_type, idcart, idproduct, idcategory, amount, subtotal
                                     }, headers)
@@ -275,53 +252,65 @@ class ProductDetailPage extends React.Component {
                                             toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                         }).catch(err => console.log(err))
                                 } else {
+                                    console.log("6666")
                                     let qty_beli = []
-                                    this.state.detailCart.map(item => {
-                                        if (item.idcategory === this.state.detail.idcategory) {
-                                            qty_beli.push(item.amount)
+                                    this.state.detailCart.map(el => {
+                                        if (el.idcategory === this.state.detail.idcategory) {
+                                            qty_beli.push(el.amount)
                                         }
                                     })
-                                    let sum_qty_beli = qty_beli.reduce((val, sum) => {
-                                        return val + sum
-                                    })
-                                    console.log("SUM", sum_qty_beli)
-                                    if (sum_qty_beli + this.state.qty > item.max_qty) {
-                                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                    } else if (sum_qty_beli === item.max_qty) {
-                                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                    let idx = this.props.cart[this.props.cart.length - 1].detail.findIndex(item => item.idproduct === this.state.detail.id)
+                                    console.log("INDEX", idx)
+                                    if (idx >= 0) {
+                                        let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                                            return val + sum
+                                        })
+                                        console.log("SUM PRODUCT SAMA", sum_qty_beli)
+                                        if (sum_qty_beli + this.state.qty > item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else if (sum_qty_beli === item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else {
+                                            axios.patch(URL_API + `/transaction/update-qty`, {
+                                                amount: sum_qty_beli + this.state.qty, idproduct: idproduct, idcart: idcart
+                                            }, headers)
+                                                .then(res => {
+                                                    console.log("Res Cart:", res.data)
+                                                    this.props.getCart(this.props.id)
+                                                }).catch(err => console.log(err))
+                                        }
                                     } else {
-                                        let token = localStorage.getItem("tkn_id")
-                                        const headers = {
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`
-                                            }
+                                        console.log("MASUK KESINI GA")
+                                        let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                                            return val + sum
+                                        })
+                                        console.log("SUM CATEGORY SAMA", sum_qty_beli)
+                                        let totalQTY = sum_qty_beli + this.state.qty
+                                        console.log("CEK", totalQTY, item.max_qty)
+                                        if (totalQTY > item.max_qty) {
+                                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                        } else {
+                                            console.log("33333")
+                                            axios.post(URL_API + `/transaction/addParcel`, {
+                                                idparcel_type, idcart, idproduct, idcategory, amount, subtotal
+                                            }, headers)
+                                                .then(res => {
+                                                    console.log(res.data)
+                                                    this.props.getCart(this.props.id)
+                                                    toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                                }).catch(err => console.log(err))
                                         }
-                                        let idparcel_type = this.state.idparcel_type
-                                        let idcart = this.state.idcart
-                                        let idproduct = this.state.detail.id
-                                        let idcategory = this.state.detail.idcategory
-                                        let amount = this.state.qty
-                                        let subtotal = this.state.qty * this.state.detail.price
-                                        console.log(idcart, idproduct, idcategory, amount, subtotal)
-                                        axios.post(URL_API + `/transaction/addParcel`, {
-                                            idparcel_type, idcart, idproduct, idcategory, amount, subtotal
-                                        }, headers)
-                                            .then(res => {
-                                                console.log(res.data)
-                                                this.props.getCart(this.props.id)
-                                                toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                            }).catch(err => console.log(err))
                                     }
                                 }
                             }
 
                         }
                     } else {
-                        toast.warn('Produck yg ada pilih tidak sesuai dengan Parcel kategori', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                        toast.warn('Product yg ada pilih tidak sesuai dengan Parcel kategori', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                     }
-                }
+                })
+            }
 
-            })
         }
     }
 
