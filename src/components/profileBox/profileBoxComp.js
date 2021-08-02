@@ -62,12 +62,14 @@ export const Form = styled.form`
 `
 
 export const Label = styled(FormLabel)`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100px;
-    text-align: right;
-    margin-right: 20px;
+    && {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100px;
+        text-align: right;
+        margin-right: 20px;
+    }
 `
 
 export const Status = styled.span`
@@ -87,8 +89,10 @@ export const Input = styled.input`
 `
 
 export const StyledButton = styled(Button)`
-    background-color: #fff8ea;
-    color: #FAB629;
+    && {
+        background-color: #fff8ea;
+        color: #FAB629;
+    }
 
     &:hover {
         background-color: #fef0d4;

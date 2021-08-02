@@ -9,6 +9,7 @@ import {
   CardContent,
   Menu,
   MenuItem,
+  Tooltip,
   Typography,
 } from "@material-ui/core/";
 import { 
@@ -75,15 +76,21 @@ const ProductCard = ({data, getProductData}) => {
       </div>
       <div>
         <Footer>
-          <Button size="medium" color="primary">
-            IDR {data.price.toLocaleString()}
-          </Button>
-          <Badge badgeContent={data.stock} color={data.stock > 5 ? "primary" : "secondary"}>
-            <LocalShippingIcon />
-          </Badge>
-          <EditDelete aria-label="settings" onClick={handleClick}>
-            <MoreVertIcon />
-          </EditDelete>
+          <Tooltip title="Price" placement="top">
+            <Button size="medium" color="primary">
+              IDR {data.price.toLocaleString()}
+            </Button>
+          </Tooltip>
+          <Tooltip title="Stock" placement="top">
+            <Badge badgeContent={data.stock} color={data.stock > 5 ? "primary" : "secondary"}>
+              <LocalShippingIcon />
+            </Badge>
+          </Tooltip>
+          <Tooltip title="Edit or Delete" placement="top">
+            <EditDelete aria-label="settings" onClick={handleClick}>
+              <MoreVertIcon />
+            </EditDelete>
+          </Tooltip>
         </Footer>
       </div>
     </StyledCard>

@@ -6,7 +6,9 @@ export const ButtonWrapper = styled.div`
 `
 
 export const StyledButton = styled(Button)`
-    background-color: #FAB629;
+    && {
+        background-color: #FAB629;
+    }
 
     &:hover {
         background-color: #E1A425;

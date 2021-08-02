@@ -67,20 +67,24 @@ export const ButtonWrapper = styled.div`
 `
 
 export const PaperWrapper = styled(Paper)`
-    height: 50px;
-    width: 300px;
-    padding: 2px 4px;
-    display: flex;
-    align-items: center;
+    && {
+        height: 50px;
+        width: 300px;
+        padding: 2px 4px;
+        display: flex;
+        align-items: center;
+    }
 `
 
 export const SpinnerContainer = styled(Box)`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 50px 0;
+    && {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 50px 0;
+    }
 `
 
 export const ProductContainer = styled.div`

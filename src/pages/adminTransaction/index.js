@@ -3,12 +3,14 @@ import axios from 'axios'
 import { Container } from "react-bootstrap";
 import { URL_API } from '../../helper';
 import DialogImagePayment from '../../components/dialogImage';
+import DialogActionTransaction from '../../components/dialogActionTransaction';
 import FilterTransactionManagement from '../../components/filterTransaction';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
 import Skeleton from '@material-ui/lab/Skeleton';
 import { 
     Button,
+    Chip ,
     Table,
     TableBody,
     TableCell,
@@ -17,8 +19,11 @@ import {
     TableRow,
     Paper,
 } from '@material-ui/core';
-import { ButtonWrapper, PaginationWrapper } from './adminTransaction';
-import DialogActionTransaction from '../../components/dialogActionTransaction';
+import { 
+    ButtonWrapper, 
+    PaginationWrapper, 
+    ButtonReject, 
+    ChipRejected } from './adminTransaction';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -73,7 +78,7 @@ const TransactionManagement = () => {
     const [page, setPage] = useState(1)
     const [countPage, setCountPage] = useState(1)
     const [openAction, setOpenAction] = useState(false)
-    const [rowsPerPage, setRowsPerPage] = useState(5)
+    const [rowsPerPage, setRowsPerPage] = useState(10)
     const [paymentStatus, setPaymentStatus] = useState({
         ongoing: false,
         accepted: false,
@@ -130,20 +135,16 @@ const TransactionManagement = () => {
                         <ButtonWrapper>
                             {
                                 item.payment_status === 'accepted' ?
-                                    <Button variant="contained" size="small" color="primary" disabled>
-                                        Accepted
-                                    </Button> :
+                                    <Chip label="accepted" color="primary" /> :
                                 item.payment_status === 'rejected' ?
-                                    <Button variant="contained" size="small" color="secondary" disabled>
-                                        Rejected
-                                    </Button> :
+                                    <Chip label="rejected" color="secondary" /> :
                                     <div>
                                         <Button variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'accept')} color="primary">
                                             Accept
                                         </Button>
-                                        <Button variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'reject')} color="secondary">
+                                        <ButtonReject variant="contained" size="small" onClick={() => handleClickOpenAction(item, 'reject')} color="secondary">
                                             Reject
-                                        </Button>
+                                        </ButtonReject>
                                     </div>
                             }
                         </ButtonWrapper>
