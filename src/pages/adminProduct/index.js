@@ -52,9 +52,10 @@ const ProductManagement = () => {
                 }
             }
             let response = await axios(config)
+            console.log(response)
             setLoading(false)
             setPageN(Math.ceil(response.data.count / 20))
-            setCardData(response.data.values)
+            setCardData(response.data)
         } catch (error) {
             console.log(error)
         }

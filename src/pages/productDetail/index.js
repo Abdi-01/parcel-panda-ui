@@ -31,7 +31,7 @@ class ProductDetailPage extends React.Component {
 
 
     getProductDetail = () => {
-        axios.get(URL_API + `/product-manage/product-detail${this.props.location.search}`)
+        axios.get(URL_API + `/product/product-detail${this.props.location.search}`)
             .then(res => {
                 console.log("detail product", res.data)
                 this.setState({ detail: res.data[0] })
