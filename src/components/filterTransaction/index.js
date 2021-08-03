@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import DatePicker from "react-modern-calendar-datepicker";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import PaymentIcon from "@material-ui/icons/Payment";
+import 'react-modern-calendar-datepicker/lib/DatePicker.css'
 import {
     Button,
     Checkbox,

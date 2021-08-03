@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
+import axios from 'axios';
 import { useDispatch } from "react-redux";
+import { ButtonWrapper } from './dialogVerifyComp';
+import { URL_API } from '../../helper';
+import { getProfile } from '../../actions';
+import { toast } from 'react-toastify';
 import {
     Button,
     Dialog,
@@ -9,11 +14,6 @@ import {
     DialogTitle,
     TextField,
 } from "@material-ui/core/";
-import { ButtonWrapper } from './dialogVerifyComp';
-import { URL_API } from '../../helper';
-import axios from 'axios';
-import { getProfile } from '../../actions';
-import { toast } from 'react-toastify';
 
 toast.configure()
 const FormDialogVerify = ({ open, setOpen }) => {

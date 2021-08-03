@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import {
   Button,
@@ -14,7 +15,6 @@ import {
 import { toast } from 'react-toastify';
 import { ButtonWrapper, RadioWrapper } from "./dialogGenderComp";
 import { URL_API } from "../../helper";
-import axios from "axios";
 import { getProfile } from "../../actions";
 
 toast.configure()

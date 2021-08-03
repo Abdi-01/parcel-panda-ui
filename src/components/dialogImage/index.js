@@ -1,7 +1,7 @@
 import React from 'react'
-import { URL_API } from '../../helper';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import { URL_API } from '../../helper';
 import { ViewImage } from './dialogImage';
 
 const DialogImagePayment = ({ openImage, setOpenImage, imageURL }) => {

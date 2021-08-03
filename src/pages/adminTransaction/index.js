@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Container } from "react-bootstrap";
-import { URL_API } from '../../helper';
 import DialogImagePayment from '../../components/dialogImage';
 import DialogActionTransaction from '../../components/dialogActionTransaction';
 import FilterTransactionManagement from '../../components/filterTransaction';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
 import Skeleton from '@material-ui/lab/Skeleton';
+import { Container } from "react-bootstrap";
+import { URL_API } from '../../helper';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { 
     Button,
     Chip ,
@@ -23,7 +23,7 @@ import {
     ButtonWrapper, 
     PaginationWrapper, 
     ButtonReject, 
-    ChipRejected } from './adminTransaction';
+} from './adminTransaction';
 
 
 const StyledTableCell = withStyles((theme) => ({

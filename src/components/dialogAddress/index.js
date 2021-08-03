@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react'
+import axios from 'axios';
 import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import { getProfile } from '../../actions';
 import { URL_API } from '../../helper';
-import axios from 'axios';
 import {
     Dialog,
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
+    FormControl,
     Grid,
+    InputLabel,
+    MenuItem,
+    Select,
     TextField,
 } from "@material-ui/core/";
 import { ButtonWrapper, StyledButton } from "./dialogAddressComp";
@@ -18,12 +22,14 @@ import { ButtonWrapper, StyledButton } from "./dialogAddressComp";
 toast.configure()
 const FormDialogAddress = ({ open, setOpen, data }) => {
     const [loading, setLoading] = useState(false)
+    const [listCity, setListCity] = useState([])
+    // const [city, setCity] = useState('')
     const [values, setValues] = useState({
         label: '',
         recipient_name: '',
         phone_number: '',
         address: '',
-        city: '',
+        idcity: '',
         postal_code: ''
     })
     const dispatch = useDispatch()
@@ -31,6 +37,12 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    const handleChangeCity = (event) => {
+        // setAge(event.target.value);
+        console.log("handleChangeCity", event.target.value)
+        setValues({ ...values, idcity: event.target.value })
+    }
 
     const handleSave = async () => {
         try {
@@ -70,7 +82,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                 recipient_name: '',
                 phone_number: '',
                 address: '',
-                city: '',
+                idcity: '',
                 postal_code: ''
             })
         } catch (error) {
@@ -101,13 +113,31 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                 recipient_name: data.recipient_name,
                 phone_number: data.phone_number,
                 address: data.address,
-                city: data.city,
+                idcity: data.idcity,
                 postal_code: data.postal_code
             })  
         }
+        const getCity = async () => {
+            try {
+                let token = localStorage.getItem("tkn_id")
+                let config = {
+                    method: 'get',
+                    url: URL_API + '/profile/city',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                let response = await axios(config)
+                setListCity(response.data)
+                console.log("listcity", listCity)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getCity()
     }, [data])
 
-    // console.log(data, data.id)
+    console.log(data)
 
     return (
         <div>
@@ -177,16 +207,26 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <TextField
-                                fullWidth
-                                margin="dense"
-                                label="City"
-                                type="text"
-                                value={values.city}
-                                onChange={(event) =>
-                                    setValues({ ...values, city: event.target.value })
-                                }
-                            />
+                            <FormControl variant="standard" fullWidth margin="dense">
+                                <InputLabel id="city-label">City</InputLabel>
+                                <Select
+                                    labelId="city-label"
+                                    id="demo-simple-select-standard"
+                                    defaultValue={values.idcity}
+                                    onChange={handleChangeCity}
+                                    label="City"
+                                >
+                                    <MenuItem value="">
+                                        <em>None</em>
+                                    </MenuItem>
+                                    {
+                                        listCity.length > 0 ?
+                                            listCity.map((item) => {
+                                                return <MenuItem value={item.idcity}>{item.city}</MenuItem>
+                                            }) : ''
+                                    }
+                                </Select>
+                            </FormControl>
                         </Grid>
                     </Grid>
                 </DialogContent>
