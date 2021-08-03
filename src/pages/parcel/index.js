@@ -14,6 +14,9 @@ import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
 import "../parcel/parcelPage.css"
 import ModalParcel from '../../components/parcelConfirmation';
+import GifPlayer from "react-gif-player";
+import step from "../../asset/gif/step.gif";
+
 
 toast.configure()
 
@@ -85,87 +88,77 @@ class ParcelPage extends React.Component {
         })
     }
 
-    printConfirm = () => {
-        return this.state.parcel.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <div>
-                        <Modal size="lg" isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
-                            <ModalBody>
-                                <Container>
-                                    <Row className="box">
-                                        <Col md="6" className="p-0">
-                                            {
-                                                item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
-                                                    <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
-                                                        src={URL_API + '/static/images/' + item.url} alt="img" /> :
-                                                    <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
-                                                        src={'https://drive.google.com/uc?export=view&id=' + item.url} alt="img" />
-                                            }
-                                        </Col>
-                                        <Col md="6" className="col2">
-                                            <h3>Yay!</h3>
-                                            <h4>You Selected Paket {item.id}</h4>
-                                            <h6>this parcel MUST contains {item.title}</h6>
-                                            <Link onClick={() => this.onBtCart(item)} className="btn btn-warning"
-                                                to={
-                                                    this.props.id ?
-                                                        this.props.idstatus === 1 ?
-                                                            `/product?${item.category.join("&")}` : false
-                                                        : false
-                                                } style={{ textDecoration: "none", color: "black" }}>
-                                                Pick goods
-                                            </Link>
-                                        </Col>
-                                    </Row>
-                                </Container>
-                            </ModalBody>
-                        </Modal>
-                    </div>
-                )
-            }
-        })
-    }
+    // printConfirm = () => {
+    //     return this.state.parcel.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
+    //         if (this.state.selectedIndex === index) {
+    //             return (
+    //                 <div>
+    //                     <Modal size="lg" isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
+    //                         <ModalBody>
+    //                             <Container>
+    //                                 <Row className="box">
+    //                                     <Col md="6" className="p-0">
+    //                                         {
+    //                                             item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
+    //                                                 <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
+    //                                                     src={URL_API + '/static/images/' + item.url} alt="img" /> :
+    //                                                 <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
+    //                                                     src={'https://drive.google.com/uc?export=view&id=' + item.url} alt="img" />
+    //                                         }
+    //                                     </Col>
+    //                                     <Col md="6" className="col2">
+    //                                         <h3>Yay!</h3>
+    //                                         <h4>You Selected Paket {item.id}</h4>
+    //                                         <h6>this parcel MUST contains {item.title}</h6>
+    //                                         <Link onClick={() => this.onBtCart(item)} className="btn btn-warning"
+    //                                             to={
+    //                                                 this.props.id ?
+    //                                                     this.props.idstatus === 1 ?
+    //                                                         `/product?${item.category.join("&")}` : false
+    //                                                     : false
+    //                                             } style={{ textDecoration: "none", color: "black" }}>
+    //                                             Pick goods
+    //                                         </Link>
+    //                                     </Col>
+    //                                 </Row>
+    //                             </Container>
+    //                         </ModalBody>
+    //                     </Modal>
+    //                 </div>
+    //             )
+    //         }
+    //     })
+    // }
 
     resetCheckbox = () => {
         window.location.reload()
     }
 
-    resendOTP = () => {
-        console.log(this.props.username, this.props.password)
-        axios.patch(URL_API + `/auth/reverif`, {
-            username: this.props.username, password: this.props.password
-        }).then(res => {
-            console.log(res.data)
-            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        }).catch(err => console.log(err))
-    }
-
-    onBtCart = (item) => {
-        if (this.props.id) {
-            if (this.props.idstatus === 1) {
-                console.log("PARCEL", item)
-                let token = localStorage.getItem("tkn_id")
-                const headers = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-                let idparcel_type = item.id
-                let subtotal = item.price
-                console.log("add", idparcel_type, subtotal)
-                axios.post(URL_API + `/transaction/addCart`, { idparcel_type, subtotal }, headers)
-                    .then(res => {
-                        console.log("cart", res.data)
-                        // this.props.getCart(res.data)
-                    }).catch(err => console.log("add cart", err))
-            } else {
-                toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-            }
-        } else {
-            toast.error('Login First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        }
-    }
+    // onBtCart = (item) => {
+    //     if (this.props.id) {
+    //         if (this.props.idstatus === 1) {
+    //             console.log("PARCEL", item)
+    //             let token = localStorage.getItem("tkn_id")
+    //             const headers = {
+    //                 headers: {
+    //                     'Authorization': `Bearer ${token}`
+    //                 }
+    //             }
+    //             let idparcel_type = item.id
+    //             let subtotal = item.price
+    //             console.log("add", idparcel_type, subtotal)
+    //             axios.post(URL_API + `/transaction/addCart`, { idparcel_type, subtotal }, headers)
+    //                 .then(res => {
+    //                     console.log("cart", res.data)
+    //                     // this.props.getCart(res.data)
+    //                 }).catch(err => console.log("add cart", err))
+    //         } else {
+    //             toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+    //         }
+    //     } else {
+    //         toast.error('Login First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+    //     }
+    // }
 
     checkbox = (e) => {
         var { name, checked } = e.target
@@ -274,6 +267,9 @@ class ParcelPage extends React.Component {
                     <div className="col-md-9">
                         <div className="div-box-parcel">
                             <h2 className="h2-produk">PARCEL</h2>
+                        </div>
+                        <div>
+                            <GifPlayer gif={step} autoplay={true} style={{ width: '100%' }} />
                         </div>
                         <div className="row">
                             {

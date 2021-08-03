@@ -78,7 +78,7 @@ class CartPages extends React.Component {
                 if (sum_qty_beli > this.state.type[i].max_qty) {
                     toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                 } else {
-                    updateCart({ amount: sum_qty_beli, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                    updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
                 }
                 // let qty_beli = []
                 // this.state.type.map((item, i) => {
@@ -281,7 +281,7 @@ class CartPages extends React.Component {
                                     <Link 
                                     onClick={() => this.handleToCheckOut()} 
                                     to={
-                                        this.totalQty() < this.props.cart.length * 5 ?
+                                        this.totalQty() === this.props.cart.length * 5 ?
                                         `/checkout/${this.props.id}`: false} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
                                         PROCEED TO CHECKOUT
                                     </Link>

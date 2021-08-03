@@ -16,6 +16,8 @@ import { Checkbox } from '@material-ui/core';
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import { Link } from "react-router-dom";
+import GifPlayer from "react-gif-player";
+import step2 from "../../asset/gif/step2.gif";
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -271,6 +273,9 @@ class ProductsPage extends React.Component {
                                     <option value="nama-desc">Z - A</option>
                                 </Input>
                             </div>
+                        </div>
+                        <div>
+                            <GifPlayer gif={step2} autoplay={true} style={{ width: '100%' }} />
                         </div>
                         <div className="row">
                             {

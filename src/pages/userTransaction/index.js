@@ -55,7 +55,7 @@ class UserTransactionPage extends React.Component {
 
 
     componentDidMount() {
-        // this.props.getTransaction()
+        this.props.getTransaction()
         this.getPaymentStatus()
         this.getUserTransaction()
     }
