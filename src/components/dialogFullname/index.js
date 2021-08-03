@@ -87,7 +87,7 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
               onClick={handleSave} 
               variant="contained" 
               color="primary"
-              disabled={fullname.length === 0}
+              disabled={fullname !== null ? fullname.length === 0 : false}
             >
               {loading ? "Loading..." : "Save"}
             </Button>
