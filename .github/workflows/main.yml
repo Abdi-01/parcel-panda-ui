@@ -18,7 +18,5 @@ jobs:
           script: |
             cd ${{ secrets.PROJECT_PATH }}
             git pull origin ${{ secrets.BRANCH }}
-            docker image rm --force parcel-ui:beta
             docker build --tag parcel-ui:beta .
-            docker container rm --force parcel-ui
             docker run -d -p 3001:3000 --name parcel-ui parcel-ui:beta
