@@ -1,4 +1,4 @@
-name: CI Parcel-Panda FE
+name: CI Parcel-Panda UI
 
 on: 
   push:
