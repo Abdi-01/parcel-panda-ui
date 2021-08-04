@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { Container } from 'reactstrap';
 
 export const FooterContainer = styled.div`
     height: 100px;
@@ -24,4 +25,15 @@ export const LeftHeader = styled.h6`
     font-size: 15px;
     margin: 0;
     padding: 0;
+`
+
+export const ContentContainer = styled(Container)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`
+
+export const IconWrapper = styled.div`
+    display: flex;
+    justify-content: space-between;
 `
