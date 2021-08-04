@@ -8,7 +8,7 @@ class FooterComp extends React.Component {
     }
     render() { 
         return ( 
-            <div className="mt-5" style={{height: '55px', backgroundColor: '#F4F4F4',}}>
+            <div className="mt-5" style={{height: '55px', width: '100%', backgroundColor: '#F4F4F4',}}>
                 <Container>
                     <h6 style={{paddingTop: '20px', fontSize: '15px'}}>2021 © Parcelpanda. All Rights Reserved.</h6>
                 </Container>
