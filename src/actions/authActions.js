@@ -105,7 +105,7 @@ export const updateCart = ({data, amount, idproduct, idcart}) => {
                     'Authorization': `Bearer ${token}`
                 }
             }
-            let updateCart = await axios.patch(URL_API + `/transaction/update-qty`, {
+            await axios.patch(URL_API + `/transaction/update-qty`, {
                 amount, idproduct, idcart
             }, headers)
             await dispatch(getCart(data))

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg, Spinner } from 'reactstrap';
+import { Container, Input, Label, Button, CardImg, Spinner } from 'reactstrap';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
