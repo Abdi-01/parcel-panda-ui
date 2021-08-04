@@ -107,15 +107,17 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
 
     useEffect(() => {
         // console.log(data)
-        if (data) {
-            setValues({...values, 
-                label: data.label,
-                recipient_name: data.recipient_name,
-                phone_number: data.phone_number,
-                address: data.address,
-                idcity: data.idcity,
-                postal_code: data.postal_code
-            })  
+        const fetchData = () => {
+            if (data) {
+                setValues({...values, 
+                    label: data.label,
+                    recipient_name: data.recipient_name,
+                    phone_number: data.phone_number,
+                    address: data.address,
+                    idcity: data.idcity,
+                    postal_code: data.postal_code
+                })  
+            }
         }
         const getCity = async () => {
             try {
@@ -129,11 +131,11 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                 }
                 let response = await axios(config)
                 setListCity(response.data)
-                console.log("listcity", listCity)
             } catch (error) {
                 console.log(error)
             }
         }
+        fetchData()
         getCity()
     }, [data])
 
