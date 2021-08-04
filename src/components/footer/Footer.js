@@ -1,12 +1,18 @@
 import styled from 'styled-components'
 
+export const FooterContainer = styled.div`
+    height: 100px;
+    padding-top: 40px;
+`
+
 export const Wrapper = styled.footer`
-    /* position: absolute; */
+    position: absolute;
     right: 0;
     bottom: 0;
-    left: 0;
+    right: 0;
     background-color: #F4F4F4;
-    height: 3rem;
+    height: 60px;
+    line-height: 60px;
     width: 100%;
     display: flex;
     flex-direction: column;

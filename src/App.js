@@ -56,7 +56,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{position: 'relative', minHeight:"100vh"}}>
         {
           this.props.role === "admin" ? <AdminAppBar /> : <NavbarComp />
         }
