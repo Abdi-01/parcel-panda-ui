@@ -1,10 +1,11 @@
 import React from 'react';
+import axios from 'axios';
 import { Container } from 'reactstrap';
 import { URL_API } from '../../helper';
-import { Table, Input } from 'reactstrap';
+import { Table, Input, Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
-import { getCart, getProfile } from "../../actions"
+import { getCart, getProfile, updateCart } from "../../actions"
 import { toast } from 'react-toastify';
 import "../cart/cartPage.css"
 toast.configure()
@@ -13,7 +14,13 @@ class CartPages extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cart: []
+            cart: [],
+            type: [],
+            idparcel_type: [],
+            idcart: [],
+            detailCart: [],
+            idcartEdit: [],
+            parcel_type: []
         }
     }
 
@@ -21,14 +28,137 @@ class CartPages extends React.Component {
         this.props.getCart()
     }
 
+    incrementQty = (idx, index, idcategory) => {
+        if (this.state.type.length < 0) {
+            toast.warn(`Klik icon Edit sebelum menambahkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        } else {
+            let { cart, updateCart } = this.props
+            cart[index].detail[idx].amount += 1
+            if (this.state.type.length === 1) {
+                // cart[index].detail[idx].amount += 1
+                this.state.type.map((item, i) => {
+                    let qty_beli = []
+                    console.log(this.state.detailCart)
+                    cart[index].detail.map(el => {
+                        if (item.idcategory === el.idcategory) {
+                            qty_beli.push(el.amount)
+                        }
+                    })
+                    console.log('qty beli', qty_beli)
+                    let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                        return val + sum
+                    })
+                    console.log("BRP NI", sum_qty_beli)
+                    // console.log("BRP NI", cart[index].detail[idx].amount, item.max_qty)
+                    if (sum_qty_beli > item.max_qty) {
+                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                    } else {
+                        updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                    }
+                })
+            } else if (this.state.type.length > 1) {
+                // console.log(idcategory)
+                let i = this.state.type.findIndex(item => item.idcategory === idcategory)
+                console.log("IDX CATEGORY", i)
+                console.log("MAX QTY", this.state.type[i].max_qty)
+                console.log("DETAIL CART", cart[index].detail)
+                // let val = cart[index].detail.findIndex(item => item.idcategory === idcategory)
+                // console.log(val)
+                let qty_beli = []
+                cart[index].detail.map(el => {
+                    if (el.idcategory === idcategory) {
+                        qty_beli.push(el.amount)
+                    }
+                })
+                console.log('qty beli', qty_beli)
+                let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                    return val + sum
+                })
+                console.log("BRP NI", sum_qty_beli, cart[index].detail[idx].amount)
+                if (sum_qty_beli > this.state.type[i].max_qty) {
+                    toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                } else {
+                    updateCart({ amount: sum_qty_beli, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                }
+                // let qty_beli = []
+                // this.state.type.map((item, i) => {
+                //     console.log(this.state.detailCart)
+                //     cart[index].detail.map(el => {
+                //         if (item.idcategory === el.idcategory) {
+                //             qty_beli.push(el.amount)
+                //         }
+                //     })
+                //     console.log('qty beli', qty_beli)
+                //     let sum_qty_beli = qty_beli.reduce((val, sum) => {
+                //         return val + sum
+                //     })
+                //     console.log("BRP NI", sum_qty_beli)
+                //     // console.log("BRP NI", cart[index].detail[idx].amount, item.max_qty)
+                //     if (sum_qty_beli > item.max_qty) {
+                //         toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                //     } 
+                //     else {
+                //         toast.success(`OK!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                //         // updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                //     }
+                // })
+            }
+        }
+    }
+
+    DecrementQty = (idx, index) => {
+        if (this.state.type.length < 0) {
+            toast.warn(`Klik icon Edit sebelum menambahkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        } else {
+            let { cart, updateCart } = this.props
+            cart[index].detail[idx].amount -= 1
+            updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+        }
+    }
+
+    deleteCart = (idcart) => {
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        axios.patch(URL_API + `/transaction/del-cart`, {
+            idcart: idcart
+        }, headers)
+            .then(res => {
+                console.log(res.data)
+                this.props.getCart(this.props.id)
+            }).catch(err => console.log(err))
+    }
+
+    getParcelType = (index) => {
+        let token = localStorage.getItem("tkn_id")
+        const headers = {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        }
+        axios.get(URL_API + `/transaction/getcart`, headers)
+            .then(res => {
+                this.setState({
+                    cart: res.data, idcart: res.data[index].idcart,
+                    detailCart: res.data[index].detail, idparcel_type: res.data[index].idparcel_type
+                })
+                axios.get(URL_API + `/parcel/getParcel-type?idparcel_type=${res.data[index].idparcel_type}`)
+                    .then(res => {
+                        console.log(res.data)
+                        this.setState({ type: res.data })
+                        console.log("TYPE", this.state.type)
+                    }).catch(err => console.log(err))
+            }).catch(err => console.log("get cart", err))
+    }
+
     getDataCart = () => {
         console.log("YUHUU", this.props.cart)
         return this.props.cart.map((item, index) => {
             return (
                 <tr className="box-cart">
-                    {/* <td>
-                        <img src={item.images[0].images} alt="..." width="200vw" />
-                    </td> */}
                     <td>
                         <div className="cart-name">Parcel {item.idparcel_type}</div>
                     </td>
@@ -46,13 +176,13 @@ class CartPages extends React.Component {
                                                 <div style={{ color: 'gray', width: '170px' }}>{el.title}</div>
                                             </td>
                                             <td style={{ width: '30%', alignContent: 'center', paddingLeft: '20px' }}>
-                                                <span style={{ width: '50%', display: 'flex', alignItems: 'center', border: '1px solid gray', height: '100%' }}>
-                                                    <span onClick={() => this.DecrementQty(idx)} class="material-icons" >
+                                                <span style={{ width: '60%', display: 'flex', alignItems: 'center', border: '1px solid gray', height: '100%' }}>
+                                                    <span onClick={() => this.DecrementQty(idx, index)} class="material-icons" >
                                                         remove
                                                     </span>
                                                     <Input size="sm" placeholder="qty" style={{ width: '60%', display: 'inline-block' }}
                                                         innerRef={elemen => this.addQty = elemen} value={el.amount} />
-                                                    <span onClick={() => this.incrementQty(idx)} class="material-icons">
+                                                    <span onClick={() => this.incrementQty(idx, index, el.idcategory)} class="material-icons">
                                                         add
                                                     </span>
                                                 </span>
@@ -65,6 +195,20 @@ class CartPages extends React.Component {
                     </td>
                     <td className="det-subtotal">
                         Rp. {item.subtotal.toLocaleString()}
+                    </td>
+                    <td>
+                        <Button outline color="warning" size="sm"
+                            onClick={() => this.getParcelType(index)}>
+                            <span class="material-icons" size="18dp" >
+                                edit
+                            </span>
+                        </Button> <br />
+                        <Button outline color="warning" size="sm"
+                            onClick={() => this.deleteCart(item.idcart)}>
+                            <span class="material-icons" size="18dp" >
+                                delete
+                            </span>
+                        </Button>
                     </td>
                 </tr>
             )
@@ -85,17 +229,15 @@ class CartPages extends React.Component {
         }).reduce((a, b) => a + b, 0)
     }
 
-    handleToCheckOut =() => {
-        if(this.totalQty() < this.props.cart.length * 5){
+    handleToCheckOut = () => {
+        if (this.totalQty() < this.props.cart.length * 5) {
             toast.warn('Kuantity anda kurang, pilih produk lagi!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        } 
-        else {
-            this.props.getCart(this.props.id)
         }
     }
 
 
     render() {
+        console.log(this.totalQty(), this.props.cart.length * 5)
         return (
             <div>
                 <Container>
@@ -112,6 +254,7 @@ class CartPages extends React.Component {
                                             <th className="th-cart">PARCEL</th>
                                             <th className="th-cart">PRODUCT</th>
                                             <th className="th-cart">SUBTOTAL</th>
+                                            <th className="th-cart">ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -135,7 +278,11 @@ class CartPages extends React.Component {
                                     <p className="sum-ongkir"><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span> <span>(belum termasuk ongkir)</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    <Link onClick={() => this.handleToCheckOut()} to={`/checkout/${this.props.id}`} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
+                                    <Link 
+                                    onClick={() => this.handleToCheckOut()} 
+                                    to={
+                                        this.totalQty() < this.props.cart.length * 5 ?
+                                        `/checkout/${this.props.id}`: false} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
                                         PROCEED TO CHECKOUT
                                     </Link>
                                 </div>
@@ -155,4 +302,4 @@ const mapStateToProps = ({ authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, { getCart, getProfile})(CartPages);
+export default connect(mapStateToProps, { getCart, getProfile, updateCart })(CartPages);
