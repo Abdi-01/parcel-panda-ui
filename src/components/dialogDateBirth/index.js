@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import axios from "axios";
+import DateFnsUtils from '@date-io/date-fns';
 import { useDispatch } from "react-redux";
 import { URL_API } from "../../helper";
 import { getProfile } from "../../actions";
 import { toast } from 'react-toastify';
+import { MuiPickersUtilsProvider} from '@material-ui/pickers';
+import { DatePicker } from "@material-ui/pickers";
 import {
   Button,
   Dialog,
@@ -11,22 +14,18 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField,
 } from "@material-ui/core/";
-import { ButtonWrapper } from "./dialogFullnameComp";
+import { ButtonWrapper } from "./dialogDateBirthComp";
 
 toast.configure()
-const FormDialogProfile = ({ open, setOpen, value }) => {
-  const [fullname, setFullname] = useState(value)
+const FormDialogDateBirth = ({ open, setOpen, value }) => {
+//   const [selectedDate, handleDateChange] = useState(new Date(value));
+  const [selectedDate, handleDateChange] = useState(new Date(value));
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch()
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleChange = (event) => {
-    setFullname(event.target.value);
   };
 
   const handleSave = async () => {
@@ -37,7 +36,7 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
         method: 'patch',
         url: URL_API + '/profile/update-data',
         data: {
-          "fullname": fullname
+          "date_birth": selectedDate.toISOString().slice(0, 10)
         },
         headers: {
             Authorization: `Bearer ${token}`
@@ -53,6 +52,8 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
       });
     } catch (error) {
       console.log(error)
+      setLoading(false)
+      setOpen(false);
       toast.error("Error update profile !", {
         position: toast.POSITION.TOP_CENTER
       });
@@ -68,18 +69,23 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
         onClose={handleClose}
         aria-labelledby="fullname"
       >
-        <DialogTitle>Edit New Fullname</DialogTitle>
+        <DialogTitle>Edit Date Birth</DialogTitle>
         <DialogContent>
-          <DialogContentText>Type new fullname</DialogContentText>
-          <TextField
-            fullWidth
-            autoFocus
-            margin="dense"
-            label="Fullname"
-            type="text"
-            value={fullname}
-            onChange={handleChange}
-          />
+            <DialogContentText>Choose date</DialogContentText>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Fragment>
+                <DatePicker
+                    disableFuture
+                    fullWidth
+                    openTo="year"
+                    format="dd/MM/yyyy"
+                    label="Date of birth"
+                    views={["year", "month", "date"]}
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                />
+            </Fragment>
+            </MuiPickersUtilsProvider>
         </DialogContent>
         <DialogActions>
           <ButtonWrapper>
@@ -87,7 +93,7 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
               onClick={handleSave} 
               variant="contained" 
               color="primary"
-              disabled={fullname !== null ? fullname.length === 0 : false}
+              disabled={selectedDate.length === 0}
             >
               {loading ? "Loading..." : "Save"}
             </Button>
@@ -98,4 +104,4 @@ const FormDialogProfile = ({ open, setOpen, value }) => {
   );
 };
 
-export default FormDialogProfile;
+export default FormDialogDateBirth;

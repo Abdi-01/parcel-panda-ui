@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import RevenueCard from "../revenueCard";
+import PieChartComponent from "../pieChart";
+import AreaChartComponent from "../areaChart";
 import DatePicker from "react-modern-calendar-datepicker";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import {
@@ -16,9 +19,6 @@ import {
   // DataWrapper,
   PieChartWrapper
 } from "./chartRevenue";
-import RevenueCard from "../revenueCard";
-import PieChartComponent from "../pieChart";
-import AreaChartComponent from "../areaChart";
 
 const options = [
   'revenue',
