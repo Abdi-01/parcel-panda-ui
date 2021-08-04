@@ -166,9 +166,9 @@ class CartPages extends React.Component {
                         {
                             item.detail.map((el, idx) => {
                                 return (
-                                    <div>
+                                    <div >
                                         <tr>
-                                            <td className="td-detail"><img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '150px', height: '150px' }} /></td>
+                                            <td className="td-detail" style={{padding: '10px'}}><img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '150px', height: '150px' }} /></td>
                                             <td style={{ width: '30%' }}>
                                                 <div style={{ fontSize: '16px', lineHeight: '20px', letterSpacing: '0.5px' }}>
                                                     {el.name}
@@ -237,7 +237,6 @@ class CartPages extends React.Component {
 
 
     render() {
-        console.log(this.totalQty(), this.props.cart.length * 5)
         return (
             <div>
                 <Container>
@@ -249,7 +248,7 @@ class CartPages extends React.Component {
                             <div className="mt-5 table-cart" >
                                 <Table borderless>
                                     <thead>
-                                        <tr style={{ border: '1px solid #DDDDDD' }}>
+                                        <tr style={{ borderBottom: '1px solid #DDDDDD' }}>
                                             {/* <th style={{textAlign: 'center'}}>gambar</th> */}
                                             <th className="th-cart">PARCEL</th>
                                             <th className="th-cart">PRODUCT</th>

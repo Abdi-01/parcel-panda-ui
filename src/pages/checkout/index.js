@@ -129,7 +129,7 @@ class CheckoutPage extends React.Component {
                                 return (
                                     <div>
                                         <tr>
-                                            <td style={{ width: '30%' }}><img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '150px', height: '150px' }} /></td>
+                                            <td style={{ width: '30%', padding: '10px' }}><img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '150px', height: '150px' }} /></td>
                                             <td style={{ width: '30%' }}>
                                                 <div style={{ fontSize: '16px', lineHeight: '20px', letterSpacing: '0.5px' }}>
                                                     {el.name}

@@ -79,7 +79,7 @@ class NavbarComp extends React.Component {
 
     render() {
         return (
-            <div style={{position: 'sticky', top: '0', height: '130px', backgroundColor: 'white'}}>
+            <div style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '99', boxShadow: '5px 5px 5px #DDDDDD', width: '100%' }}>
                 {this.printLogin()}
                 <Navbar expand="md" >
                     <Container>
@@ -87,9 +87,14 @@ class NavbarComp extends React.Component {
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />
                         </Navbar.Brand>
                         <Nav>
-                            {/* <div>
-                                <h6>8 800 332 65-66 <br></br><span className="support">Support 24/7</span></h6>
-                            </div> */}
+                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
+                                takeout_dining
+                            </span>Parcel</Nav.Link>
+                            <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
+                                sell
+                            </span>Product</Nav.Link>
+                        </Nav>
+                        <Nav>
                             {
                                 this.props.username ?
                                     <div style={{ display: 'flex', alignItems: "center" }}>
@@ -157,13 +162,10 @@ class NavbarComp extends React.Component {
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-                                        {/* <Button color="secondary" outline>
-                                            Notifications <Badge color="warning">4</Badge>
-                                        </Button> */}
                                         <Nav.Link href={`/cart/${this.props.iduser}`}>
                                             <span className="material-icons">
                                                 shopping_cart
-                                            </span><Badge style={{ color: "black", backgroundColor: '#FAB629'}}>{this.totalQty()}</Badge>
+                                            </span><Badge style={{ color: "black", backgroundColor: '#FAB629' }}>{this.totalQty()}</Badge>
                                         </Nav.Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
@@ -175,7 +177,7 @@ class NavbarComp extends React.Component {
                         </Nav>
                     </Container>
                 </Navbar>
-                <Navbar >
+                {/* <Navbar >
                     <Container>
                         <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
                             <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
@@ -186,7 +188,7 @@ class NavbarComp extends React.Component {
                             </span>Product</Nav.Link>
                         </Nav>
                     </Container>
-                </Navbar>
+                </Navbar> */}
             </div>
         );
     }

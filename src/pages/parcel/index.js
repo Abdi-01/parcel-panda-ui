@@ -15,7 +15,7 @@ import { toast } from 'react-toastify';
 import "../parcel/parcelPage.css"
 import ModalParcel from '../../components/parcelConfirmation';
 import GifPlayer from "react-gif-player";
-import step from "../../asset/gif/step.gif";
+import parcel from "../../asset/gif/parcel.gif";
 
 
 toast.configure()
@@ -218,7 +218,7 @@ class ParcelPage extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{marginTop: '35px'}}>
                 <div className="row" >
                     {/* {this.printConfirm()} */}
                     <ModalParcel modal={this.state.modal} detailParcel={this.state.detailParcel} category={this.state.category}
@@ -269,7 +269,7 @@ class ParcelPage extends React.Component {
                             <h2 className="h2-produk">PARCEL</h2>
                         </div>
                         <div>
-                            <GifPlayer gif={step} autoplay={true} style={{ width: '100%' }} />
+                            <GifPlayer gif={parcel} autoplay={true} style={{ width: '100%' }} />
                         </div>
                         <div className="row">
                             {
