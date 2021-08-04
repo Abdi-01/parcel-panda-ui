@@ -54,7 +54,7 @@ class ProductsPage extends React.Component {
         const slice = product.slice(this.state.offset, this.state.offset + this.state.perPage)
         return slice.map((item, index) => {
             return <div className="col-md-3 mt-5">
-                <Card style={{boxShadow: '5px 5px 5px #DDDDDD'}}>
+                <Card style={{ boxShadow: '5px 5px 5px #DDDDDD' }}>
                     <Link to={`/product-detail?p.id=${item.id}`} style={{ textDecoration: "none", color: "black" }}>
                         {
                             item.url ?
@@ -67,7 +67,7 @@ class ProductsPage extends React.Component {
                         <CardContent>
                             <Typography variant="body2" color="text.secondary" style={{ color: 'gray' }}>
                                 {item.category}
-                                
+
                             </Typography>
                             <Typography gutterBottom component="div" style={{ height: '55px' }}>
                                 {item.name}
@@ -115,11 +115,12 @@ class ProductsPage extends React.Component {
     }
 
     getDataProduct = () => {
+        this.setState({ loading: true })
         console.log(this.props.location.search)
         axios.get(URL_API + `/product/filter-product?${this.props.location.search}`)
             .then(res => {
                 console.log("filter", res.data)
-                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
             }).catch(err => console.log(err))
     }
 
@@ -176,39 +177,26 @@ class ProductsPage extends React.Component {
 
     render() {
         return (
-            <Container style={{marginTop: '35px'}}>
-                <div className="row" >
-                    <div className="col-md-3 mt-3">
-                        <div>
-                            <h2 className="h2-sort">PRODUCT NAME</h2>
-                            <div className="p-field ">
-                                <div>
-                                    <span className="p-input-icon-right">
-                                        <InputText value={this.state.filterName} onChange={(e) => this.setState({ filterName: e.target.value })} />
-                                        <i className="pi pi-search" />
-                                    </span>
+            <div>
+                <Container style={{ marginTop: '35px', marginBottom: '35px', height: '100%' }}>
+                    <div className="row" >
+                        <div className="col-md-3 mt-3">
+                            <div>
+                                <h2 className="h2-sort">PRODUCT NAME</h2>
+                                <div className="p-field ">
+                                    <div>
+                                        <span className="p-input-icon-right">
+                                            <InputText value={this.state.filterName} onChange={(e) => this.setState({ filterName: e.target.value })} />
+                                            <i className="pi pi-search" />
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                            <h2 className="mt-5 h2-sort">PRODUCT CATEGORY</h2>
-                            {
-                                this.props.location.search === '?idcategory=1' ?
-                                    <>
-                                        <div className="div-checkbox">
-                                            <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                            <Label className="label-chk">Food</Label>
-                                        </div>
-                                        <div className="div-checkbox">
-                                            <Checkbox disabled className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                            <Label className="label-chk">Drinks</Label>
-                                        </div>
-                                        <div className="div-checkbox">
-                                            <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                            <Label className="label-chk">Fruits</Label>
-                                        </div>
-                                    </> : this.props.location.search === '?idcategory=2' ?
+                                <h2 className="mt-5 h2-sort">PRODUCT CATEGORY</h2>
+                                {
+                                    this.props.location.search === '?idcategory=1' ?
                                         <>
                                             <div className="div-checkbox">
-                                                <Checkbox disabled className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
                                                 <Label className="label-chk">Food</Label>
                                             </div>
                                             <div className="div-checkbox">
@@ -216,94 +204,104 @@ class ProductsPage extends React.Component {
                                                 <Label className="label-chk">Drinks</Label>
                                             </div>
                                             <div className="div-checkbox">
-                                                <Checkbox className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
                                                 <Label className="label-chk">Fruits</Label>
                                             </div>
-                                        </> : this.props.location.search === '?idcategory=3' ?
+                                        </> : this.props.location.search === '?idcategory=2' ?
                                             <>
                                                 <div className="div-checkbox">
                                                     <Checkbox disabled className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
                                                     <Label className="label-chk">Food</Label>
                                                 </div>
                                                 <div className="div-checkbox">
-                                                    <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
-                                                    <Label className="label-chk">Drinks</Label>
-                                                </div>
-                                                <div className="div-checkbox">
-                                                    <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
-                                                    <Label className="label-chk">Fruits</Label>
-                                                </div>
-                                            </> :
-                                            <>
-                                                <div className="div-checkbox">
-                                                    <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
-                                                    <Label className="label-chk">Food</Label>
-                                                </div>
-                                                <div className="div-checkbox">
-                                                    <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                    <Checkbox disabled className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
                                                     <Label className="label-chk">Drinks</Label>
                                                 </div>
                                                 <div className="div-checkbox">
                                                     <Checkbox className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
                                                     <Label className="label-chk">Fruits</Label>
                                                 </div>
-                                            </>
-                            }
+                                            </> : this.props.location.search === '?idcategory=3' ?
+                                                <>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox disabled className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Food</Label>
+                                                    </div>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Drinks</Label>
+                                                    </div>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox disabled className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Fruits</Label>
+                                                    </div>
+                                                </> :
+                                                <>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox className="chkbox" color="primary" name="idcategory=1" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Food</Label>
+                                                    </div>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox className="chkbox" color="primary" name="idcategory=3" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Drinks</Label>
+                                                    </div>
+                                                    <div className="div-checkbox">
+                                                        <Checkbox className="chkbox" color="primary" name="idcategory=2" onChange={this.checkbox} />
+                                                        <Label className="label-chk">Fruits</Label>
+                                                    </div>
+                                                </>
+                                }
 
-                            <div style={{ marginTop: '15px', display: 'flex' }}>
-                                <Button onClick={() => this.resetCheckbox()} color="secondary">
-                                    Reset
-                                </Button>
-                                <Button onClick={this.handleFilter} color="warning" style={{ background: "#FAB629", color: "black", marginLeft: '15px' }}>
-                                    Apply
-                                </Button>
-                                
-                                
+                                <div style={{ marginTop: '15px', display: 'flex' }}>
+                                    <Button onClick={() => this.resetCheckbox()} color="secondary">
+                                        Reset
+                                    </Button>
+                                    <Button onClick={this.handleFilter} color="warning" style={{ background: "#FAB629", color: "black", marginLeft: '15px' }}>
+                                        Apply
+                                    </Button>
+
+
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-md-9">
-                        <div className="div-box-parcel">
-                            <h2 className="h2-produk">PRODUCT</h2>
-                            <div style={{ display: "flex", justifyContent: "flex-end", }}>
-                                <h2 style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '17px', color: '#8C8582', display: "inline", padding: '9px 12px 9px 0' }}>SORT</h2>
-                                <Input type="select" onClick={this.handleSort} innerRef={elemen => this.sort = elemen} >
-                                    <option selected disabled>-</option>
-                                    <option value="nama-asc" >A - Z</option>
-                                    <option value="nama-desc">Z - A</option>
-                                </Input>
+                        <div className="col-md-9">
+                            <div className="div-box-parcel">
+                                <h2 className="h2-produk">PRODUCT</h2>
+                                <div style={{ display: "flex", justifyContent: "flex-end", }}>
+                                    <h2 style={{ fontSize: '14px', letterSpacing: '1px', lineHeight: '17px', color: '#8C8582', display: "inline", padding: '9px 12px 9px 0' }}>SORT</h2>
+                                    <Input type="select" onClick={this.handleSort} innerRef={elemen => this.sort = elemen} >
+                                        <option selected disabled>-</option>
+                                        <option value="nama-asc" >A - Z</option>
+                                        <option value="nama-desc">Z - A</option>
+                                    </Input>
+                                </div>
                             </div>
+                            <div style={{ marginTop: '15px' }}>
+                                <GifPlayer gif={product} autoplay={true} style={{ width: '100%' }} />
+                            </div>
+                            <div className="row">
+                                {
+                                    this.state.loading === true &&
+                                    <Spinner color="warning" />
+                                }
+                                {this.getData()}
+                            </div>
+                            <ReactPaginate
+                                previousLabel={"prev"}
+                                nextLabel={"next"}
+                                breakLabel={"..."}
+                                breakClassName={"break-me"}
+                                pageCount={this.state.pageCount}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={this.handlePageClick}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"} />
                         </div>
-                        <div style={{marginTop: '15px'}}>
-                            <GifPlayer gif={product} autoplay={true} style={{ width: '100%' }} />
-                        </div>
-                        <div className="row">
-                            {
-                                this.props.products ?
-                                    <>
-                                        {this.getData()}
-                                    </>
-                                    :
-                                    <>
-                                        <Spinner color="warning" />
-                                    </>
-                            }
-                        </div>
-                        <ReactPaginate
-                            previousLabel={"prev"}
-                            nextLabel={"next"}
-                            breakLabel={"..."}
-                            breakClassName={"break-me"}
-                            pageCount={this.state.pageCount}
-                            marginPagesDisplayed={2}
-                            pageRangeDisplayed={5}
-                            onPageChange={this.handlePageClick}
-                            containerClassName={"pagination"}
-                            subContainerClassName={"pages pagination"}
-                            activeClassName={"active"} />
                     </div>
-                </div>
-            </Container>
+                </Container>
+            </div>
         );
     }
 }

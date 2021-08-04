@@ -238,7 +238,7 @@ class CartPages extends React.Component {
 
     render() {
         return (
-            <div>
+            <div style={{minHeight: '100%', height: '100%'}}>
                 <Container>
                     <div className="cart-judul">
                         <h2 className="shopping-cart">SHOPPING CART</h2>
