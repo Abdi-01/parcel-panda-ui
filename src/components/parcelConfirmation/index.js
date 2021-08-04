@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg, Spinner } from 'reactstrap';
+import { Container, Modal, ModalBody, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { URL_API } from '../../helper';
 import { connect } from 'react-redux';
