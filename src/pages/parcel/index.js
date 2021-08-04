@@ -5,7 +5,6 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-// import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import "../product/productPage.css"
 import { Checkbox } from '@material-ui/core';
@@ -50,7 +49,6 @@ class ParcelPage extends React.Component {
         this.handleSort()
     }
 
-
     dataParcel = () => {
         this.setState({ loading: true })
         axios.get(URL_API + `/parcel/get-parcel`)
@@ -89,7 +87,6 @@ class ParcelPage extends React.Component {
             </div>
         })
     }
-
 
     resetCheckbox = () => {
         window.location.reload()

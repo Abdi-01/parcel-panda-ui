@@ -1,4 +1,5 @@
-import React from "react";
+import React, {useState} from "react";
+import ModalParcel from '../parcelConfirmation';
 import {
   Card,
   Content,
@@ -12,9 +13,14 @@ import {
 } from "./frontParcelCard";
 
 const FrontParcelCard = ({item}) => {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleModal = () => {
+    setShowModal(true)
+  }
   return (
     <div>
-        <Card>
+        <Card onClick={handleModal}>
           <Face1>
               <Content>
                 <Face1Heading>{item.title}</Face1Heading>
@@ -28,10 +34,15 @@ const FrontParcelCard = ({item}) => {
               </Content>
           </Face1>
           <Face2>
-            {/* <Face2Title>Parcel</Face2Title> */}
             <Face2Heading>0{item.id}</Face2Heading>
           </Face2>
         </Card>
+        <ModalParcel 
+          modal={showModal} 
+          detailParcel={item} 
+          category={item.category}
+          btClose={() => setShowModal(false)} 
+        />
     </div>
   );
 };
