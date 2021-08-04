@@ -21,6 +21,16 @@ class ModalParcel extends React.Component {
         </div>
     );
 
+    resendOTP = () => {
+        console.log(this.props.username, this.props.password)
+        axios.patch(URL_API + `/auth/reverif`, {
+            username: this.props.username, password: this.props.password
+        }).then(res => {
+            console.log(res.data)
+            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        }).catch(err => console.log(err))
+    }
+
 
     onBtCart = () => {
         if (this.props.id) {

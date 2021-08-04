@@ -1,5 +1,5 @@
 .box-cart {
-    border: 1px solid #DDDDDD;
+    border-bottom: 1px solid #DDDDDD;
 }
 
 .cart-name {
@@ -64,7 +64,20 @@
 .table-cart {
     border: 1px solid #DDDDDD;
     border-radius: 10px;
+    padding: 10px;
+    
 }
+
+.table-cart tr td {
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.table-cart tr:last-child { 
+    border: 0;
+}
+
+
+
 
 .th-cart {
     font-size: 16px;

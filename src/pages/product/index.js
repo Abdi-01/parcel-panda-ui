@@ -16,6 +16,8 @@ import { Checkbox } from '@material-ui/core';
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import { Link } from "react-router-dom";
+import GifPlayer from "react-gif-player";
+import product from "../../asset/gif/product.gif";
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -52,7 +54,7 @@ class ProductsPage extends React.Component {
         const slice = product.slice(this.state.offset, this.state.offset + this.state.perPage)
         return slice.map((item, index) => {
             return <div className="col-md-3 mt-5">
-                <Card>
+                <Card style={{boxShadow: '5px 5px 5px #DDDDDD'}}>
                     <Link to={`/product-detail?p.id=${item.id}`} style={{ textDecoration: "none", color: "black" }}>
                         {
                             item.url ?
@@ -174,7 +176,7 @@ class ProductsPage extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{marginTop: '35px'}}>
                 <div className="row" >
                     <div className="col-md-3 mt-3">
                         <div>
@@ -271,6 +273,9 @@ class ProductsPage extends React.Component {
                                     <option value="nama-desc">Z - A</option>
                                 </Input>
                             </div>
+                        </div>
+                        <div style={{marginTop: '15px'}}>
+                            <GifPlayer gif={product} autoplay={true} style={{ width: '100%' }} />
                         </div>
                         <div className="row">
                             {
