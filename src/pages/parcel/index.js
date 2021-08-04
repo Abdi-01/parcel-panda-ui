@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg, Spinner } from 'reactstrap';
+import { Container, Input, Label, Button, CardImg, Spinner } from 'reactstrap';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import "../product/productPage.css"
 import { Checkbox } from '@material-ui/core';
@@ -40,7 +40,8 @@ class ParcelPage extends React.Component {
             selectedIndex: null,
             parcel: [],
             detailParcel: {},
-            category: []
+            category: [],
+            loading: false,
         }
     }
 
@@ -51,7 +52,7 @@ class ParcelPage extends React.Component {
 
 
     dataParcel = () => {
-        this.setState({loading: true})
+        this.setState({ loading: true })
         axios.get(URL_API + `/parcel/get-parcel`)
             .then(res => {
                 this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
@@ -152,7 +153,7 @@ class ParcelPage extends React.Component {
 
     render() {
         return (
-            <Container style={{marginTop: '35px'}}>
+            <Container style={{ marginTop: '35px' }}>
                 <div className="row" >
                     {/* {this.printConfirm()} */}
                     <ModalParcel modal={this.state.modal} detailParcel={this.state.detailParcel} category={this.state.category}
@@ -167,14 +168,6 @@ class ParcelPage extends React.Component {
                                 <option value="harga-asc">Price Low-High</option>
                                 <option value="harga-desc">Price High-Low</option>
                             </Input>
-                            {/* <div className="p-field ">
-                                <div>
-                                    <span className="p-input-icon-right">
-                                        <InputText value={this.state.filterName} onChange={(e) => this.setState({ filterName: e.target.value })} />
-                                        <i className="pi pi-search" />
-                                    </span>
-                                </div>
-                            </div> */}
                             <h2 className="mt-5 h2-sort">PARCEL CATEGORY</h2>
                             <div className="div-checkbox" >
                                 <Checkbox className="chkbox" color="primary" name="idcategori=1" onChange={this.checkbox} />
@@ -206,11 +199,11 @@ class ParcelPage extends React.Component {
                             <GifPlayer gif={parcel} autoplay={true} style={{ width: '100%' }} />
                         </div>
                         <div className="row">
-                        {
-                            this.state.loading === true &&
-                            <Spinner color="warning" />
-                        }
-                        {this.getData()} 
+                            {
+                                this.state.loading === true &&
+                                <Spinner color="warning" />
+                            }
+                            {this.getData()}
                         </div>
                         <ReactPaginate
                             previousLabel={"prev"}

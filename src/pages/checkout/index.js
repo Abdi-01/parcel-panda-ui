@@ -39,10 +39,10 @@ class CheckoutPage extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        axios.get(URL_API + `/transaction/get-address`, headers)
+        axios.get(URL_API + `/profile`, headers)
             .then(res => {
-                console.log("ADDRESS", res.data)
-                this.setState({ address: res.data })
+                console.log("ADDRESS", res.data[0].address)
+                this.setState({ address: res.data[0].address })
             }).catch(err => console.log(err))
     }
 

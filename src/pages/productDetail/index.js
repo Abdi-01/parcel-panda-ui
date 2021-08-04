@@ -102,14 +102,14 @@ class ProductDetailPage extends React.Component {
                                 </Button>
                             </div>
                         </div>
-                    </div>
-                    <Link className="btn btn-warning" onClick={() => this.onBtAddToParcel(index)}
+                        <Link className="btn btn-warning" onClick={() => this.onBtAddToParcel(index)}
                         to={`/cart/${this.props.id}`}
-                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%', width: '100%' }}>
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '5%',width: '100%' }}>
                         <span class="material-icons" >
                             shopping_cart
                         </span>
                         <span>Add to Parcel</span></Link>
+                    </div>
                 </div>
             )
         })
