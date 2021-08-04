@@ -69,7 +69,7 @@ const UserProfile = () => {
   return (
     <div>
       <Container>
-        <Box sx={{ bgcolor: 'background.paper' }}>
+        <Box sx={{ bgcolor: 'background.paper', marginTop: 30 }}>
           <AppBar position="static">
             <Tabs
               value={value}

@@ -23,9 +23,7 @@ const SwiperComp = () => {
             parcel: parcelReducers.parcel_list
         }
     })
-
-    // console.log(parcel)
-
+    
     const printCard = () => {
         console.log("parcel", parcel)
         if (parcel.length > 0) {

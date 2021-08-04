@@ -1,20 +1,17 @@
-import React from 'react';
+import React from 'react'
 import { Container } from 'reactstrap';
+import { Wrapper, LeftHeader } from './Footer';
 
-class FooterComp extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
-    }
-    render() { 
-        return ( 
-            <div className="mt-5" style={{height: '55px', backgroundColor: '#F4F4F4',}}>
+const FooterComp = () => {
+    return (
+        <div>
+            <Wrapper>
                 <Container>
-                    <h6 style={{paddingTop: '20px', fontSize: '15px'}}>2021 © Parcelpanda. All Rights Reserved.</h6>
+                    <LeftHeader>2021 © Parcelpanda. All Rights Reserved.</LeftHeader>
                 </Container>
-            </div>
-         );
-    }
+            </Wrapper>
+        </div>
+    )
 }
- 
-export default FooterComp;
+
+export default FooterComp
