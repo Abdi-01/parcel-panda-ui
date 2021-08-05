@@ -44,7 +44,7 @@ const ProductManagement = () => {
     const printCard = () => {
         if (cardData !== null) {
             return cardData.map((item) => {
-                return <ProductCard data={item} getProductData={getProductData} />
+                return <ProductCard data={item} getProductData={getProductData} key={item.id}/>
             })
         }
     }
