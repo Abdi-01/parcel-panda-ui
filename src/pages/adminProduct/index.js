@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import ProductCard from "../../components/productCard";
 import SortProductAdmin from "../../components/sortProductAdmin";
@@ -41,25 +41,6 @@ const ProductManagement = () => {
         setOpenAddProduct(true);
     };
 
-    const getProductData = async () => {
-        try {
-            let token = localStorage.getItem("tkn_id");
-            let config = {
-                method: 'get',
-                url: URL_API + `/product-manage/read/20/${20 * (page - 1)}?sort=${sort.order}&column=${sort.column}`,
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            let response = await axios(config)
-            setLoading(false)
-            setPageN(Math.ceil(response.data.count / 20))
-            setCardData(response.data.values)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     const printCard = () => {
         if (cardData !== null) {
             return cardData.map((item) => {
@@ -76,9 +57,28 @@ const ProductManagement = () => {
         });
     }
 
+    const getProductData = useCallback(async () => {
+        try {
+            let token = localStorage.getItem("tkn_id");
+            let config = {
+                method: 'get',
+                url: URL_API + `/product-manage/read/20/${20 * (page - 1)}?sort=${sort.order}&column=${sort.column}`,
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            let response = await axios(config)
+            setLoading(false)
+            setPageN(Math.ceil(response.data.count / 20))
+            setCardData(response.data.values)
+        } catch (error) {
+            console.log(error)
+        }
+    }, [page, sort] )
+
     useEffect(() => {
         getProductData()
-    }, [page, sort])
+    }, [getProductData])
 
     return (
         <div>

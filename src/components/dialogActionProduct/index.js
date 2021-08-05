@@ -143,14 +143,14 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
 
   useEffect(() => {
     if (data) {
-      setValues({
+      setValues(values => ({
         ...values,
         id: data.id,
         name: data.name,
         idcategory: data.idcategory,
         stock: data.stock,
         price: data.price,
-      })
+      }))
     }
   }, [data])
 
