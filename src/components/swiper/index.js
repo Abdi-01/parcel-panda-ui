@@ -37,7 +37,7 @@ const SwiperComp = () => {
 
     return (
         <div>
-            <h1 style={{textAlign: 'center'}}>Choose Parcel</h1>
+            <h1 style={{textAlign: 'center', marginTop: '50px'}}>Choose Parcel</h1>
             <Swiper slidesPerView={5} spaceBetween={30} centeredSlides={false} pagination={{"clickable": true}} className="mySwiper">
                 {printCard()}
             </Swiper>

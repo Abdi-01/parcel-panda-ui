@@ -42,6 +42,7 @@ const ProductManagement = () => {
     };
 
     const printCard = () => {
+        // console.log("printCard", cardData)
         if (cardData !== null) {
             return cardData.map((item) => {
                 return <ProductCard data={item} getProductData={getProductData} key={item.id}/>

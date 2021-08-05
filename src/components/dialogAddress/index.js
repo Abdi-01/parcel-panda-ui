@@ -40,7 +40,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
 
     const handleChangeCity = (event) => {
         // setAge(event.target.value);
-        console.log("handleChangeCity", event.target.value)
+        // console.log("handleChangeCity", event.target.value)
         setValues({ ...values, idcity: event.target.value })
     }
 
@@ -50,7 +50,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
             let token = localStorage.getItem("tkn_id")
             let config = {}
             if (data && data.id) {
-                console.log("Edit address", values)
+                // console.log("Edit address", values)
                 let temp = values
                 temp.id = data.id
                 config = {
@@ -62,7 +62,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
                     }
                 }
             } else {
-                console.log("Add address", values)
+                // console.log("Add address", values)
                 config = {
                     method: 'post',
                     url: URL_API + '/profile/add-address',

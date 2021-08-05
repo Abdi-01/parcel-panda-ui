@@ -46,7 +46,7 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
   }
 
   const handleFile = (event) => {
-    console.log("Files", event.target.files)
+    // console.log("Files", event.target.files)
     if (event.target.files[0]) {
       setValues({
         ...values,
