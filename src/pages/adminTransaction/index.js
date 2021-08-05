@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
 import DialogImagePayment from '../../components/dialogImage';
 import DialogActionTransaction from '../../components/dialogActionTransaction';
@@ -154,29 +154,29 @@ const TransactionManagement = () => {
         }
     }
 
-    const setQueryPaymentFilter = () => {
-        if (paymentStatus.ongoing || paymentStatus.accepted || paymentStatus.rejected) {
-            let query = 'payment='
-            let values = []
-            for (let payment in paymentStatus) {
-                if (paymentStatus[payment] === true) {
-                    values.push(payment)
+    
+    const getTransaction = useCallback(async () => {
+        try {
+            const setQueryPaymentFilter = () => {
+                if (paymentStatus.ongoing || paymentStatus.accepted || paymentStatus.rejected) {
+                    let query = 'payment='
+                    let values = []
+                    for (let payment in paymentStatus) {
+                        if (paymentStatus[payment] === true) {
+                            values.push(payment)
+                        }
+                    }
+                    return query + values.join(",")
                 }
             }
-            return query + values.join(",")
-        }
-    }
-
-    const setQueryDateFilter = () => {
-        if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
-            let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
-            console.log("Date filter", query)
-            return query
-        }
-    }
-    
-    const getTransaction = async () => {
-        try {
+        
+            const setQueryDateFilter = () => {
+                if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
+                    let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
+                    console.log("Date filter", query)
+                    return query
+                }
+            }
             setLoading(true)
             let queryPayment = ''
             let queryDate = ''
@@ -201,12 +201,13 @@ const TransactionManagement = () => {
             setLoading(false)
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
-    }
+    }, [page, rowsPerPage, paymentStatus, selectedDayRange])
     
     useEffect(() => {
         getTransaction()
-    }, [page, paymentStatus, selectedDayRange, rowsPerPage])
+    }, [getTransaction])
 
     return (
         <div>

@@ -109,14 +109,15 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
         // console.log(data)
         const fetchData = () => {
             if (data) {
-                setValues({...values, 
+                setValues(values => ({
+                    ...values, 
                     label: data.label,
                     recipient_name: data.recipient_name,
                     phone_number: data.phone_number,
                     address: data.address,
                     idcity: data.idcity,
                     postal_code: data.postal_code
-                })  
+                }))
             }
         }
         const getCity = async () => {
@@ -139,7 +140,7 @@ const FormDialogAddress = ({ open, setOpen, data }) => {
         getCity()
     }, [data])
 
-    console.log(data)
+    // console.log(data)
 
     return (
         <div>
