@@ -1,8 +1,8 @@
 import React from 'react'
-import { URL_API } from '../../helper';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
-import { ViewImage } from './dialogImage';
+import { URL_API } from '../../helper';
+import { ViewImage, ViewAltImage } from './dialogImage';
 
 const DialogImagePayment = ({ openImage, setOpenImage, imageURL }) => {
 
@@ -21,8 +21,9 @@ const DialogImagePayment = ({ openImage, setOpenImage, imageURL }) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogContent>
-                    <ViewImage src={`${URL_API}/static/images/${imageURL}`} alt="payment"/>
-                    {/* <img src={`${URL_API}/static/images/${imageURL}`} alt="payment"/> */}
+                    <ViewImage data={`${URL_API}/static/transaction/${imageURL}`} type="image/jpg">
+                        <ViewAltImage src={`${URL_API}/static/transaction/unpaid.jpg`} alt="payment"/>
+                    </ViewImage>
                 </DialogContent>
             </Dialog>
         </div>

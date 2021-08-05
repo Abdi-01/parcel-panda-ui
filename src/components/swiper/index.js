@@ -10,7 +10,8 @@ import "./styles.css";
 
 // import Swiper core and required modules
 import SwiperCore, { Pagination } from 'swiper/core';
-import ParcelCard from '../parcelCard';
+// import ParcelCard from '../parcelCard';
+import FrontParcelCard from '../frontParcelCard'
 
 // install Swiper modules
 SwiperCore.use([Pagination]);
@@ -22,14 +23,13 @@ const SwiperComp = () => {
             parcel: parcelReducers.parcel_list
         }
     })
-
-    // console.log(parcel)
-
+    
     const printCard = () => {
+        console.log("parcel", parcel)
         if (parcel.length > 0) {
             return parcel.map((item) => {
                 return  <SwiperSlide>
-                            <ParcelCard item={item} />
+                            <FrontParcelCard item={item} />
                         </SwiperSlide>
             })
         }
@@ -37,6 +37,7 @@ const SwiperComp = () => {
 
     return (
         <div>
+            <h1 style={{textAlign: 'center'}}>Choose Parcel</h1>
             <Swiper slidesPerView={5} spaceBetween={30} centeredSlides={false} pagination={{"clickable": true}} className="mySwiper">
                 {printCard()}
             </Swiper>

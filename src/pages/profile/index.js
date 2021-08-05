@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { injectStyle } from "react-toastify/dist/inject-style";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@material-ui/core/styles";
-import { Container } from "react-bootstrap";
 import ProfileBox from "../../components/profileBox";
 import AddressBox from "../../components/addressBox";
 import PasswordBox from "../../components/passwordBox";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { useTheme } from "@material-ui/core/styles";
+import { Container } from "react-bootstrap";
 import { 
   AppBar, 
   Box,
@@ -69,7 +69,7 @@ const UserProfile = () => {
   return (
     <div>
       <Container>
-        <Box sx={{ bgcolor: 'background.paper' }}>
+        <Box sx={{ bgcolor: 'background.paper', marginTop: 30 }}>
           <AppBar position="static">
             <Tabs
               value={value}

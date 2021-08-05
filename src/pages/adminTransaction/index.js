@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import axios from 'axios'
-import { Container } from "react-bootstrap";
-import { URL_API } from '../../helper';
 import DialogImagePayment from '../../components/dialogImage';
 import DialogActionTransaction from '../../components/dialogActionTransaction';
 import FilterTransactionManagement from '../../components/filterTransaction';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Pagination from "@material-ui/lab/Pagination";
 import Skeleton from '@material-ui/lab/Skeleton';
+import { Container } from "react-bootstrap";
+import { URL_API } from '../../helper';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { 
     Button,
     Chip ,
@@ -23,7 +23,7 @@ import {
     ButtonWrapper, 
     PaginationWrapper, 
     ButtonReject, 
-    ChipRejected } from './adminTransaction';
+} from './adminTransaction';
 
 
 const StyledTableCell = withStyles((theme) => ({
@@ -154,29 +154,29 @@ const TransactionManagement = () => {
         }
     }
 
-    const setQueryPaymentFilter = () => {
-        if (paymentStatus.ongoing || paymentStatus.accepted || paymentStatus.rejected) {
-            let query = 'payment='
-            let values = []
-            for (let payment in paymentStatus) {
-                if (paymentStatus[payment] === true) {
-                    values.push(payment)
+    
+    const getTransaction = useCallback(async () => {
+        try {
+            const setQueryPaymentFilter = () => {
+                if (paymentStatus.ongoing || paymentStatus.accepted || paymentStatus.rejected) {
+                    let query = 'payment='
+                    let values = []
+                    for (let payment in paymentStatus) {
+                        if (paymentStatus[payment] === true) {
+                            values.push(payment)
+                        }
+                    }
+                    return query + values.join(",")
                 }
             }
-            return query + values.join(",")
-        }
-    }
-
-    const setQueryDateFilter = () => {
-        if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
-            let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
-            console.log("Date filter", query)
-            return query
-        }
-    }
-    
-    const getTransaction = async () => {
-        try {
+        
+            const setQueryDateFilter = () => {
+                if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
+                    let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
+                    console.log("Date filter", query)
+                    return query
+                }
+            }
             setLoading(true)
             let queryPayment = ''
             let queryDate = ''
@@ -201,12 +201,13 @@ const TransactionManagement = () => {
             setLoading(false)
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
-    }
+    }, [page, rowsPerPage, paymentStatus, selectedDayRange])
     
     useEffect(() => {
         getTransaction()
-    }, [page, paymentStatus, selectedDayRange, rowsPerPage])
+    }, [getTransaction])
 
     return (
         <div>

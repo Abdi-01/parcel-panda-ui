@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { toast } from 'react-toastify';
-import { URL_API } from "../../helper";
 import axios from "axios";
 import InputIcon from "@material-ui/icons/Input";
 import LocalMallIcon from "@material-ui/icons/LocalMall";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import { toast } from 'react-toastify';
+import { URL_API } from "../../helper";
 import { styled } from "@material-ui/core/styles";
 import {
   Button,
@@ -143,14 +143,14 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
 
   useEffect(() => {
     if (data) {
-      setValues({
+      setValues(values => ({
         ...values,
         id: data.id,
         name: data.name,
         idcategory: data.idcategory,
         stock: data.stock,
         price: data.price,
-      })
+      }))
     }
   }, [data])
 

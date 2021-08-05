@@ -1,11 +1,10 @@
 import React from 'react';
-import { Container, Input, Label, Button, Modal, ModalBody, Row, Col, CardImg, Spinner } from 'reactstrap';
+import { Container, Input, Label, Button, CardImg, Spinner } from 'reactstrap';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import { Link } from "react-router-dom";
 import ReactPaginate from 'react-paginate';
 import "../product/productPage.css"
 import { Checkbox } from '@material-ui/core';
@@ -13,6 +12,10 @@ import axios from 'axios';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
 import "../parcel/parcelPage.css"
+import ModalParcel from '../../components/parcelConfirmation';
+import GifPlayer from "react-gif-player";
+import parcel from "../../asset/gif/parcel.gif";
+
 
 toast.configure()
 
@@ -34,7 +37,10 @@ class ParcelPage extends React.Component {
             dataFilterName: [],
             modal: false,
             selectedIndex: null,
-            parcel: []
+            parcel: [],
+            detailParcel: {},
+            category: [],
+            loading: false,
         }
     }
 
@@ -43,11 +49,11 @@ class ParcelPage extends React.Component {
         this.handleSort()
     }
 
-
     dataParcel = () => {
+        this.setState({ loading: true })
         axios.get(URL_API + `/parcel/get-parcel`)
             .then(res => {
-                this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                this.setState({ parcel: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
             }).catch(err => console.log(err))
     }
 
@@ -73,101 +79,17 @@ class ParcelPage extends React.Component {
                         </Typography>
                     </CardContent>
                     <CardActions>
-                        <Link onClick={() => { this.setState({ modal: !this.state.modal, selectedIndex: index, }) }} className="btn btn-warning">
+                        <Button onClick={() => this.setState({ detailParcel: item, modal: !this.state.modal, category: item.category.join("&") })} className="btn btn-warning">
                             Add to Cart
-                        </Link>
+                        </Button>
                     </CardActions>
                 </Card>
             </div>
         })
     }
 
-    printConfirm = () => {
-        return this.state.parcel.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <div>
-                        <Modal size="lg" isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
-                            <ModalBody>
-                                <Container>
-                                    <Row className="box">
-                                        <Col md="6" className="p-0">
-                                            {
-                                                item.url.includes('.jpg') || item.url.includes('.png') || item.url.includes('.jpeg') ?
-                                                    <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
-                                                        src={URL_API + '/static/images/' + item.url} alt="img" /> :
-                                                    <img className="img-log" style={{ objectFit: "fill", borderRadius: "15px 0px 0px 15px", width: "100%", height: "100%" }}
-                                                        src={'https://drive.google.com/uc?export=view&id=' + item.url} alt="img" />
-                                            }
-                                        </Col>
-                                        <Col md="6" className="col2">
-                                            <h3>Yay!</h3>
-                                            <h4>You Selected Paket {item.id}</h4>
-                                            <h6>this parcel MUST contains {item.title}</h6>
-                                            <Link onClick={() => this.onBtCart(item)} className="btn btn-warning"
-                                                to={
-                                                    this.props.id ?
-                                                        this.props.idstatus === 1 ?
-                                                            `/product?${item.category.join("&")}` : false
-                                                        : false
-                                                } style={{ textDecoration: "none", color: "black" }}>
-                                                Pick goods
-                                            </Link>
-                                        </Col>
-                                    </Row>
-                                </Container>
-                            </ModalBody>
-                        </Modal>
-                    </div>
-                )
-            }
-        })
-    }
-
     resetCheckbox = () => {
         window.location.reload()
-    }
-
-    resendOTP = () => {
-        console.log(this.props.username, this.props.password)
-        axios.patch(URL_API + `/auth/reverif`, {
-            username: this.props.username, password: this.props.password
-        }).then(res => {
-            console.log(res.data)
-            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        }).catch(err => console.log(err))
-    }
-
-    customToastWithLink = () => (
-        <div>
-            <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
-        </div>
-    );
-
-    onBtCart = (item) => {
-        if (this.props.id) {
-            if (this.props.idstatus === 1) {
-                console.log("PARCEL", item)
-                let token = localStorage.getItem("tkn_id")
-                const headers = {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }
-                let idparcel_type = item.id
-                let subtotal = item.price
-                console.log("add", idparcel_type, subtotal)
-                axios.post(URL_API + `/transaction/addCart`, { idparcel_type, subtotal }, headers)
-                    .then(res => {
-                        console.log("cart", res.data)
-                        // this.props.getCart(res.data)
-                    }).catch(err => console.log("add cart", err))
-            } else {
-                toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-            }
-        } else {
-            toast.error('Login First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        }
     }
 
     checkbox = (e) => {
@@ -228,9 +150,11 @@ class ParcelPage extends React.Component {
 
     render() {
         return (
-            <Container>
+            <Container style={{ marginTop: '35px' }}>
                 <div className="row" >
-                    {this.printConfirm()}
+                    {/* {this.printConfirm()} */}
+                    <ModalParcel modal={this.state.modal} detailParcel={this.state.detailParcel} category={this.state.category}
+                        btClose={() => this.setState({ modal: !this.state.modal })} />
                     <div className="col-md-3 mt-3">
                         <div>
                             <h2 className="h2-sort">SORT</h2>
@@ -241,14 +165,6 @@ class ParcelPage extends React.Component {
                                 <option value="harga-asc">Price Low-High</option>
                                 <option value="harga-desc">Price High-Low</option>
                             </Input>
-                            {/* <div className="p-field ">
-                                <div>
-                                    <span className="p-input-icon-right">
-                                        <InputText value={this.state.filterName} onChange={(e) => this.setState({ filterName: e.target.value })} />
-                                        <i className="pi pi-search" />
-                                    </span>
-                                </div>
-                            </div> */}
                             <h2 className="mt-5 h2-sort">PARCEL CATEGORY</h2>
                             <div className="div-checkbox" >
                                 <Checkbox className="chkbox" color="primary" name="idcategori=1" onChange={this.checkbox} />
@@ -276,17 +192,15 @@ class ParcelPage extends React.Component {
                         <div className="div-box-parcel">
                             <h2 className="h2-produk">PARCEL</h2>
                         </div>
+                        <div>
+                            <GifPlayer gif={parcel} autoplay={true} style={{ width: '100%' }} />
+                        </div>
                         <div className="row">
                             {
-                                this.props.parcel ?
-                                    <>
-                                        {this.getData()}
-                                    </>
-                                    :
-                                    <>
-                                        <Spinner color="warning" />
-                                    </>
+                                this.state.loading === true &&
+                                <Spinner color="warning" />
                             }
+                            {this.getData()}
                         </div>
                         <ReactPaginate
                             previousLabel={"prev"}

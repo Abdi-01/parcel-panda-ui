@@ -17,7 +17,7 @@ import {
 } from "./RevenueCard";
 
 const RevenueCard = ({ data, type }) => {
-    console.log("Revenue card data", data,type)
+    // console.log("Revenue card data", data,type)
     return (
         <div>
             <Container>
@@ -63,8 +63,8 @@ const RevenueCard = ({ data, type }) => {
                             <AccountBalanceWalletIcon fontSize="large" style={{fill: "#3f50b5"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
-                            <TextHeadCategory>Revenue</TextHeadCategory>
-                            <TextHeaderNumb>IDR {data.month === null ? 0 : data.month.toLocaleString()}</TextHeaderNumb>
+                            <TextHeadCategory>{type}</TextHeadCategory>
+                            <TextHeaderNumb>{type === 'item' ? "" : "IDR"} {data.month === null ? 0 : data.month.toLocaleString()}</TextHeaderNumb>
                         </TextHeadWrapper>
                     </CardHead>
                     <hr />

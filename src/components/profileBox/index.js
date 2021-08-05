@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from "react-redux";
 import axios from 'axios';
-import { URL_API } from '../../helper'
 import picture_profile from "../../asset/img/profile-user.png";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import SyncLoader from "react-spinners/SyncLoader";
+import FormDialogProfile from '../dialogFullname';
+import FormDialogGender from '../dialogGender';
+import FormDialogVerify from '../dialogVerify';
+import FormDialogDateBirth from '../dialogDateBirth';
+import { useDispatch } from "react-redux";
+import { URL_API } from '../../helper'
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
-import SyncLoader from "react-spinners/SyncLoader";
+import { getProfile } from '../../actions';
 import { 
     Badge,
     Button, 
@@ -26,14 +31,13 @@ import {
     Status,
     StyledButton,
 } from "./profileBoxComp";
-import FormDialogProfile from '../dialogFullname';
-import FormDialogGender from '../dialogGender';
-import FormDialogVerify from '../dialogVerify';
-import { getProfile } from '../../actions';
+
+const date_options = { year: 'numeric', month: 'long', day: 'numeric' }
 
 const ProfileBox = () => {
     const [openDialogFullname, setOpenDialogFullname] = useState(false);
     const [openDialogGender, setOpenDialogGender] = useState(false);
+    const [openDialogDateBirth, setOpenDialogDateBirth] = useState(false);
     const [openDialogVerify, setOpenDialogVerify] = useState(false);
     const [imageLoading, setImageLoading] = useState(false)
     const dispatch = useDispatch()
@@ -45,6 +49,10 @@ const ProfileBox = () => {
     const editGender = () => {
       setOpenDialogGender(true);
     };
+
+    const editDateBirth = () => {
+      setOpenDialogDateBirth(true)
+    }
 
     const verifyAccount = () => {
       setOpenDialogVerify(true);
@@ -96,7 +104,6 @@ const ProfileBox = () => {
     useEffect(() => {
   
     }, [imageLoading])
-
     // console.log(profile)
 
     return (
@@ -133,6 +140,17 @@ const ProfileBox = () => {
                     <StyledButton
                       size="small"
                       onClick={editGender}
+                      style={{ textTransform: "lowercase", marginLeft: "5px" }}
+                    >
+                      update
+                    </StyledButton>
+                  </EditContainer>
+                  <EditContainer>
+                    <Label>Date birth</Label>
+                    <Typography variant="subtitle1">{new Date(profile.date_birth).toLocaleDateString('en-GB', date_options)}</Typography>
+                    <StyledButton
+                      size="small"
+                      onClick={editDateBirth}
                       style={{ textTransform: "lowercase", marginLeft: "5px" }}
                     >
                       update
@@ -201,19 +219,21 @@ const ProfileBox = () => {
             <FormDialogProfile
                 open={openDialogFullname}
                 setOpen={setOpenDialogFullname}
-                // handleNotify={handleNotify}
                 value={profile.fullname}
             />
             <FormDialogGender
                 open={openDialogGender}
                 setOpen={setOpenDialogGender}
-                // handleNotify={handleNotify}
                 value={profile.gender}
+            />
+            <FormDialogDateBirth 
+                open={openDialogDateBirth}
+                setOpen={setOpenDialogDateBirth}
+                value={profile.date_birth}
             />
             <FormDialogVerify
                 open={openDialogVerify}
                 setOpen={setOpenDialogVerify}
-                // handleNotify={handleNotify}
             />
         </div>
     )

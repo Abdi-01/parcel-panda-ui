@@ -95,3 +95,22 @@ export const getCart = (data) => {
         }
     }
 }
+
+export const updateCart = ({data, amount, idproduct, idcart}) => {
+    return async dispatch => {
+        try {
+            let token = localStorage.getItem("tkn_id")
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+            await axios.patch(URL_API + `/transaction/update-qty`, {
+                amount, idproduct, idcart
+            }, headers)
+            await dispatch(getCart(data))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}

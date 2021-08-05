@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
-import { BarLoader, ClipLoader } from "react-spinners";
-import { URL_API } from "../../helper";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import ProductCard from "../../components/productCard";
 import SortProductAdmin from "../../components/sortProductAdmin";
 import ActionProduct from "../../components/dialogActionProduct";
 import Pagination from "@material-ui/lab/Pagination";
+import { Container } from "react-bootstrap";
+import { BarLoader, ClipLoader } from "react-spinners";
+import { URL_API } from "../../helper";
 import {
     Button,
 } from "@material-ui/core/";
@@ -41,7 +41,23 @@ const ProductManagement = () => {
         setOpenAddProduct(true);
     };
 
-    const getProductData = async () => {
+    const printCard = () => {
+        if (cardData !== null) {
+            return cardData.map((item) => {
+                return <ProductCard data={item} getProductData={getProductData} />
+            })
+        }
+    }
+
+    const scrollToTop = () => {
+        setLoading(true)
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    const getProductData = useCallback(async () => {
         try {
             let token = localStorage.getItem("tkn_id");
             let config = {
@@ -59,27 +75,11 @@ const ProductManagement = () => {
         } catch (error) {
             console.log(error)
         }
-    }
-
-    const printCard = () => {
-        if (cardData !== null) {
-            return cardData.map((item) => {
-                return <ProductCard data={item} getProductData={getProductData} />
-            })
-        }
-    }
-
-    const scrollToTop = () => {
-        setLoading(true)
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    }
+    }, [page, sort] )
 
     useEffect(() => {
         getProductData()
-    }, [page, sort])
+    }, [getProductData])
 
     return (
         <div>

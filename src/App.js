@@ -21,11 +21,7 @@ import ProductDetailPage from './pages/productDetail';
 import CartPages from './pages/cart';
 import CheckoutPage from './pages/checkout';
 import UserTransactionPage from './pages/userTransaction';
-// import userTransaction from './pages/userTransaction';
-// import FinancialReport from './pages/report'
-// import ProductManagement from './pages/product'
-// import TransactionManagement from './pages/transaction'
-// import SpecialMenu from './pages/specialMenu'
+import PageNotFound from './pages/pageNotFound';
 
 class App extends React.Component {
   constructor(props) {
@@ -60,40 +56,39 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{position: 'relative', minHeight:"100vh"}}>
         {
           this.props.role === "admin" ? <AdminAppBar /> : <NavbarComp />
         }
-        <Switch>
-          <Route
-            path="/"
-            component={this.props.role !== "admin" ? LandingPage : ProductManagement} exact />
-          <Route path="/regis" component={RegisterPage} />
-          <Route path="/forget-pass" component={ResetPassPage} />
-          <Route path="/verification" component={VerificationPage} />
-          <Route path="/parcel" component={ParcelPage} />
-          <Route path="/product" component={ProductsPage} />
-          <Route path="/product-detail" component={ProductDetailPage} />
-          {
-            this.props.role === "admin" ?
-              <>
-                {/* <Route path="/" component={AdminPage} exact /> */}
-                {/* <Route path='/user-profile' component={UserProfile} /> */}
-                <Route path='/product-management' component={ProductManagement} exact />
-                <Route path='/transaction-management' component={TransactionManagement} />
-                <Route path='/sales-report' component={SalesReport} />
-              </> : this.props.role === "user" ?
-                <>
-                  <Route path="/" component={LandingPage} exact />
-                  <Route path='/user-profile' component={UserProfile} />
-                  <Route path="/cart/:id" component={CartPages} />
-                  <Route path="/checkout/:id" component={CheckoutPage} />
-                  <Route path="/user-transaction/:id" component={UserTransactionPage} />
-                  {/* <Route path="/user-transaction/:id" component={userTransaction} /> */}
-                </> :
-                <Route path="*" component={LandingPage} exact />
-          }
-        </Switch>
+        {
+          this.props.role === "admin" ?
+            <Switch>
+              <Route path="/" component={ProductManagement} exact/>
+              <Route path='/product-management' component={ProductManagement} exact />
+              <Route path='/transaction-management' component={TransactionManagement} />
+              <Route path='/sales-report' component={SalesReport} />
+              <Route path='*' component={PageNotFound} />
+            </Switch> :
+          this.props.role === "user" ?
+            <Switch>
+              <Route path="/" component={LandingPage} exact/>
+              <Route path='/user-profile' component={UserProfile} />
+              <Route path="/parcel" component={ParcelPage} />
+              <Route path="/product" component={ProductsPage} />
+              <Route path="/product-detail" component={ProductDetailPage} />
+              <Route path="/cart/:id" component={CartPages} />
+              <Route path="/checkout/:id" component={CheckoutPage} />
+              <Route path="/user-transaction/:id" component={UserTransactionPage} />
+              <Route path="*" component={PageNotFound} />
+            </Switch> :
+            <Switch>
+              <Route path="/" component={LandingPage} exact/>
+              <Route path="/regis" component={RegisterPage} />
+              <Route path="/forget-pass" component={ResetPassPage} />
+              <Route path="/verification" component={VerificationPage} />
+              <Route path="*" component={PageNotFound} />
+          </Switch>
+        }
         <FooterComp />
       </div>
     );

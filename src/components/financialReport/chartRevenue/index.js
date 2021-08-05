@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import RevenueCard from "../revenueCard";
+import PieChartComponent from "../pieChart";
+import AreaChartComponent from "../areaChart";
 import DatePicker from "react-modern-calendar-datepicker";
 import DateRangeIcon from "@material-ui/icons/DateRange";
 import {
@@ -16,9 +19,6 @@ import {
   // DataWrapper,
   PieChartWrapper
 } from "./chartRevenue";
-import RevenueCard from "../revenueCard";
-import PieChartComponent from "../pieChart";
-import AreaChartComponent from "../areaChart";
 
 const options = [
   'revenue',
@@ -83,7 +83,7 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
     useEffect(() => {
       const fetchData = () => {
         if (values !== null) {
-          console.log("values", values)
+          // console.log("values", values)
           let tmp = values.data
           const options = { year: 'numeric', month: 'long', day: 'numeric' }
           for (let prop in tmp) {
@@ -91,20 +91,17 @@ const ChartRevenue = ({ values, selectedDayRange, setSelectedDayRange, selectedI
           }
           setDataAreaChart(tmp)
           setDataPieChart(values.top)
-          setRevenue({
+          setRevenue(revenue => ({
             ...revenue,
             day: values.day,
             month: values.month,
             total: values.total,
             filtered: values.filtered
-          })
+          }))
         }
       }
       fetchData()
-    }, [values])
-
-    // console.log("Values", values)
-    console.log("revenue", revenue)
+    }, [values]) // if add revenue, will infinite loop
 
     return (
         <div>
