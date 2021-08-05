@@ -75,7 +75,7 @@ class ModalParcel extends React.Component {
                                 </Col>
                                 <Col md="6" className="col2">
                                     <h3>Yay!</h3>
-                                    <h4>You Selected Paket{this.props.detailParcel.id}</h4>
+                                    <h4>You Selected Paket {this.props.detailParcel.id}</h4>
                                     <h6>this parcel MUST contains {this.props.detailParcel.title}</h6>
                                     <Link className="btn btn-warning" onClick={this.onBtCart}
                                         to={

@@ -1,7 +1,6 @@
 import React from 'react';
 import { Button, Container, Form, Nav, Navbar, Badge } from 'react-bootstrap';
 import logo from "../../asset/img/logo.png"
-// import { InputText } from 'primereact/inputtext';
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
@@ -83,16 +82,20 @@ class NavbarComp extends React.Component {
                 {this.printLogin()}
                 <Navbar expand="md" >
                     <Container>
-                        <Navbar.Brand href="/">
+                        <Link to="/">
                             <img src={logo} width="200px" alt="logo" className="d-inline-block align-top " />
-                        </Navbar.Brand>
+                        </Link>
                         <Nav>
-                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
-                                takeout_dining
-                            </span>Parcel</Nav.Link>
-                            <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
-                                sell
-                            </span>Product</Nav.Link>
+                            <div>
+                                <Link to="/parcel" style={{ display: 'flex', textDecoration: 'none', color: 'gray' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
+                                    takeout_dining
+                                </span>Parcel</Link>
+                            </div>
+                            <div>
+                                <Link to="/product" style={{ display: 'flex', textDecoration: 'none', color: 'gray', marginLeft: '10px'}}><span style={{ paddingRight: '3px' }} className="material-icons">
+                                    sell
+                                </span>Product</Link>
+                            </div>
                         </Nav>
                         <Nav>
                             {
@@ -162,11 +165,11 @@ class NavbarComp extends React.Component {
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-                                        <Nav.Link href={`/cart/${this.props.iduser}`}>
+                                        <Link to={`/cart/${this.props.iduser}`} style={{textDecoration: 'none', color: 'gray'}}>
                                             <span className="material-icons">
                                                 shopping_cart
                                             </span><Badge style={{ color: "black", backgroundColor: '#FAB629' }}>{this.totalQty()}</Badge>
-                                        </Nav.Link>
+                                        </Link>
                                     </div> :
                                     <Button style={{ marginLeft: '15px' }} size="sm" variant="outline-secondary" onClick={() => {
                                         this.setState({ modal: !this.state.modal });
@@ -177,18 +180,6 @@ class NavbarComp extends React.Component {
                         </Nav>
                     </Container>
                 </Navbar>
-                {/* <Navbar >
-                    <Container>
-                        <Nav className=" my-2 my-lg-0 " style={{ maxHeight: '100px' }} navbarScroll>
-                            <Nav.Link href="/parcel" style={{ display: 'flex' }}><span style={{ paddingLeft: '3px' }} className="material-icons">
-                                bolt
-                            </span>Parcel</Nav.Link>
-                            <Nav.Link href="/product" style={{ display: 'flex' }}><span style={{ paddingRight: '3px' }} className="material-icons">
-                                sell
-                            </span>Product</Nav.Link>
-                        </Nav>
-                    </Container>
-                </Navbar> */}
             </div>
         );
     }
