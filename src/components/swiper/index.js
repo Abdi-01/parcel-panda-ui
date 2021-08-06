@@ -1,4 +1,5 @@
 import React from 'react'
+import { Container } from "react-bootstrap";
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useSelector } from "react-redux";
 
@@ -37,10 +38,12 @@ const SwiperComp = () => {
 
     return (
         <div>
-            <h1 style={{textAlign: 'center', marginTop: '50px'}}>Choose Parcel</h1>
-            <Swiper slidesPerView={5} spaceBetween={30} centeredSlides={false} pagination={{"clickable": true}} className="mySwiper">
-                {printCard()}
-            </Swiper>
+            <Container>
+                <h1 style={{textAlign: 'center', marginTop: '50px'}}>Choose Parcel</h1>
+                <Swiper slidesPerView={5} spaceBetween={10} centeredSlides={false} pagination={{"clickable": true}} className="mySwiper">
+                    {printCard()}
+                </Swiper>
+            </Container>
         </div>
     )
 }
