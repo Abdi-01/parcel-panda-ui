@@ -10,7 +10,8 @@ export const Container = styled.div`
 
 export const Card = styled.div`
     padding: 20px;
-    border-left: 8px solid #3f50b5;
+    border-left: ${props => props.type === 'revenue' ? 
+        "8px solid #3f50b5" : "8px solid #fa8231"};
     border-radius: 5px;
     color: #252422;
     background-color: #fff;
@@ -18,6 +19,8 @@ export const Card = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+
 `
 
 export const CardHead = styled.div`

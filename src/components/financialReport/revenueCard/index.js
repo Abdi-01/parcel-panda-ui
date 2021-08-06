@@ -21,10 +21,11 @@ const RevenueCard = ({ data, type }) => {
     return (
         <div>
             <Container>
-                <Card>
+                <Card type={type}>
                     <CardHead>
                         <IconWrapper>
-                            <AttachMoneyIcon fontSize="large" style={{fill: "#3f50b5"}}/>
+                            {/* <AttachMoneyIcon fontSize="large" style={{fill: "#3f50b5"}}/> */}
+                            <AttachMoneyIcon fontSize="large" style={type === 'revenue' ? {fill: "#3f50b5"} : {fill: "#fa8231"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
                             <TextHeadCategory>{type}</TextHeadCategory>
@@ -39,10 +40,10 @@ const RevenueCard = ({ data, type }) => {
                         <TextFooter>{data.filtered === null ? "Not yet selected" : "Selected date"}</TextFooter>
                     </CardFooter>
                 </Card>
-                <Card>
+                <Card type={type}>
                     <CardHead>
                         <IconWrapper>
-                            <LocalAtmIcon fontSize="large" style={{fill: "#3f50b5"}}/>
+                            <LocalAtmIcon fontSize="large" style={type === 'revenue' ? {fill: "#3f50b5"} : {fill: "#fa8231"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
                             <TextHeadCategory>{type}</TextHeadCategory>
@@ -57,10 +58,10 @@ const RevenueCard = ({ data, type }) => {
                         <TextFooter>Today</TextFooter>
                     </CardFooter>
                 </Card>
-                <Card>
+                <Card type={type}>
                     <CardHead>
                         <IconWrapper>
-                            <AccountBalanceWalletIcon fontSize="large" style={{fill: "#3f50b5"}}/>
+                            <AccountBalanceWalletIcon fontSize="large" style={type === 'revenue' ? {fill: "#3f50b5"} : {fill: "#fa8231"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
                             <TextHeadCategory>{type}</TextHeadCategory>
@@ -75,10 +76,10 @@ const RevenueCard = ({ data, type }) => {
                         <TextFooter>This month</TextFooter>
                     </CardFooter>
                 </Card>
-                <Card>
+                <Card type={type}>
                     <CardHead>
                         <IconWrapper>
-                            <AccountBalanceIcon fontSize="large" style={{fill: "#3f50b5"}}/>
+                            <AccountBalanceIcon fontSize="large" style={type === 'revenue' ? {fill: "#3f50b5"} : {fill: "#fa8231"}}/>
                         </IconWrapper>
                         <TextHeadWrapper>
                             <TextHeadCategory>{type}</TextHeadCategory>

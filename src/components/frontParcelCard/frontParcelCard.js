@@ -15,7 +15,7 @@ export const Face2 = styled(Face)`
     justify-content: center;
     align-items: center;
     transition: 0.5s;
-    height: 320px;
+    height: 310px;
     background-image: linear-gradient(
         40deg,
         #ffeb3b 0%,
@@ -46,11 +46,14 @@ export const Face2Heading = styled.h2`
 `
 
 export const Card = styled.div`
+    border-top: 8px solid #4C2CAC;
     position: relative;
     width: 250px;
     height: 350px;
-    margin: 0 auto;
-    background: #000;
+    margin: 20px auto;
+    color: black;
+    /* background-color: #1e272e; */
+    background-color: white;
     border-radius: 15px;
     box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
     cursor: pointer;
@@ -62,18 +65,18 @@ export const Card = styled.div`
             justify-content: space-evenly;
 
             ${Face2Title} {
-                font-size: 2em;
+                font-size: 0em;
             }
 
             ${Face2Heading} {
-                font-size: 2em;
+                font-size: 0em;
             }
         }
     }
 `
 
 export const Face1 = styled(Face)`
-    color: white;
+    color: black;
 `
 
 export const Face1Heading = styled.h5`
