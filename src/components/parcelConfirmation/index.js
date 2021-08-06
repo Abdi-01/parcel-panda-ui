@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Modal, ModalBody, Row, Col } from 'reactstrap';
+import { Container, Modal, ModalBody, Row, Col, Button, Spinner } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { URL_API } from '../../helper';
 import { connect } from 'react-redux';
@@ -13,22 +13,30 @@ toast.configure()
 class ModalParcel extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            loading: false
+        }
     }
 
     customToastWithLink = () => (
         <div>
-            <p>Please Verify Your Account <span><Link className="alert-link" onClick={() => this.resendOTP()}>Request Verification</Link></span></p>
+            <p>Please Verify Your Account
+                <span>
+                    <Button size="sm" color="warning" onClick={() => this.resendOTP()}>{this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Request Verification</span>}</Button>
+                </span>
+            </p>
         </div>
     );
 
     resendOTP = () => {
+        this.setState({ loading: false })
         console.log(this.props.username, this.props.password)
         axios.patch(URL_API + `/auth/reverif`, {
             username: this.props.username, password: this.props.password
         }).then(res => {
             console.log(res.data)
-            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+            this.setState({ loading: true })
+            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 6000 })
         }).catch(err => console.log(err))
     }
 
