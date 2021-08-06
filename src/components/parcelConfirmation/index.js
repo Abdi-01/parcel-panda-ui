@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { URL_API } from '../../helper';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import { getCart } from '../../actions'
 
 toast.configure()
 
@@ -47,7 +48,7 @@ class ModalParcel extends React.Component {
                 axios.post(URL_API + `/transaction/addCart`, { idparcel_type, subtotal }, headers)
                     .then(res => {
                         console.log("cart", res.data)
-                        // this.props.getCart(res.data)
+                        this.props.getCart(res.data)
                     }).catch(err => console.log("add cart", err))
             } else {
                 toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -60,9 +61,6 @@ class ModalParcel extends React.Component {
 
     render() {
         console.log("detail", this.props.detailParcel, this.props.category)
-        // console.log("detail parcel", this.props.detailParcel, this.props.detailParcel.category)
-        // let { id, title, url, category } = this.props.detailParcel
-        // let ctg = category.join("&")
         return (
             <div>
                 <Modal size="lg" isOpen={this.props.modal} toggle={this.props.btClose}>
@@ -104,4 +102,4 @@ const mapStateToProps = ({ parcelReducers, authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, {})(ModalParcel);
+export default connect(mapStateToProps, { getCart })(ModalParcel);
