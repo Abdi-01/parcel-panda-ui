@@ -4,7 +4,7 @@ import logo from "../../asset/img/logo.png"
 import { Password } from 'primereact/password';
 import { Modal, ModalBody, Row, Col, FormGroup, Input, Label, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import login2 from "../../asset/img/login2.jpg";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
@@ -77,8 +77,12 @@ class NavbarComp extends React.Component {
     }
 
     render() {
+        if (this.props.iduser == null) {
+
+        }
         return (
             <div style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '99', boxShadow: '5px 5px 5px #DDDDDD', width: '100%' }}>
+                {!this.props.iduser && <Redirect to="/" />}
                 {this.printLogin()}
                 <Navbar expand="md" >
                     <Container>
@@ -92,7 +96,7 @@ class NavbarComp extends React.Component {
                                 </span>Parcel</Link>
                             </div>
                             <div>
-                                <Link to="/product" style={{ display: 'flex', textDecoration: 'none', color: 'gray', marginLeft: '10px'}}><span style={{ paddingRight: '3px' }} className="material-icons">
+                                <Link to="/product" style={{ display: 'flex', textDecoration: 'none', color: 'gray', marginLeft: '10px' }}><span style={{ paddingRight: '3px' }} className="material-icons">
                                     sell
                                 </span>Product</Link>
                             </div>
@@ -165,7 +169,7 @@ class NavbarComp extends React.Component {
                                         <Nav.Link><span className="material-icons">
                                             favorite_border
                                         </span></Nav.Link>
-                                        <Link to={`/cart/${this.props.iduser}`} style={{textDecoration: 'none', color: 'gray'}}>
+                                        <Link to={`/cart/${this.props.iduser}`} style={{ textDecoration: 'none', color: 'gray' }}>
                                             <span className="material-icons">
                                                 shopping_cart
                                             </span><Badge style={{ color: "black", backgroundColor: '#FAB629' }}>{this.totalQty()}</Badge>

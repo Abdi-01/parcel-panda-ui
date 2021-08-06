@@ -72,7 +72,7 @@ const ProductManagement = () => {
             console.log(response)
             setLoading(false)
             setPageN(Math.ceil(response.data.count / 20))
-            setCardData(response.data)
+            setCardData(response.data.values)
         } catch (error) {
             console.log(error)
         }

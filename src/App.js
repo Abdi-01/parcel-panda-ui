@@ -56,41 +56,41 @@ class App extends React.Component {
 
   render() {
     return (
-      <div style={{position: 'relative', minHeight:"100vh"}}>
+      <div style={{ position: 'relative', minHeight: "100vh" }}>
         {
           this.props.role === "admin" ? <AdminAppBar /> : <NavbarComp />
         }
         {
           this.props.role === "admin" ?
             <Switch>
-              <Route path="/" component={ProductManagement} exact/>
+              <Route path="/" component={ProductManagement} exact />
               <Route path='/product-management' component={ProductManagement} exact />
               <Route path='/transaction-management' component={TransactionManagement} />
               <Route path='/sales-report' component={SalesReport} />
               <Route path='*' component={PageNotFound} />
             </Switch> :
-          this.props.role === "user" ?
-            <Switch>
-              <Route path="/" component={LandingPage} exact/>
-              <Route path='/user-profile' component={UserProfile} />
-              <Route path="/parcel" component={ParcelPage} />
-              <Route path="/product" component={ProductsPage} />
-              <Route path="/product-detail" component={ProductDetailPage} />
-              <Route path="/cart/:id" component={CartPages} />
-              <Route path="/checkout/:id" component={CheckoutPage} />
-              <Route path="/user-transaction/:id" component={UserTransactionPage} />
-              <Route path="*" component={PageNotFound} />
-            </Switch> :
-            <Switch>
-              <Route path="/" component={LandingPage} exact/>
-              <Route path="/regis" component={RegisterPage} />
-              <Route path="/forget-pass" component={ResetPassPage} />
-              <Route path="/verification" component={VerificationPage} />
-              <Route path="/parcel" component={ParcelPage} />
-              <Route path="/product" component={ProductsPage} />
-              <Route path="/product-detail" component={ProductDetailPage} />
-              <Route path="*" component={PageNotFound} />
-          </Switch>
+            this.props.role === "user" ?
+              <Switch>
+                <Route path="/" component={LandingPage} exact />
+                <Route path='/user-profile' component={UserProfile} />
+                <Route path="/parcel" component={ParcelPage} />
+                <Route path="/product" component={ProductsPage} />
+                <Route path="/product-detail" component={ProductDetailPage} />
+                <Route path="/cart/:id" component={CartPages} />
+                <Route path="/checkout/:id" component={CheckoutPage} />
+                <Route path="/user-transaction/:id" component={UserTransactionPage} />
+                <Route path="*" component={PageNotFound} />
+              </Switch> :
+              <Switch>
+                <Route path="/" component={LandingPage} exact />
+                <Route path="/regis" component={RegisterPage} />
+                <Route path="/forget-pass" component={ResetPassPage} />
+                <Route path="/verification" component={VerificationPage} />
+                <Route path="/parcel" component={ParcelPage} />
+                <Route path="/product" component={ProductsPage} />
+                <Route path="/product-detail" component={ProductDetailPage} />
+                <Route path="*" component={PageNotFound} />
+              </Switch>
         }
         <FooterComp />
       </div>
@@ -100,7 +100,8 @@ class App extends React.Component {
 
 const mapsStateToProps = ({ authReducer }) => {
   return {
-    role: authReducer.role
+    role: authReducer.role,
+    iduser: authReducer.id
   }
 }
 
