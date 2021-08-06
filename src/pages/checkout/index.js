@@ -47,7 +47,7 @@ class CheckoutPage extends React.Component {
     }
 
     getAddress = () => {
-        return this.state.address.map((item, index) => {
+        return this.state.address.forEach((item, index) => {
             if (this.state.selectedIndex === index) {
                 return (
                     <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>

@@ -117,7 +117,7 @@ class ProductsPage extends React.Component {
 
 
     printDetail = () => {
-        return this.state.product.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
+        return this.state.product.slice(this.state.offset, this.state.offset + this.state.perPage).forEach((item, index) => {
             if (this.state.selectedIndex === index) {
                 return (
                     <div>
@@ -303,7 +303,7 @@ class ProductsPage extends React.Component {
             toast.warn('Choose Parcel First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
             if (this.state.type.length > 1) {
-                this.state.type.map((item, index) => {
+                this.state.type.forEach((item, index) => {
                     if (item.idcategory === this.state.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -323,7 +323,7 @@ class ProductsPage extends React.Component {
                             } else {
                                 // Dicart kategory itu > 0
                                 let qty_beli = []
-                                this.state.detailCart.map(item => {
+                                this.state.detailCart.forEach(item => {
                                     if (item.idcategory === this.state.idcategory) {
                                         qty_beli.push(item.amount)
                                     }
@@ -342,7 +342,7 @@ class ProductsPage extends React.Component {
                                         }).catch(err => console.log(err))
                                 } else {
                                     let qty_beli = []
-                                    this.state.detailCart.map(el => {
+                                    this.state.detailCart.forEach(el => {
                                         if (el.idcategory === this.state.idcategory) {
                                             qty_beli.push(el.amount)
                                         }
@@ -401,7 +401,7 @@ class ProductsPage extends React.Component {
 
                 })
             } else {
-                this.state.type.map((item, index) => {
+                this.state.type.forEach((item, index) => {
                     if (item.idcategory === this.state.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -421,7 +421,7 @@ class ProductsPage extends React.Component {
                             } else {
                                 // Dicart kategory itu > 0
                                 let qty_beli = []
-                                this.state.detailCart.map(item => {
+                                this.state.detailCart.forEach(item => {
                                     if (item.idcategory === this.state.idcategory) {
                                         qty_beli.push(item.amount)
                                     }
@@ -441,7 +441,7 @@ class ProductsPage extends React.Component {
                                 } else {
                                     console.log("6666")
                                     let qty_beli = []
-                                    this.state.detailCart.map(el => {
+                                    this.state.detailCart.forEach(el => {
                                         if (el.idcategory === this.state.idcategory) {
                                             qty_beli.push(el.amount)
                                         }
@@ -511,22 +511,12 @@ class ProductsPage extends React.Component {
     handleSort = () => {
         if (this.sort.value === "nama-asc") {
             this.state.product.sort((a, b) => {
-                let namaA = a.name.toUpperCase()
-                let namaB = b.name.toUpperCase()
-
-                if (namaA < namaB) {
-                    return -1;
-                }
+                return a.name - b.name
             })
             console.log(this.props.products)
         } else if (this.sort.value === "nama-desc") {
             this.state.product.sort((a, b) => {
-                let namaA = a.name.toUpperCase()
-                let namaB = b.name.toUpperCase()
-
-                if (namaA > namaB) {
-                    return -1;
-                }
+                return b.name - a.name
             })
         } else if (this.sort.value === "harga-asc") {
             this.state.product.sort((a, b) => {
