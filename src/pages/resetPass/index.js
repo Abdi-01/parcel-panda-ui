@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Row, Alert } from 'reactstrap';
+import { Button, Col, Container, Row, Alert, Spinner } from 'reactstrap';
 import forgett1 from '../../asset/img/forgett1.jpg';
 import { Password } from 'primereact/password';
 import { InputText } from 'primereact/inputtext';
@@ -14,6 +14,7 @@ class ResetPassPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            loading: false,
             email: '',
             newPass: '',
             confirmPass: '',
@@ -32,8 +33,10 @@ class ResetPassPage extends React.Component {
                 .then(res => {
                     if (res.data.length > 0) {
                         if (newPass === confirmPass) {
+                            this.setState({ loading: true })
                             axios.patch(URL_API + `/auth/update-pass`, { email: email, password: newPass })
                                 .then(res => {
+                                    this.setState({ loading: false })
                                     toast.success('Hey 👋 Your account has been updated!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                     console.log(res.data)
                                 }).catch(errPatch => console.log(errPatch))
@@ -66,7 +69,6 @@ class ResetPassPage extends React.Component {
                             <Alert isOpen={this.state.alert} color={this.state.alertType}>
                                 {this.state.message}
                             </Alert>
-                            <br></br>
                             <div className="p-field p-fluid input">
                                 <label className="p-d-block label">Email</label>
                                 <div >
@@ -75,6 +77,7 @@ class ResetPassPage extends React.Component {
                                         <InputText value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} />
                                     </span>
                                 </div>
+                                <small className="p-d-block username1-help">Enter your Email.</small>
                             </div>
                             <div className="p-field p-fluid input">
                                 <label className="p-d-block label">New Password</label>
@@ -84,6 +87,7 @@ class ResetPassPage extends React.Component {
                                         <Password value={this.state.newPass} onChange={(e) => this.setState({ newPass: e.target.value })} toggleMask />
                                     </span>
                                 </div>
+                                <small className="p-d-block username1-help">Enter your password.</small>
                             </div>
                             <div className="p-field p-fluid input">
                                 <label className="p-d-block label">Confirm Password</label>
@@ -93,9 +97,10 @@ class ResetPassPage extends React.Component {
                                         <Password value={this.state.confirmPass} onChange={(e) => this.setState({ confirmPass: e.target.value })} toggleMask />
                                     </span>
                                 </div>
+                                <small className="p-d-block username1-help">Confirm your password.</small>
                             </div>
                             <Button onClick={this.forgetPass} className="btncustom2" style={{ background: "#FAB629", color: "black" }} color="warning">
-                                Submit
+                            {this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Submit</span>}
                             </Button>
                         </Col>
                     </Row>
