@@ -18,7 +18,7 @@ class ModalParcel extends React.Component {
 
     customToastWithLink = () => (
         <div>
-            <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
+            <p>Please Verify Your Account <span><Link className="alert-link" onClick={() => this.resendOTP()}>Request Verification</Link></span></p>
         </div>
     );
 
