@@ -80,7 +80,7 @@ const SalesReport = () => {
         getData()
     }, [selectedDayRange.from, selectedDayRange.to, selectedIndex])
     
-    console.log("values in page", values)
+    // console.log("values in page", values)
     return (
         <div>
             <Container>

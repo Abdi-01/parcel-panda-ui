@@ -173,7 +173,7 @@ const TransactionManagement = () => {
             const setQueryDateFilter = () => {
                 if (selectedDayRange.from !== null && selectedDayRange.to !== null) {
                     let query = `from=${selectedDayRange.from.year}/${selectedDayRange.from.month}/${selectedDayRange.from.day}&to=${selectedDayRange.to.year}/${selectedDayRange.to.month}/${selectedDayRange.to.day}`
-                    console.log("Date filter", query)
+                    // console.log("Date filter", query)
                     return query
                 }
             }
