@@ -168,6 +168,125 @@ class ProductsPage extends React.Component {
         })
     }
 
+    handlePageClick = (e) => {
+        const selectedPage = e.selected;
+        const offset = selectedPage * this.state.perPage;
+        this.setState({
+            currentPage: selectedPage,
+            offset: offset
+        }, () => {
+            this.getData()
+        });
+    };
+
+    checkbox = (e) => {
+        var { name, checked } = e.target
+        this.setState((e) => {
+            var selectedCtg = e.checkedCtg
+            return selectedCtg[name] = checked
+        })
+    }
+
+    resetCheckbox = () => {
+        window.location.reload()
+    }
+
+    getDataProduct = () => {
+        this.setState({ loading: true })
+        console.log(this.props.location.search)
+        axios.get(URL_API + `/product/filter-product?${this.props.location.search}`)
+            .then(res => {
+                console.log("filter", res.data)
+                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
+            }).catch(err => console.log(err))
+    }
+
+    handleFilter = () => {
+        var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
+        var filter = display.join("&")
+        console.log("fff", display)
+        axios.get(URL_API + `/product/filter-product?${filter}`)
+            .then(res => {
+                console.log("filter", res.data)
+                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+
+                let dataFilter = this.state.product.filter((item) =>
+                    item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
+                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+            }).catch(err => console.log(err))
+    }
+
+    incrementQty = (stock) => {
+        if (this.state.qty < stock) {
+            return this.setState({ qty: this.state.qty + 1 })
+        } else {
+            toast.warn('Product out of stock!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        }
+    }
+
+    DecrementQty = () => {
+        if (this.state.qty > 1) {
+            return this.setState({ qty: this.state.qty - 1 })
+        }
+    }
+
+    printParcel = () => {
+        return this.props.cart.map((item, index) => {
+            return (
+                <div>
+                    <Accordion activeIndex={0}>
+                        <AccordionTab header={<div className="h2-sort">PARCEL {item.idparcel_type}</div>}>
+                            <p style={{ color: 'gray', fontSize: '14px' }}>Choose {item.title}</p>
+                            {
+                                item.detail.map((val, i) => {
+                                    return (
+                                        <p className="date"><span>{val.name}</span>
+                                            <br />
+                                            <span>Amount: {val.amount}</span>
+                                        </p>
+                                    )
+                                })
+                            }
+                            {/* <Button color="warning" size="sm" onClick={() => this.getParcelType(index)}>Select</Button> */}
+                        </AccordionTab>
+                    </Accordion>
+                </div>
+            )
+        })
+    }
+
+    confirmParcel = () => {
+        console.log(this.props.cart)
+        return this.props.cart.map((item, index) => {
+            return (
+                <div style={{ marginTop: '10px' }}>
+                    <div className="detail-box">
+                        <div className="row">
+                            <div className="col-md-9">
+                                <h6>Parcel {item.idparcel_type}</h6>
+                                {
+                                    item.detail.map((el, idx) => {
+                                        return (
+                                            <div>
+                                                <p className="order">{el.name}</p>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                            <div className="col-md-3">
+                                <Button outline color="warning" onClick={() => this.getParcelType(index)}>
+                                    Select
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )
+        })
+    }
+
+
     onBtAddToParcel = () => {
         let idparcel_type = this.state.idparcel_type
         let idcart = this.state.idcart
@@ -389,59 +508,6 @@ class ProductsPage extends React.Component {
         }
     }
 
-    handlePageClick = (e) => {
-        const selectedPage = e.selected;
-        const offset = selectedPage * this.state.perPage;
-        this.setState({
-            currentPage: selectedPage,
-            offset: offset
-        }, () => {
-            this.getData()
-        });
-    };
-
-    checkbox = (e) => {
-        var { name, checked } = e.target
-        this.setState((e) => {
-            var selectedCtg = e.checkedCtg
-            return selectedCtg[name] = checked
-        })
-    }
-
-    resetCheckbox = () => {
-        window.location.reload()
-    }
-
-    getDataProduct = () => {
-        this.setState({ loading: true })
-        console.log(this.props.location.search)
-        axios.get(URL_API + `/product/filter-product?${this.props.location.search}`)
-            .then(res => {
-                console.log("filter", res.data)
-                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
-            }).catch(err => console.log(err))
-    }
-
-    handleFilter = () => {
-        var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
-        var filter = display.join("&")
-        console.log("fff", display)
-        axios.get(URL_API + `/product/filter-product?${filter}`)
-            .then(res => {
-                console.log("filter", res.data)
-                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
-
-                let dataFilter = this.state.product.filter((item) =>
-                    item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
-                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
-            }).catch(err => console.log(err))
-    }
-
-    handleProduct = () => {
-        var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
-        var filter = display.join("&")
-        console.log("fff", display)
-    }
 
     handleSort = () => {
         if (this.sort.value === "nama-asc") {
@@ -500,76 +566,6 @@ class ProductsPage extends React.Component {
                         console.log("TYPE", this.state.type)
                     }).catch(err => console.log(err))
             }).catch(err => console.log("get cart", err))
-    }
-
-    incrementQty = (stock) => {
-        if (this.state.qty < stock) {
-            return this.setState({ qty: this.state.qty + 1 })
-        } else {
-            toast.warn('Product out of stock!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-        }
-    }
-
-    DecrementQty = () => {
-        if (this.state.qty > 1) {
-            return this.setState({ qty: this.state.qty - 1 })
-        }
-    }
-
-    printParcel = () => {
-        return this.props.cart.map((item, index) => {
-            return (
-                <div>
-                    <Accordion activeIndex={0}>
-                        <AccordionTab header={<div className="h2-sort">PARCEL {item.idparcel_type}</div>}>
-                            <p style={{ color: 'gray', fontSize: '14px' }}>Choose {item.title}</p>
-                            {
-                                item.detail.map((val, i) => {
-                                    return (
-                                        <p className="date"><span>{val.name}</span>
-                                            <br />
-                                            <span>Amount: {val.amount}</span>
-                                        </p>
-                                    )
-                                })
-                            }
-                            {/* <Button color="warning" size="sm" onClick={() => this.getParcelType(index)}>Select</Button> */}
-                        </AccordionTab>
-                    </Accordion>
-                </div>
-            )
-        })
-    }
-
-    confirmParcel = () => {
-        console.log(this.props.cart)
-        return this.props.cart.map((item, index) => {
-            return (
-                <div style={{ marginTop: '10px' }}>
-                    <div className="detail-box">
-                        <div className="row">
-                            <div className="col-md-9">
-                                <h6>Parcel {item.idparcel_type}</h6>
-                                {
-                                    item.detail.map((el, idx) => {
-                                        return (
-                                            <div>
-                                                <p className="order">{el.name}</p>
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <div className="col-md-3">
-                                <Button outline color="warning" onClick={() => this.getParcelType(index)}>
-                                    Select
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )
-        })
     }
 
     render() {
