@@ -1,23 +1,21 @@
 import React from 'react';
-import { Container, Input, Label, Button, CardImg, Spinner } from 'reactstrap';
+import { Container, Input, Label, Button, CardImg, Spinner} from 'reactstrap';
 import { InputText } from 'primereact/inputtext';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-// import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-// import Badge from 'react-bootstrap/Badge'
 import { connect } from 'react-redux';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Pagination from '@material-ui/lab/Pagination';
 import ReactPaginate from 'react-paginate';
 import "../product/productPage.css"
 import { Checkbox } from '@material-ui/core';
 import axios from 'axios';
 import { URL_API } from '../../helper';
+import { getCart } from '../../actions';
 import { Link } from "react-router-dom";
 import GifPlayer from "react-gif-player";
 import product from "../../asset/gif/product.gif";
+import { Accordion, AccordionTab } from 'primereact/accordion';
 
 class ProductsPage extends React.Component {
     constructor(props) {
@@ -39,6 +37,7 @@ class ProductsPage extends React.Component {
             filterName: '',
             dataFilterName: [],
             product: [],
+            activeIndex: null
         }
         this.handlePageClick = this.handlePageClick.bind(this);
     }
@@ -47,6 +46,24 @@ class ProductsPage extends React.Component {
         this.getData()
         this.handleSort()
         this.getDataProduct()
+        this.props.getCart()
+    }
+
+    onClick(itemIndex) {
+        let activeIndex = this.state.activeIndex ? [...this.state.activeIndex] : [];
+        if (activeIndex.length === 0) {
+            activeIndex.push(itemIndex);
+        }
+        else {
+            const index = activeIndex.indexOf(itemIndex);
+            if (index === -1) {
+                activeIndex.push(itemIndex);
+            }
+            else {
+                activeIndex.splice(index, 1);
+            }
+        }
+        this.setState({ activeIndex });
     }
 
     getData = () => {
@@ -175,13 +192,49 @@ class ProductsPage extends React.Component {
         this.getData()
     }
 
+    printParcel = () => {
+        return this.props.cart.map((item, index) => {
+            return (
+                <div>
+                    <Accordion activeIndex={0}>
+                        <AccordionTab header={<div className="h2-sort">PARCEL {item.idparcel_type}</div>}>
+                            <p style={{ color: 'gray', fontSize: '14px' }}>Choose {item.title}</p>
+                            {
+                                item.detail.map((val, i) => {
+                                    return (
+                                        <p className="date"><span>{val.name}</span>
+                                            <br />
+                                            <span>Amount: {val.amount}</span>
+                                        </p>
+                                    )
+                                })
+                            }
+                        </AccordionTab>
+                    </Accordion>
+                </div>
+            )
+        })
+    }
+
     render() {
         return (
             <Container style={{ marginTop: '35px' }}>
                 <div className="row" >
                     <div className="col-md-3 mt-3">
                         <div>
-                            <h2 className="h2-sort">PRODUCT NAME</h2>
+                            <h2 className="h2-sort">YOUR PARCEL(S)</h2>
+                            {
+                                this.props.cart.length <= 0 ?
+                                    <p style={{color: 'gray', fontSize: '14px'}}>
+                                        - Anda belum memilih parcel -
+                                    </p> :
+                                    <>
+                                        {this.printParcel()}
+                                    </>
+                            }
+                        </div>
+                        <div>
+                            <h2 className=" mt-5 h2-sort">PRODUCT NAME</h2>
                             <div className="p-field ">
                                 <div>
                                     <span className="p-input-icon-right">
@@ -302,10 +355,11 @@ class ProductsPage extends React.Component {
     }
 }
 
-const mapStateToProps = ({ productReducers }) => {
+const mapStateToProps = ({ productReducers, authReducer }) => {
     return {
-        products: productReducers.products_list
+        products: productReducers.products_list,
+        cart: authReducer.cart
     }
 }
 
-export default connect(mapStateToProps, {})(ProductsPage);
+export default connect(mapStateToProps, { getCart })(ProductsPage);

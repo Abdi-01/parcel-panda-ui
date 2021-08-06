@@ -86,6 +86,9 @@ class App extends React.Component {
               <Route path="/regis" component={RegisterPage} />
               <Route path="/forget-pass" component={ResetPassPage} />
               <Route path="/verification" component={VerificationPage} />
+              <Route path="/parcel" component={ParcelPage} />
+              <Route path="/product" component={ProductsPage} />
+              <Route path="/product-detail" component={ProductDetailPage} />
               <Route path="*" component={PageNotFound} />
           </Switch>
         }
