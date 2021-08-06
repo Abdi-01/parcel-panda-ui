@@ -64,7 +64,6 @@ class ProductsPage extends React.Component {
         this.handleSort()
         this.getDataProduct()
         this.props.getCart()
-        this.handleProduct()
     }
 
     onClick(itemIndex) {
@@ -319,7 +318,7 @@ class ProductsPage extends React.Component {
                                         console.log(res.data)
                                         this.props.getCart(this.props.id)
                                         toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                        this.setState({ modalConfirm: false, modal: false })
+                                        this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                     }).catch(err => console.log(err))
                             } else {
                                 // Dicart kategory itu > 0
@@ -339,7 +338,7 @@ class ProductsPage extends React.Component {
                                             console.log(res.data)
                                             this.props.getCart(this.props.id)
                                             toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                            this.setState({ modalConfirm: false, modal: false })
+                                            this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                         }).catch(err => console.log(err))
                                 } else {
                                     let qty_beli = []
@@ -368,7 +367,7 @@ class ProductsPage extends React.Component {
                                                     console.log("Res Cart:", res.data)
                                                     toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                                     this.props.getCart(this.props.id)
-                                                    this.setState({ modalConfirm: false, modal: false })
+                                                    this.setState({ modalConfirm: false, modal: false, qty: 1})
                                                 }).catch(err => console.log(err))
                                         }
                                     } else {
@@ -390,7 +389,7 @@ class ProductsPage extends React.Component {
                                                     console.log(res.data)
                                                     this.props.getCart(this.props.id)
                                                     toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                                    this.setState({ modalConfirm: false, modal: false })
+                                                    this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                                 }).catch(err => console.log(err))
                                         }
                                     }
@@ -417,7 +416,7 @@ class ProductsPage extends React.Component {
                                         console.log(res.data)
                                         this.props.getCart(this.props.id)
                                         toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                        this.setState({ modalConfirm: false, modal: false })
+                                        this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                     }).catch(err => console.log(err))
                             } else {
                                 // Dicart kategory itu > 0
@@ -437,7 +436,7 @@ class ProductsPage extends React.Component {
                                             console.log(res.data)
                                             this.props.getCart(this.props.id)
                                             toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                            this.setState({ modalConfirm: false, modal: false })
+                                            this.setState({ modalConfirm: false, modal: false, qty: 1})
                                         }).catch(err => console.log(err))
                                 } else {
                                     console.log("6666")
@@ -468,7 +467,7 @@ class ProductsPage extends React.Component {
                                                     console.log("Res Cart:", res.data)
                                                     toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                                     this.props.getCart(this.props.id)
-                                                    this.setState({ modalConfirm: false, modal: false })
+                                                    this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                                 }).catch(err => console.log(err))
                                         }
                                     } else {
@@ -491,7 +490,7 @@ class ProductsPage extends React.Component {
                                                     console.log(res.data)
                                                     this.props.getCart(this.props.id)
                                                     toast.success('Success add to parcel!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                                                    this.setState({ modalConfirm: false, modal: false })
+                                                    this.setState({ modalConfirm: false, modal: false, qty: 1 })
                                                 }).catch(err => console.log(err))
                                         }
                                     }
