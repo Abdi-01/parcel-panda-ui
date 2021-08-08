@@ -36,10 +36,10 @@ class CartPages extends React.Component {
             cart[index].detail[idx].amount += 1
             if (this.state.type.length === 1) {
                 // cart[index].detail[idx].amount += 1
-                this.state.type.map((item, i) => {
+                this.state.type.forEach((item, i) => {
                     let qty_beli = []
                     console.log(this.state.detailCart)
-                    cart[index].detail.map(el => {
+                    cart[index].detail.forEach(el => {
                         if (item.idcategory === el.idcategory) {
                             qty_beli.push(el.amount)
                         }
@@ -65,7 +65,7 @@ class CartPages extends React.Component {
                 // let val = cart[index].detail.findIndex(item => item.idcategory === idcategory)
                 // console.log(val)
                 let qty_beli = []
-                cart[index].detail.map(el => {
+                cart[index].detail.forEach(el => {
                     if (el.idcategory === idcategory) {
                         qty_beli.push(el.amount)
                     }

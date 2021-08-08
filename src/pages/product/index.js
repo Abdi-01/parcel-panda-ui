@@ -102,7 +102,7 @@ class ProductsPage extends React.Component {
                     </CardContent>
                     <CardActions>
                         <Button size="sm" outline color="secondary"
-                            onClick={() => { this.setState({ selectedIndex: index, modal: !this.state.modal, idproduct: item.id, idcategory: item.idcategory, price: item.price }) }}
+                            onClick={() => { this.setState({ selectedIndex: index, modal: true, idproduct: item.id, idcategory: item.idcategory, price: item.price }) }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
                             <span class="material-icons" style={{ fontSize: '17px' }}>
                                 visibility
@@ -117,53 +117,52 @@ class ProductsPage extends React.Component {
 
 
     printDetail = () => {
-        return this.state.product.slice(this.state.offset, this.state.offset + this.state.perPage).map((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <div>
-                        <Modal size="lg" isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
-                            <ModalBody>
-                                <Container>
-                                    <div className="row p-5" style={{
-                                        borderRadius: "15px",
-                                        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-                                    }}>
-                                        <div className="col-md-5">
-                                            <img alt="..." src={URL_API + '/static/images/' + item.url}
-                                                width="80%" />
+        let product = this.state.product.slice(this.state.offset, this.state.offset + this.state.perPage).filter((item, index) => index === this.state.selectedIndex)
+        return product.map((item, index) => {
+            return (
+                <div>
+                    <Modal size="lg" isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
+                        <ModalBody>
+                            <Container>
+                                <div className="row p-5" style={{
+                                    borderRadius: "15px",
+                                    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+                                }}>
+                                    <div className="col-md-5">
+                                        <img alt="..." src={URL_API + '/static/images/' + item.url}
+                                            width="80%" />
+                                    </div>
+                                    <div className="col-md-7" style={{ color: 'gray', alignSelf: 'center' }}>
+                                        <div>
+                                            <h4>{item.name}</h4>
+                                            <p>Deskripsi Produk:</p>
+                                            <p>{item.name}</p>
+                                            <p>Kategori: {item.category}</p>
                                         </div>
-                                        <div className="col-md-7" style={{ color: 'gray', alignSelf: 'center' }}>
-                                            <div>
-                                                <h4>{item.name}</h4>
-                                                <p>Deskripsi Produk:</p>
-                                                <p>{item.name}</p>
-                                                <p>Kategori: {item.category}</p>
-                                            </div>
-                                            <div className="d-flex align-item-center">
-                                                <Button onClick={() => this.DecrementQty(item.stock)} size="sm" outline color="warning">
-                                                    <span class="material-icons" style={{ fontSize: '12px' }}>
-                                                        remove
-                                                    </span>
-                                                </Button>
-                                                <Input size="sm" style={{ width: '40px', marginLeft: '5px', marginRight: '5px' }}
-                                                    innerRef={elemen => this.addQty = elemen} value={this.state.qty} />
-                                                <Button onClick={() => this.incrementQty(item.stock)} size="sm" outline color="warning">
-                                                    <span class="material-icons" style={{ fontSize: '12px' }}>
-                                                        add
-                                                    </span>
-                                                </Button>
-                                            </div>
-                                            <Button style={{ marginTop: '5%' }} size="sm" color="warning" onClick={() => { this.setState({ modalConfirm: !this.state.modalConfirm }) }}>
-                                                Select
+                                        <div className="d-flex align-item-center">
+                                            <Button onClick={() => this.DecrementQty(item.stock)} size="sm" outline color="warning">
+                                                <span class="material-icons" style={{ fontSize: '12px' }}>
+                                                    remove
+                                                </span>
+                                            </Button>
+                                            <Input size="sm" style={{ width: '40px', marginLeft: '5px', marginRight: '5px' }}
+                                                innerRef={elemen => this.addQty = elemen} value={this.state.qty} />
+                                            <Button onClick={() => this.incrementQty(item.stock)} size="sm" outline color="warning">
+                                                <span class="material-icons" style={{ fontSize: '12px' }}>
+                                                    add
+                                                </span>
                                             </Button>
                                         </div>
+                                        <Button style={{ marginTop: '5%' }} size="sm" color="warning" onClick={() => { this.setState({ modalConfirm: !this.state.modalConfirm }) }}>
+                                            Select
+                                        </Button>
                                     </div>
-                                </Container>
-                            </ModalBody>
-                        </Modal>
-                    </div>
-                )
-            }
+                                </div>
+                            </Container>
+                        </ModalBody>
+                    </Modal>
+                </div>
+            )
         })
     }
 
@@ -303,7 +302,7 @@ class ProductsPage extends React.Component {
             toast.warn('Choose Parcel First!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
             if (this.state.type.length > 1) {
-                this.state.type.map((item, index) => {
+                this.state.type.forEach((item, index) => {
                     if (item.idcategory === this.state.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -323,7 +322,7 @@ class ProductsPage extends React.Component {
                             } else {
                                 // Dicart kategory itu > 0
                                 let qty_beli = []
-                                this.state.detailCart.map(item => {
+                                this.state.detailCart.forEach(item => {
                                     if (item.idcategory === this.state.idcategory) {
                                         qty_beli.push(item.amount)
                                     }
@@ -342,7 +341,7 @@ class ProductsPage extends React.Component {
                                         }).catch(err => console.log(err))
                                 } else {
                                     let qty_beli = []
-                                    this.state.detailCart.map(el => {
+                                    this.state.detailCart.forEach(el => {
                                         if (el.idcategory === this.state.idcategory) {
                                             qty_beli.push(el.amount)
                                         }
@@ -401,7 +400,7 @@ class ProductsPage extends React.Component {
 
                 })
             } else {
-                this.state.type.map((item, index) => {
+                this.state.type.forEach((item, index) => {
                     if (item.idcategory === this.state.idcategory) {
                         if (this.state.qty > item.max_qty) {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -421,7 +420,7 @@ class ProductsPage extends React.Component {
                             } else {
                                 // Dicart kategory itu > 0
                                 let qty_beli = []
-                                this.state.detailCart.map(item => {
+                                this.state.detailCart.forEach(item => {
                                     if (item.idcategory === this.state.idcategory) {
                                         qty_beli.push(item.amount)
                                     }
@@ -441,7 +440,7 @@ class ProductsPage extends React.Component {
                                 } else {
                                     console.log("6666")
                                     let qty_beli = []
-                                    this.state.detailCart.map(el => {
+                                    this.state.detailCart.forEach(el => {
                                         if (el.idcategory === this.state.idcategory) {
                                             qty_beli.push(el.amount)
                                         }
@@ -511,22 +510,12 @@ class ProductsPage extends React.Component {
     handleSort = () => {
         if (this.sort.value === "nama-asc") {
             this.state.product.sort((a, b) => {
-                let namaA = a.name.toUpperCase()
-                let namaB = b.name.toUpperCase()
-
-                if (namaA < namaB) {
-                    return -1;
-                }
+                return a.name - b.name
             })
             console.log(this.props.products)
         } else if (this.sort.value === "nama-desc") {
             this.state.product.sort((a, b) => {
-                let namaA = a.name.toUpperCase()
-                let namaB = b.name.toUpperCase()
-
-                if (namaA > namaB) {
-                    return -1;
-                }
+                return b.name - a.name
             })
         } else if (this.sort.value === "harga-asc") {
             this.state.product.sort((a, b) => {

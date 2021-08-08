@@ -47,16 +47,19 @@ class CheckoutPage extends React.Component {
     }
 
     getAddress = () => {
-        return this.state.address.map((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>
-                        <span style={{ fontWeight: 'bold' }}>{item.recipient_name}, </span>
-                        <span>{item.address} <span>{item.postal_code}</span></span>
-                        <br /><span>{item.phone_number}</span>
-                    </p>
-                )
-            }
+        let address = this.state.address.filter((item, index) => index === this.state.selectedIndex)
+        console.log("ADDRESS", address)
+        return address.map((item, index) => {
+            return (
+                <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>
+                    <span style={{ fontWeight: 'bold' }}>{item.recipient_name}, </span>
+                    <span>{item.address} <span>{item.postal_code}</span></span>
+                    <br /><span>{item.phone_number}</span>
+                </p>
+            )
+            // if (this.state.selectedIndex === index) {
+                
+            // }
         })
     }
 

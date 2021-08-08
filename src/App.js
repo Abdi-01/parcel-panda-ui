@@ -71,6 +71,7 @@ class App extends React.Component {
           this.props.role === "user" ?
             <Switch>
               <Route path="/" component={LandingPage} exact/>
+              <Route path="/verification" component={VerificationPage} />
               <Route path='/user-profile' component={UserProfile} />
               <Route path="/parcel" component={ParcelPage} />
               <Route path="/product" component={ProductsPage} />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Container, Row, } from 'reactstrap';
+import { Button, Col, Container, Row, Spinner } from 'reactstrap';
 import otp1 from '../../asset/img/otp1.jpg';
 import { InputText } from 'primereact/inputtext';
 import "../verification/verificationPage.css"
@@ -14,7 +14,8 @@ class VerificationPage extends React.Component {
         super(props);
         this.state = {
             otp: '',
-            alert: false
+            alert: false,
+            loading: false
         }
     }
 
@@ -27,10 +28,12 @@ class VerificationPage extends React.Component {
         }
         console.log("OTP", code)
         console.log(headers)
+        this.setState({ loading: true })
         axios.patch(URL_API + `/auth/verify`, {
             otp: code
         }, headers)
             .then(res => {
+                this.setState({ loading: false })
                 console.log(res.data)
                 toast.success('Hey 👋 Verification Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
             }).catch(err => {
@@ -62,7 +65,7 @@ class VerificationPage extends React.Component {
                             </div>
 
                             <Button onClick={() => this.verify()} style={{background: '#FAB629'}} className="btncustom3" color="warning">
-                                Submit
+                            {this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Submit</span>}
                             </Button>
                         </Col>
                     </Row>
