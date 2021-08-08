@@ -195,108 +195,106 @@ class UserTransactionPage extends React.Component {
     }
 
     printDetail = () => {
-        return this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).forEach((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <div>
-                        <Modal isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
-                            <ModalBody>
-                                <div className="detail-box">
-                                    <h6>{item.invoice}</h6>
-                                    <p className="order">Order at <span style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }}>Parelpanda </span>
-                                        <span className="amount">{item.amount} parcel purchased</span></p>
-                                </div>
-                                <div className="detail-isi">
-                                    {
-                                        item.detail.map((el, idx) => {
-                                            return (
-                                                <div className="row" style={{ borderBottom: '1px solid #DDDDDD', }}>
-                                                    <div className="col-md-3 mt-3">
-                                                        <img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '70px', height: '70px', marginLeft: '15px', marginTop: '5px' }} />
-                                                    </div>
-                                                    <div className="col-md-9 mt-3">
-                                                        <p><span className="pname">Parcel {el.parcel}</span><br />
-                                                            <span className="elname">{el.name}</span><br />
-                                                            <span className="eltitle">{el.title}</span><br />
-                                                            <span className="eltitle">Quantity: {el.amount}</span></p>
-                                                    </div>
+        let detail = this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).filter((item, index) => index === this.state.selectedIndex)
+        return detail.map((item, index) => {
+            return (
+                <div>
+                    <Modal isOpen={this.state.modal} toggle={() => { this.setState({ modal: !this.state.modal }) }}>
+                        <ModalBody>
+                            <div className="detail-box">
+                                <h6>{item.invoice}</h6>
+                                <p className="order">Order at <span style={{ fontWeight: 'bold', borderRight: '1px solid #DBDBDB', paddingRight: '10px' }}>Parelpanda </span>
+                                    <span className="amount">{item.amount} parcel purchased</span></p>
+                            </div>
+                            <div className="detail-isi">
+                                {
+                                    item.detail.map((el, idx) => {
+                                        return (
+                                            <div className="row" style={{ borderBottom: '1px solid #DDDDDD', }}>
+                                                <div className="col-md-3 mt-3">
+                                                    <img src={URL_API + '/static/images/' + el.url} alt="img" style={{ width: '70px', height: '70px', marginLeft: '15px', marginTop: '5px' }} />
                                                 </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                            </ModalBody>
-                        </Modal>
-                    </div>
-                )
-            }
+                                                <div className="col-md-9 mt-3">
+                                                    <p><span className="pname">Parcel {el.parcel}</span><br />
+                                                        <span className="elname">{el.name}</span><br />
+                                                        <span className="eltitle">{el.title}</span><br />
+                                                        <span className="eltitle">Quantity: {el.amount}</span></p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
+                        </ModalBody>
+                    </Modal>
+                </div>
+            )
         })
     }
 
     paidTransaction = () => {
-        return this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).forEach((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <div>
-                        <Modal style={{ backgroundColor: '#f7eaa3' }} isOpen={this.state.modalPaid} toggle={() => { this.setState({ modalPaid: !this.state.modalPaid }) }}>
-                            <ModalBody>
-                                <div className="detail-box">
-                                    <div>
-                                        <div style={{ textAlign: 'center', alignItems: 'center' }}>
-                                            <img alt=".." src={bill} width="50px" height="50px" />
-                                            <h2 style={{ fontSize: '17px', letterSpacing: '1px', fontWeight: '500', marginTop: '10px' }}>
-                                                PLEASE COMPLETE YOUR PAYMENT PROCESS
-                                            </h2>
-                                            <p className="order">Halo, <span style={{ fontWeight: 'bold' }}>{item.username}</span></p>
-                                            <p className="order">Terima kasih telah memilih Parcelpanda! Silahkan melengkapi proses pembayaran kamu,
-                                                agar pesanan kamu dapat segera kami proses.</p>
-                                        </div>
-                                        <div style={{ border: '1px solid #DDDDDD', alignItems: 'center', backgroundColor: '#FEF5F6' }}>
-                                            <div className="row">
-                                                <div className="col-md-6" style={{ paddingLeft: '60px' }}>
-                                                    <p className="order" style={{ paddingTop: '10px', color: '#7D7D7D' }}>
-                                                        <span>Invoice</span><br />
-                                                        <span >Date of Order</span><br />
-                                                        <span >Payment Method</span><br />
-                                                        <span >Total Payment</span><br />
-                                                    </p>
-                                                </div>
-                                                <div className="col-md-6">
-                                                    <p className="order" style={{ paddingTop: '10px', fontWeight: 'bold' }}>
-                                                        <span>{item.invoice}</span><br />
-                                                        <span >{item.date_transaction}</span><br />
-                                                        <span >Bank Transafer</span><br />
-                                                        <span >Rp. {item.total_payment.toLocaleString()}</span><br />
-                                                    </p>
-                                                </div>
+        let paid = this.state.transaction.slice(this.state.offset, this.state.offset + this.state.perPage).filter((item, index) => index === this.state.selectedIndex)
+        return paid.map((item, index) => {
+            return (
+                <div>
+                    <Modal style={{ backgroundColor: '#f7eaa3' }} isOpen={this.state.modalPaid} toggle={() => { this.setState({ modalPaid: !this.state.modalPaid }) }}>
+                        <ModalBody>
+                            <div className="detail-box">
+                                <div>
+                                    <div style={{ textAlign: 'center', alignItems: 'center' }}>
+                                        <img alt=".." src={bill} width="50px" height="50px" />
+                                        <h2 style={{ fontSize: '17px', letterSpacing: '1px', fontWeight: '500', marginTop: '10px' }}>
+                                            PLEASE COMPLETE YOUR PAYMENT PROCESS
+                                        </h2>
+                                        <p className="order">Halo, <span style={{ fontWeight: 'bold' }}>{item.username}</span></p>
+                                        <p className="order">Terima kasih telah memilih Parcelpanda! Silahkan melengkapi proses pembayaran kamu,
+                                            agar pesanan kamu dapat segera kami proses.</p>
+                                    </div>
+                                    <div style={{ border: '1px solid #DDDDDD', alignItems: 'center', backgroundColor: '#FEF5F6' }}>
+                                        <div className="row">
+                                            <div className="col-md-6" style={{ paddingLeft: '60px' }}>
+                                                <p className="order" style={{ paddingTop: '10px', color: '#7D7D7D' }}>
+                                                    <span>Invoice</span><br />
+                                                    <span >Date of Order</span><br />
+                                                    <span >Payment Method</span><br />
+                                                    <span >Total Payment</span><br />
+                                                </p>
+                                            </div>
+                                            <div className="col-md-6">
+                                                <p className="order" style={{ paddingTop: '10px', fontWeight: 'bold' }}>
+                                                    <span>{item.invoice}</span><br />
+                                                    <span >{item.date_transaction}</span><br />
+                                                    <span >Bank Transafer</span><br />
+                                                    <span >Rp. {item.total_payment.toLocaleString()}</span><br />
+                                                </p>
                                             </div>
                                         </div>
-                                        <Grid container spacing={1} alignItems="flex-end">
-                                            <Grid item xs={1}>
-                                                <label htmlFor="icon-button-file">
-                                                    <Input accept="image/*" id="icon-button-file" type="file" onChange={this.handleFile} />
-                                                    <ReceiptIcon color="primary" style={{ color: '#FAB629' }} cursor="pointer" />
-                                                </label>
-                                            </Grid>
-                                            <Grid item xs={11}>
-                                                <TextField
-                                                    disabled
-                                                    fullWidth
-                                                    id="image"
-                                                    label={this.state.fileName}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={2}>
-                                                <Button onClick={this.submitPaymentProof} size="sm" color="warning" outline>Submit</Button>
-                                            </Grid>
-                                        </Grid>
                                     </div>
+                                    <Grid container spacing={1} alignItems="flex-end">
+                                        <Grid item xs={1}>
+                                            <label htmlFor="icon-button-file">
+                                                <Input accept="image/*" id="icon-button-file" type="file" onChange={this.handleFile} />
+                                                <ReceiptIcon color="primary" style={{ color: '#FAB629' }} cursor="pointer" />
+                                            </label>
+                                        </Grid>
+                                        <Grid item xs={11}>
+                                            <TextField
+                                                disabled
+                                                fullWidth
+                                                id="image"
+                                                label={this.state.fileName}
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2}>
+                                            <Button onClick={this.submitPaymentProof} size="sm" color="warning" outline>Submit</Button>
+                                        </Grid>
+                                    </Grid>
                                 </div>
-                            </ModalBody>
-                        </Modal>
-                    </div>
-                )
-            }
+                            </div>
+                        </ModalBody>
+                    </Modal>
+                </div>
+            )
         })
     }
 
