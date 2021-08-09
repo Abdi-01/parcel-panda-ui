@@ -359,8 +359,9 @@ class ProductsPage extends React.Component {
                                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                         } else {
                                             this.props.cart[this.state.idxCart].detail[idx].amount += this.state.qty
+                                            let sub_total = this.props.cart[this.state.idxCart].detail[idx].amount * this.state.price
                                             axios.patch(URL_API + `/transaction/update-qty`, {
-                                                amount: this.props.cart[this.state.idxCart].detail[idx].amount, idproduct: idproduct, idcart: idcart
+                                                amount: this.props.cart[this.state.idxCart].detail[idx].amount, idproduct: idproduct, idcart: idcart, subtotal: sub_total
                                             }, headers)
                                                 .then(res => {
                                                     console.log("Res Cart:", res.data)
@@ -459,8 +460,9 @@ class ProductsPage extends React.Component {
                                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                         } else {
                                             this.props.cart[this.state.idxCart].detail[idx].amount += this.state.qty
+                                            let sub_total = this.props.cart[this.state.idxCart].detail[idx].amount * this.state.price
                                             axios.patch(URL_API + `/transaction/update-qty`, {
-                                                amount: this.props.cart[this.state.idxCart].detail[idx].amount, idproduct: idproduct, idcart: idcart
+                                                amount: this.props.cart[this.state.idxCart].detail[idx].amount, idproduct: idproduct, idcart: idcart, subtotal: sub_total
                                             }, headers)
                                                 .then(res => {
                                                     console.log("Res Cart:", res.data)
