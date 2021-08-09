@@ -93,7 +93,7 @@ const PasswordBox = () => {
         let validPassword = checkPassword.test(values.newPassword) && checkPassword.test(values.confirmPassword)
         let match = values.newPassword === values.confirmPassword
         let result = validPassword && match && values.password.length > 1
-        console.log(validPassword, match, values.password.length > 1, result)
+        // console.log(validPassword, match, values.password.length > 1, result)
         return !result
     }
 
