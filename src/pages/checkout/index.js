@@ -178,7 +178,7 @@ class CheckoutPage extends React.Component {
                     value.stock -= item.amount
                     console.log("STOCK TERKINI KAK", value.stock)
 
-                    axios.patch(URL_API + `/product-manage/manage-stock/${value.id}`, {
+                    axios.patch(URL_API + `/product/manage-stock/${value.id}`, {
                         stock: value.stock
                     }).then(res => {
                         console.log("pengurangan stock", res.data)
