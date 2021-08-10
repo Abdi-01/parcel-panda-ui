@@ -68,28 +68,27 @@ class App extends React.Component {
               <Route path='/sales-report' component={SalesReport} />
               <Route path='*' component={PageNotFound} />
             </Switch> :
-            this.props.role === "user" ?
-              <Switch>
-                <Route path="/" component={LandingPage} exact />
-                <Route path='/user-profile' component={UserProfile} />
-                <Route path="/parcel" component={ParcelPage} />
-                <Route path="/product" component={ProductsPage} />
-                {/* <Route path="/product-detail" component={ProductDetailPage} /> */}
-                <Route path="/cart/:id" component={CartPages} />
-                <Route path="/checkout/:id" component={CheckoutPage} />
-                <Route path="/user-transaction/:id" component={UserTransactionPage} />
-                <Route path="*" component={PageNotFound} />
-              </Switch> :
-              <Switch>
-                <Route path="/" component={LandingPage} exact />
-                <Route path="/regis" component={RegisterPage} />
-                <Route path="/forget-pass" component={ResetPassPage} />
-                <Route path="/verification" component={VerificationPage} />
-                <Route path="/parcel" component={ParcelPage} />
-                <Route path="/product" component={ProductsPage} />
-                {/* <Route path="/product-detail" component={ProductDetailPage} /> */}
-                <Route path="*" component={PageNotFound} />
-              </Switch>
+          this.props.role === "user" ?
+            <Switch>
+              <Route path="/" component={LandingPage} exact/>
+              <Route path="/verification" component={VerificationPage} />
+              <Route path='/user-profile' component={UserProfile} />
+              <Route path="/parcel" component={ParcelPage} />
+              <Route path="/product" component={ProductsPage} />
+              <Route path="/cart/:id" component={CartPages} />
+              <Route path="/checkout/:id" component={CheckoutPage} />
+              <Route path="/user-transaction/:id" component={UserTransactionPage} />
+              <Route path="*" component={PageNotFound} />
+            </Switch> :
+            <Switch>
+              <Route path="/" component={LandingPage} exact/>
+              <Route path="/regis" component={RegisterPage} />
+              <Route path="/forget-pass" component={ResetPassPage} />
+              <Route path="/verification" component={VerificationPage} />
+              <Route path="/parcel" component={ParcelPage} />
+              <Route path="/product" component={ProductsPage} />
+              <Route path="*" component={PageNotFound} />
+          </Switch>
         }
         <FooterComp />
       </div>

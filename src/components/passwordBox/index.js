@@ -93,7 +93,7 @@ const PasswordBox = () => {
         let validPassword = checkPassword.test(values.newPassword) && checkPassword.test(values.confirmPassword)
         let match = values.newPassword === values.confirmPassword
         let result = validPassword && match && values.password.length > 1
-        console.log(validPassword, match, values.password.length > 1, result)
+        // console.log(validPassword, match, values.password.length > 1, result)
         return !result
     }
 
@@ -130,12 +130,12 @@ const PasswordBox = () => {
                             }
                         />
                     </FormControl>
-                    <FormControl error={!checkPassword.test(values.newPassword)} fullWidth variant="filled">
+                    <FormControl error={!checkPassword.test(values.newPassword) && values.newPassword.length > 0} fullWidth variant="filled">
                         <InputLabel htmlFor="newPassword">
                             New Password
                         </InputLabel>
                         <FilledInput 
-                            error={!checkPassword.test(values.newPassword)}
+                            error={!checkPassword.test(values.newPassword) && values.newPassword.length > 0}
                             id="newPassword"
                             type={values.showNewPassword ? "text" : "password"}
                             value={values.newPassword}
@@ -154,12 +154,12 @@ const PasswordBox = () => {
                             }
                         />
                     </FormControl>
-                    <FormControl error={!checkPassword.test(values.confirmPassword)} fullWidth variant="filled">
+                    <FormControl error={!checkPassword.test(values.confirmPassword) && values.confirmPassword.length > 0} fullWidth variant="filled">
                         <InputLabel htmlFor="confirmPassword">
                             Password Confirmation
                         </InputLabel>
                         <FilledInput
-                            error={!checkPassword.test(values.confirmPassword)}
+                            error={!checkPassword.test(values.confirmPassword) && values.confirmPassword.length > 0}
                             id="confirmPassword"
                             type={values.showConfirmPassword ? "text" : "password"}
                             value={values.confirmPassword}
@@ -178,7 +178,7 @@ const PasswordBox = () => {
                             }
                         />
                         <FormHelperText 
-                            error={!checkPassword.test(values.newPassword) || !checkPassword.test(values.confirmPassword)}
+                            error={(!checkPassword.test(values.newPassword) || !checkPassword.test(values.confirmPassword)) && values.confirmPassword.length > 0}
                             id="component-helper-text"
                         >
                             Password must be alphanumeric, 6 characters minimun, and contain special character.
