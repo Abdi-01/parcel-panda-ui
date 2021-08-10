@@ -1,10 +1,11 @@
 import React from 'react';
 import axios from 'axios';
-import { Container, Modal, ModalBody, Row, Col } from 'reactstrap';
+import { Container, Modal, ModalBody, Row, Col, Button, Spinner } from 'reactstrap';
 import { Link } from "react-router-dom";
 import { URL_API } from '../../helper';
 import { connect } from 'react-redux';
 import { toast } from 'react-toastify';
+import { getCart } from '../../actions'
 
 toast.configure()
 
@@ -12,22 +13,30 @@ toast.configure()
 class ModalParcel extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            loading: false
+        }
     }
 
     customToastWithLink = () => (
         <div>
-            <p>Please Verify Your Account <span><a className="alert-link" onClick={() => this.resendOTP()}>Request Verification</a></span></p>
+            <p>Please Verify Your Account
+                <span>
+                    <Button size="sm" color="warning" onClick={() => this.resendOTP()}>{this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Request Verification</span>}</Button>
+                </span>
+            </p>
         </div>
     );
 
     resendOTP = () => {
+        this.setState({ loading: false })
         console.log(this.props.username, this.props.password)
         axios.patch(URL_API + `/auth/reverif`, {
             username: this.props.username, password: this.props.password
         }).then(res => {
             console.log(res.data)
-            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+            this.setState({ loading: true })
+            toast.success('Email verification has been send. Please check your email', { position: toast.POSITION.TOP_CENTER, autoClose: 6000 })
         }).catch(err => console.log(err))
     }
 
@@ -47,7 +56,7 @@ class ModalParcel extends React.Component {
                 axios.post(URL_API + `/transaction/addCart`, { idparcel_type, subtotal }, headers)
                     .then(res => {
                         console.log("cart", res.data)
-                        // this.props.getCart(res.data)
+                        this.props.getCart(res.data)
                     }).catch(err => console.log("add cart", err))
             } else {
                 toast.error(this.customToastWithLink, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -60,9 +69,6 @@ class ModalParcel extends React.Component {
 
     render() {
         console.log("detail", this.props.detailParcel, this.props.category)
-        // console.log("detail parcel", this.props.detailParcel, this.props.detailParcel.category)
-        // let { id, title, url, category } = this.props.detailParcel
-        // let ctg = category.join("&")
         return (
             <div>
                 <Modal size="lg" isOpen={this.props.modal} toggle={this.props.btClose}>
@@ -104,4 +110,4 @@ const mapStateToProps = ({ parcelReducers, authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, {})(ModalParcel);
+export default connect(mapStateToProps, { getCart })(ModalParcel);

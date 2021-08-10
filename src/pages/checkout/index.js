@@ -47,16 +47,19 @@ class CheckoutPage extends React.Component {
     }
 
     getAddress = () => {
-        return this.state.address.map((item, index) => {
-            if (this.state.selectedIndex === index) {
-                return (
-                    <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>
-                        <span style={{ fontWeight: 'bold' }}>{item.recipient_name}, </span>
-                        <span>{item.address} <span>{item.postal_code}</span></span>
-                        <br /><span>{item.phone_number}</span>
-                    </p>
-                )
-            }
+        let address = this.state.address.filter((item, index) => index === this.state.selectedIndex)
+        console.log("ADDRESS", address)
+        return address.map((item, index) => {
+            return (
+                <p style={{ fontSize: '14px', lineHeight: '20px', width: '385px' }}>
+                    <span style={{ fontWeight: 'bold' }}>{item.recipient_name}, </span>
+                    <span>{item.address} <span>{item.postal_code}</span></span>
+                    <br /><span>{item.phone_number}</span>
+                </p>
+            )
+            // if (this.state.selectedIndex === index) {
+                
+            // }
         })
     }
 
@@ -175,7 +178,7 @@ class CheckoutPage extends React.Component {
                     value.stock -= item.amount
                     console.log("STOCK TERKINI KAK", value.stock)
 
-                    axios.patch(URL_API + `/product-manage/manage-stock/${value.id}`, {
+                    axios.patch(URL_API + `/product/manage-stock/${value.id}`, {
                         stock: value.stock
                     }).then(res => {
                         console.log("pengurangan stock", res.data)

@@ -17,7 +17,6 @@ import TransactionManagement from './pages/adminTransaction';
 import SalesReport from './pages/adminSales';
 import ParcelPage from './pages/parcel';
 import ProductsPage from './pages/product';
-import ProductDetailPage from './pages/productDetail';
 import CartPages from './pages/cart';
 import CheckoutPage from './pages/checkout';
 import UserTransactionPage from './pages/userTransaction';
@@ -72,10 +71,10 @@ class App extends React.Component {
           this.props.role === "user" ?
             <Switch>
               <Route path="/" component={LandingPage} exact/>
+              <Route path="/verification" component={VerificationPage} />
               <Route path='/user-profile' component={UserProfile} />
               <Route path="/parcel" component={ParcelPage} />
               <Route path="/product" component={ProductsPage} />
-              <Route path="/product-detail" component={ProductDetailPage} />
               <Route path="/cart/:id" component={CartPages} />
               <Route path="/checkout/:id" component={CheckoutPage} />
               <Route path="/user-transaction/:id" component={UserTransactionPage} />
@@ -88,7 +87,6 @@ class App extends React.Component {
               <Route path="/verification" component={VerificationPage} />
               <Route path="/parcel" component={ParcelPage} />
               <Route path="/product" component={ProductsPage} />
-              <Route path="/product-detail" component={ProductDetailPage} />
               <Route path="*" component={PageNotFound} />
           </Switch>
         }

@@ -32,11 +32,14 @@ const FormDialogDateBirth = ({ open, setOpen, value }) => {
     try {
       setLoading(true)
       let token = localStorage.getItem("tkn_id");
+      let dateValue = selectedDate
+      dateValue.setDate(dateValue.getDate() + 1)
+      // console.log(selectedDate, selectedDate.toISOString(), selectedDate.toISOString().slice(0, 10))
       let config = {
         method: 'patch',
         url: URL_API + '/profile/update-data',
         data: {
-          "date_birth": selectedDate.toISOString().slice(0, 10)
+          "date_birth": dateValue.toISOString().slice(0, 10)
         },
         headers: {
             Authorization: `Bearer ${token}`

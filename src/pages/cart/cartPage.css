@@ -69,14 +69,6 @@
     
 }
 
-.table-cart tr td {
-    border-bottom: 1px solid #DDDDDD;
-}
-
-.table-cart tr:last-child { 
-    border: 0;
-}
-
 
 .th-cart {
     font-size: 16px;

@@ -48,7 +48,7 @@ export const Face2Heading = styled.h2`
 export const Card = styled.div`
     border-top: 8px solid #4C2CAC;
     position: relative;
-    width: 250px;
+    width: 240px;
     height: 350px;
     margin: 20px auto;
     color: black;

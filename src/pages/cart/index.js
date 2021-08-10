@@ -28,7 +28,7 @@ class CartPages extends React.Component {
         this.props.getCart()
     }
 
-    incrementQty = (idx, index, idcategory) => {
+    incrementQty = (idx, index, idcategory, price) => {
         if (this.state.type.length < 0) {
             toast.warn(`Klik icon Edit sebelum menambahkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
@@ -36,10 +36,10 @@ class CartPages extends React.Component {
             cart[index].detail[idx].amount += 1
             if (this.state.type.length === 1) {
                 // cart[index].detail[idx].amount += 1
-                this.state.type.map((item, i) => {
+                this.state.type.forEach((item, i) => {
                     let qty_beli = []
                     console.log(this.state.detailCart)
-                    cart[index].detail.map(el => {
+                    cart[index].detail.forEach(el => {
                         if (item.idcategory === el.idcategory) {
                             qty_beli.push(el.amount)
                         }
@@ -53,7 +53,7 @@ class CartPages extends React.Component {
                     if (sum_qty_beli > item.max_qty) {
                         toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                     } else {
-                        updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                        updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
                     }
                 })
             } else if (this.state.type.length > 1) {
@@ -65,7 +65,7 @@ class CartPages extends React.Component {
                 // let val = cart[index].detail.findIndex(item => item.idcategory === idcategory)
                 // console.log(val)
                 let qty_beli = []
-                cart[index].detail.map(el => {
+                cart[index].detail.forEach(el => {
                     if (el.idcategory === idcategory) {
                         qty_beli.push(el.amount)
                     }
@@ -78,41 +78,19 @@ class CartPages extends React.Component {
                 if (sum_qty_beli > this.state.type[i].max_qty) {
                     toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                 } else {
-                    updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+                    updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
                 }
-                // let qty_beli = []
-                // this.state.type.map((item, i) => {
-                //     console.log(this.state.detailCart)
-                //     cart[index].detail.map(el => {
-                //         if (item.idcategory === el.idcategory) {
-                //             qty_beli.push(el.amount)
-                //         }
-                //     })
-                //     console.log('qty beli', qty_beli)
-                //     let sum_qty_beli = qty_beli.reduce((val, sum) => {
-                //         return val + sum
-                //     })
-                //     console.log("BRP NI", sum_qty_beli)
-                //     // console.log("BRP NI", cart[index].detail[idx].amount, item.max_qty)
-                //     if (sum_qty_beli > item.max_qty) {
-                //         toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                //     } 
-                //     else {
-                //         toast.success(`OK!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                //         // updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
-                //     }
-                // })
             }
         }
     }
 
-    DecrementQty = (idx, index) => {
+    DecrementQty = (idx, index, price) => {
         if (this.state.type.length < 0) {
             toast.warn(`Klik icon Edit sebelum menambahkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
             let { cart, updateCart } = this.props
             cart[index].detail[idx].amount -= 1
-            updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart })
+            updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount*price })
         }
     }
 
@@ -177,12 +155,12 @@ class CartPages extends React.Component {
                                             </td>
                                             <td style={{ width: '30%', alignContent: 'center', paddingLeft: '20px' }}>
                                                 <span style={{ width: '60%', display: 'flex', alignItems: 'center', border: '1px solid gray', height: '100%' }}>
-                                                    <span onClick={() => this.DecrementQty(idx, index)} class="material-icons" >
+                                                    <span onClick={() => this.DecrementQty(idx, index, el.price)} class="material-icons" >
                                                         remove
                                                     </span>
                                                     <Input size="sm" placeholder="qty" style={{ width: '60%', display: 'inline-block' }}
                                                         innerRef={elemen => this.addQty = elemen} value={el.amount} />
-                                                    <span onClick={() => this.incrementQty(idx, index, el.idcategory)} class="material-icons">
+                                                    <span onClick={() => this.incrementQty(idx, index, el.idcategory, el.price)} class="material-icons">
                                                         add
                                                     </span>
                                                 </span>
