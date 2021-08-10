@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Container, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalBody } from 'reactstrap';
+import { Container, Button, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Modal, ModalBody, Spinner } from 'reactstrap';
 import earphones from "../../asset/img/earphones.png"
 import { getTransaction } from "../../actions"
 import ReactPaginate from 'react-paginate';
@@ -40,6 +40,7 @@ class UserTransactionPage extends React.Component {
             fileName: "File upload (click on icon left)",
             fileUpload: null,
             idtransaksi: null,
+            loading: false,
         }
     }
 
@@ -70,6 +71,7 @@ class UserTransactionPage extends React.Component {
 
     getUserTransaction = () => {
         // console.log("ID", id)
+        this.setState({ loading: true })
         let token = localStorage.getItem("tkn_id")
         const headers = {
             headers: {
@@ -79,7 +81,7 @@ class UserTransactionPage extends React.Component {
         axios.get(URL_API + `/transaction`, headers)
             .then(res => {
                 console.log("OK")
-                this.setState({ transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                this.setState({ transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage), loading: false })
             }).catch(err => {
                 console.log(err)
             })
@@ -92,17 +94,17 @@ class UserTransactionPage extends React.Component {
                 'Authorization': `Bearer ${token}`
             }
         }
-        axios.patch(URL_API + `/transaction/filter`, {idpayment_status: id}, headers)
-        .then(res => {
-            console.log("filter ni", res.data)
-            if(res.data.length <= 0){
-                // alert("OK")
-                toast.warn('Transaksi dengan status ini tidak tersedia!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                this.setState({transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage)})
-            } else {
-                this.setState({transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage)})
-            }
-        }).catch(err => console.log(err))
+        axios.patch(URL_API + `/transaction/filter`, { idpayment_status: id }, headers)
+            .then(res => {
+                console.log("filter ni", res.data)
+                if (res.data.length <= 0) {
+                    // alert("OK")
+                    toast.warn('Transaksi dengan status ini tidak tersedia!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                    this.setState({ transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                } else {
+                    this.setState({ transaction: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                }
+            }).catch(err => console.log(err))
     }
 
     handlePageClick = (e) => {
@@ -163,7 +165,7 @@ class UserTransactionPage extends React.Component {
                                             <Button className="btn-payment" color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
                                             :
                                             <>
-                                                <Button color="warning"onClick={() => this.setState({ selectedIndex: index, modalPaid: !this.state.modalPaid, idtransaksi: item.id })}>
+                                                <Button color="warning" onClick={() => this.setState({ selectedIndex: index, modalPaid: !this.state.modalPaid, idtransaksi: item.id })}>
                                                     Paid
                                                 </Button>
                                                 <Button className="btn-payment" color="warning" onClick={() => this.setState({ selectedIndex: index, modal: !this.state.modal })}>Detail</Button>
@@ -327,12 +329,12 @@ class UserTransactionPage extends React.Component {
         };
 
         axios.patch(URL_API + `/transaction/payment`, fd, headers)
-        .then(res => {
-            console.log(res.data)
-            toast.success("Thankyou, We will process your payment", { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-            this.setState({modalPaid: false})
-            this.getUserTransaction(res.data)
-        }).catch(err => console.log(err))
+            .then(res => {
+                console.log(res.data)
+                toast.success("Thankyou, We will process your payment", { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                this.setState({ modalPaid: false })
+                this.getUserTransaction(res.data)
+            }).catch(err => console.log(err))
     }
 
     onBtReset = () => {
@@ -352,7 +354,7 @@ class UserTransactionPage extends React.Component {
                                     MY ORDER</p>
                                 <div style={{ display: 'flex' }}>
                                     <UncontrolledDropdown>
-                                        <DropdownToggle DropdownToggle nav caret className="order-status" style={{color: '#8C8582'}}>
+                                        <DropdownToggle DropdownToggle nav caret className="order-status" style={{ color: '#8C8582' }}>
                                             Order Status
                                         </DropdownToggle>
                                         <DropdownMenu right>
@@ -383,6 +385,10 @@ class UserTransactionPage extends React.Component {
                                 </p>
                             </div>
                         </div>
+                        {
+                            this.state.loading === true &&
+                            <Spinner color="warning" />
+                        }
                         {this.printUserTransaction()}
                         <ReactPaginate
                             previousLabel={"prev"}
