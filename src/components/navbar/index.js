@@ -82,7 +82,6 @@ class NavbarComp extends React.Component {
         }
         return (
             <div style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '99', boxShadow: '5px 5px 5px #DDDDDD', width: '100%' }}>
-                {!this.props.iduser && <Redirect to="/" />}
                 {this.printLogin()}
                 <Navbar expand="md" >
                     <Container>
