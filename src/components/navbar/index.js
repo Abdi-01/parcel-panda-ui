@@ -78,7 +78,7 @@ class NavbarComp extends React.Component {
 
     render() {
         return (
-            <div style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '99', boxShadow: '5px 5px 5px #DDDDDD', width: '110%' }}>
+            <div style={{ position: 'sticky', top: '0', backgroundColor: 'white', zIndex: '99', boxShadow: '5px 5px 5px #DDDDDD', width: '100%' }}>
                 {this.printLogin()}
                 <Navbar expand="md" >
                     <Container>
