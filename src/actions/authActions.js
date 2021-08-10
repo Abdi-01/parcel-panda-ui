@@ -2,7 +2,6 @@ import axios from "axios"
 import { URL_API } from "../helper"
 import { toast } from 'react-toastify';
 
-
 toast.configure()   
 
 const handleNotify = () => {
