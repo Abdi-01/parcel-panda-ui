@@ -9,7 +9,7 @@ import {
   FooterContainer,
   ContentContainer,
   IconWrapper,
-} from "./footer";
+} from "./Footer";
 
 const FooterComp = () => {
   return (
