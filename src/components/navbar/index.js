@@ -9,6 +9,7 @@ import "../navbar/navbarComp.css"
 import 'react-toastify/dist/ReactToastify.css';
 import { authLogin, authLogout } from "../../actions"
 import { connect } from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 class NavbarComp extends React.Component {
     constructor(props) {
@@ -20,6 +21,11 @@ class NavbarComp extends React.Component {
         this.props.authLogin(this.inputUsername.value, this.state.password)
         this.setState({ modal: false, });
         this.setState({ password: '' });
+    }
+
+    handleLogout = () => {
+        this.props.authLogout()
+        this.props.history.push('/')
     }
 
     printLogin = () => {
@@ -133,7 +139,7 @@ class NavbarComp extends React.Component {
                                                                     </Link>
 
                                                                 </DropdownItem>
-                                                                <DropdownItem onClick={this.props.authLogout}>
+                                                                <DropdownItem onClick={this.handleLogout}>
                                                                     <Link className="nav-link" style={{ display: 'flex' }}>
                                                                         <span class="material-icons">
                                                                             logout
@@ -198,4 +204,4 @@ const mapStateToProps = ({ authReducer }) => {
     }
 }
 
-export default connect(mapStateToProps, { authLogin, authLogout })(NavbarComp);
+export default withRouter(connect(mapStateToProps, { authLogin, authLogout })(NavbarComp));

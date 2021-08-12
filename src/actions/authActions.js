@@ -2,8 +2,8 @@ import axios from "axios"
 import { URL_API } from "../helper"
 import { toast } from 'react-toastify';
 
-
 toast.configure()   
+
 
 const handleNotify = () => {
     toast.success('Hey 👋 Login Success!', {position: toast.POSITION.TOP_CENTER, autoClose: 3000})
