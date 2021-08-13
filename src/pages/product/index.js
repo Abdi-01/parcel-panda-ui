@@ -512,12 +512,22 @@ class ProductsPage extends React.Component {
     handleSort = () => {
         if (this.sort.value === "nama-asc") {
             this.state.product.sort((a, b) => {
-                return a.name - b.name
+                let namaA = a.name.toUpperCase()
+                let namaB = b.name.toUpperCase()
+                if (namaA < namaB) {
+                    return -1;
+                }
+                // return a.name - b.name
             })
             console.log(this.props.products)
         } else if (this.sort.value === "nama-desc") {
             this.state.product.sort((a, b) => {
-                return b.name - a.name
+                let namaA = a.name.toUpperCase()
+                let namaB = b.name.toUpperCase()
+                if (namaA > namaB) {
+                    return -1;
+                }
+                // return b.name - a.name
             })
         } else if (this.sort.value === "harga-asc") {
             this.state.product.sort((a, b) => {
