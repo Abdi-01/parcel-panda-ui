@@ -3,6 +3,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { authLogout } from "../../actions";
 import {
   AppBar,
@@ -24,8 +25,8 @@ import {
 const AdminAppBar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch()
-
   const isMenuOpen = Boolean(anchorEl);
+  const history = useHistory();
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -38,6 +39,7 @@ const AdminAppBar = () => {
   const handleLogout = () => {
     dispatch(authLogout())
     handleMenuClose()
+    history.push("/");
   }
 
   const renderMenu = (
