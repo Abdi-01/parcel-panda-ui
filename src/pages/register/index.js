@@ -7,6 +7,7 @@ import "../register/registerPage.css"
 import axios from 'axios';
 import { URL_API } from "../../helper"
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 
 toast.configure()
 class RegisterPage extends React.Component {
@@ -50,11 +51,15 @@ class RegisterPage extends React.Component {
                                                 axios.post(URL_API + `/auth/regis`, { username, fullname, email, password })
                                                     .then(res => {
                                                         this.setState({ loading: false })
-                                                        toast.success('Hey 👋 Registration Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                                        toast.success('Hey 👋 Registration Success, Please check your Email!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                                                        this.props.history.push('/')
                                                         console.log(res.data)
                                                     }).catch(err => console.log("Error Register", err))
                                             }
-                                        }).catch(error => console.log(error))
+                                        }).catch(error => {
+                                            console.log(error)
+                                            this.setState({ loading: false })
+                                        })
                                 }
                             }).catch(errUname => console.log(errUname))
                     } else {
@@ -120,7 +125,7 @@ class RegisterPage extends React.Component {
                                 <small className="p-d-block username1-help">Password must contain more than or equal to 6 digits letters and numbers.</small>
                             </div>
                             <Button onClick={this.onBtRegis} className="btncustom1" color="warning" style={{ background: "#FAB629", color: "black" }}>
-                                {this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Sign Up</span>}
+                                {this.state.loading === true ? <Spinner color="secondary" style={{ alignItems: 'center' }} /> : <span>Sign Up</span>}
                             </Button>
                         </Col>
                     </Row>
@@ -130,4 +135,4 @@ class RegisterPage extends React.Component {
     }
 }
 
-export default RegisterPage;
+export default withRouter(RegisterPage);

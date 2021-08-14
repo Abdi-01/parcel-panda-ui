@@ -202,16 +202,31 @@ class ProductsPage extends React.Component {
     handleFilter = () => {
         var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
         var filter = display.join("&")
-        console.log("fff", display)
-        axios.get(URL_API + `/product/filter-product?${filter}`)
+        console.log("DISPLAY", display)
+        console.log("NAME", this.state.filterName)
+        if(this.state.filterName !== '' && display.length === 0) {
+            console.log("MASUK SINI")
+            axios.get(URL_API + `/product/filter-product?${this.props.location.search}`)
             .then(res => {
                 console.log("filter", res.data)
                 this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
 
                 let dataFilter = this.state.product.filter((item) =>
                     item.name.toLowerCase().includes(this.state.filterName.toLowerCase()))
-                this.setState({ product: dataFilter, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+                this.setState({ product: dataFilter, pageCount: Math.ceil(dataFilter.length / this.state.perPage) })
             }).catch(err => console.log(err))
+        } else if(display !== []) {
+            console.log("atau sini")
+            axios.get(URL_API + `/product/filter-product?${filter}`)
+            .then(res => {
+                console.log("filter", res.data)
+                this.setState({ product: res.data, pageCount: Math.ceil(res.data.length / this.state.perPage) })
+
+                let dataFilter = this.state.product.filter((item) =>
+                    item.name.toLowerCase().includes(this.state.filterName?.toLowerCase()))
+                this.setState({ product: dataFilter, pageCount: Math.ceil(dataFilter.length / this.state.perPage) })
+            }).catch(err => console.log(err))
+        } 
     }
 
     incrementQty = (stock) => {
@@ -569,8 +584,8 @@ class ProductsPage extends React.Component {
     }
 
     render() {
-        var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
-        console.log("fff", display)
+        // var display = Object.keys(this.state.checkedCtg).filter((x) => this.state.checkedCtg[x])
+        // console.log("fff", display)
         return (
             <Container style={{ marginTop: '35px' }}>
                 <div>
