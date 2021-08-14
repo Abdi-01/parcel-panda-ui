@@ -361,9 +361,6 @@ class UserTransactionPage extends React.Component {
                                             {
                                                 this.state.payment_status.map((item, index) => {
                                                     return (
-                                                        // <DropdownItem onClick={() => { this.setState({ idpayment_status: item.id }) }}>
-                                                        //     {item.title}
-                                                        // </DropdownItem>
                                                         <DropdownItem onClick={() => this.handleStatus(item.id)}>
                                                             {item.title}
                                                         </DropdownItem>
@@ -391,8 +388,8 @@ class UserTransactionPage extends React.Component {
                         }
                         {this.printUserTransaction()}
                         <ReactPaginate
-                            previousLabel={"prev"}
-                            nextLabel={"next"}
+                            previousLabel={this.state.pageCount > 1 ? "prev" : false}
+                            nextLabel={this.state.pageCount > 1 ? "next" : false}
                             breakLabel={"..."}
                             breakClassName={"break-me"}
                             pageCount={this.state.pageCount}
