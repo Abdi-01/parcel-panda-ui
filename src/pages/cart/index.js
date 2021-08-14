@@ -98,7 +98,7 @@ class CartPages extends React.Component {
 
     DecrementQty = (idx, index, price) => {
         if (this.state.type.length === 0) {
-            toast.warn(`Klik icon Edit sebelum menambahkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+            toast.warn(`Klik icon Edit sebelum mengurangkan!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         } else {
             let { cart, updateCart } = this.props
             cart[index].detail[idx].amount -= 1
