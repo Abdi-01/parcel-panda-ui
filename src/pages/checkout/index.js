@@ -7,6 +7,9 @@ import { getProfile, getCart, getTransaction } from "../../actions"
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import "../checkout/checkOutPage.css"
+import { toast } from 'react-toastify';
+
+toast.configure()
 
 class CheckoutPage extends React.Component {
     constructor(props) {
@@ -57,9 +60,6 @@ class CheckoutPage extends React.Component {
                     <br /><span>{item.phone_number}</span>
                 </p>
             )
-            // if (this.state.selectedIndex === index) {
-                
-            // }
         })
     }
 
@@ -162,55 +162,62 @@ class CheckoutPage extends React.Component {
             }
         }
         axios.get(URL_API + `/transaction/getcart-detail`, headers)
-        .then(res => {
-            console.log("cart detail", res.data)
-            this.setState({cart_detail: res.data})
-        }).catch(err => console.log("get cart detail error", err))
+            .then(res => {
+                console.log("cart detail", res.data)
+                this.setState({ cart_detail: res.data })
+            }).catch(err => console.log("get cart detail error", err))
     }
 
     onBtCheckOut = () => {
         console.log("cart", this.props.cart)
         console.log("cart detail", this.state.cart_detail)
         console.log("product", this.props.product)
-        this.state.cart_detail.forEach((item, index) => {
-            this.props.product.forEach((value, idx) => {
-                if(item.idproduct === value.id) {
-                    value.stock -= item.amount
-                    console.log("STOCK TERKINI KAK", value.stock)
+        console.log("SELECTED IDX", this.state.selectedIndex)
+        if (this.state.selectedIndex === null) {
+            toast.warn('Pilih alamat Pengiriman!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        } else {
+            let detail = this.state.cart_detail
+            let invoice = this.getInvoice()
+            let idaddress = this.state.address[this.state.selectedIndex].id
+            let amount = this.props.cart.length
+            let subtotal_product = this.subTotalProduk()
+            let subtotal_parcel = this.subTotalCart()
+            let ongkir = this.state.ongkir
+            let total_payment = subtotal_parcel + ongkir
+            let idpayment_status = 2
+            console.log(invoice, idaddress, amount, subtotal_product, subtotal_parcel, ongkir, total_payment, idpayment_status, detail)
 
-                    axios.patch(URL_API + `/product/manage-stock/${value.id}`, {
-                        stock: value.stock
-                    }).then(res => {
-                        console.log("pengurangan stock", res.data)
-                    }).catch(err => console.log("pengurangan stock err", err))
-                }
+            this.state.cart_detail.forEach((item, index) => {
+                this.props.product.forEach((value, idx) => {
+                    if (item.idproduct === value.id) {
+                        value.stock -= item.amount
+                        console.log("STOCK TERKINI KAK", value.stock)
+
+                        axios.patch(URL_API + `/product/manage-stock/${value.id}`, {
+                            stock: value.stock
+                        }).then(res => {
+                            console.log("pengurangan stock", res.data)
+                        }).catch(err => console.log("pengurangan stock err", err))
+                    }
+                })
             })
-        })
 
-        let token = localStorage.getItem("tkn_id")
-        const headers = {
-            headers: {
-                'Authorization': `Bearer ${token}`
+            let token = localStorage.getItem("tkn_id")
+            const headers = {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
             }
+
+            axios.post(URL_API + `/transaction/checkout`, {
+                invoice, idaddress, amount, subtotal_product, subtotal_parcel, ongkir, total_payment, idpayment_status, detail
+            }, headers)
+                .then(res => {
+                    console.log("POST", res.data)
+                    this.props.getCart(this.props.id)
+                    this.props.getTransaction(this.props.id)
+                }).catch(err => console.log("post trans", err))
         }
-        let detail = this.state.cart_detail
-        let invoice = this.getInvoice()
-        let idaddress = this.state.address[this.state.selectedIndex].id
-        let amount = this.props.cart.length
-        let subtotal_product = this.subTotalProduk()
-        let subtotal_parcel = this.subTotalCart()
-        let ongkir = this.state.ongkir
-        let total_payment = subtotal_parcel + ongkir
-        let idpayment_status = 2
-        console.log(invoice, idaddress, amount, subtotal_product, subtotal_parcel, ongkir, total_payment, idpayment_status, detail)
-        axios.post(URL_API + `/transaction/checkout`, {
-            invoice, idaddress, amount, subtotal_product, subtotal_parcel, ongkir, total_payment, idpayment_status, detail
-        }, headers)
-        .then(res => {
-            console.log("POST", res.data)
-            this.props.getCart(this.props.id)
-            this.props.getTransaction(this.props.id)
-        }).catch(err => console.log("post trans", err))
     }
 
 
@@ -319,9 +326,9 @@ class CheckoutPage extends React.Component {
                                 <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                                         <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'left' }}>
-                                        Shipping Cost</h6>
+                                            Shipping Cost</h6>
                                         <h6 style={{ fontSize: '14px', lineHeight: '20px', textAlign: 'right', fontWeight: 'bold', }}>
-                                        Rp.{this.state.ongkir.toLocaleString()}</h6>
+                                            Rp.{this.state.ongkir.toLocaleString()}</h6>
                                     </div>
                                 </div>
                                 <div style={{ borderBottom: '1px dashed #DDDDDD', paddingTop: '8px' }}>
@@ -334,7 +341,7 @@ class CheckoutPage extends React.Component {
                                     <p style={{ fontSize: '10px', fontStyle: 'italic' }}><span style={{ fontWeight: 'bold' }}>Tanpa biaya tambahan</span></p>
                                 </div>
                                 <div style={{ paddingTop: '10px' }}>
-                                    <Link onClick={this.onBtCheckOut} to={`/user-transaction/${this.props.id}`} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
+                                    <Link onClick={this.onBtCheckOut} to={this.state.selectedIndex !== null ? `/user-transaction/${this.props.id}`: false} className="btn btn-warning btn-block" style={{ fontSize: '13px', letterSpacing: '2px', lineHeight: '18px', }}>
                                         PROCEED TO CHECKOUT
                                     </Link>
                                 </div>
