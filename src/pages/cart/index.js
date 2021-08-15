@@ -40,24 +40,22 @@ class CartPages extends React.Component {
                         let qty_beli = []
                         console.log(this.state.detailCart)
                         console.log("MAX_QTY", item.max_qty)
-                        if (cart[index].detail[idx].amount < item.max_qty) {
+                        cart[index].detail.forEach(el => {
+                            if (item.idcategory === el.idcategory) {
+                                qty_beli.push(el.amount)
+                            }
+                        })
+                        console.log('qty beli', qty_beli)
+                        let sum_qty_beli = qty_beli?.reduce((val, sum) => {
+                            return val + sum
+                        })
+                        console.log("BRP NI", sum_qty_beli)
+                        if (sum_qty_beli < item.max_qty) {
                             cart[index].detail[idx].amount += 1
                             console.log("SKG BRP", cart[index].detail[idx].amount)
-                            cart[index].detail.forEach(el => {
-                                if (item.idcategory === el.idcategory) {
-                                    qty_beli.push(el.amount)
-                                }
-                            })
-                            console.log('qty beli', qty_beli)
-                            let sum_qty_beli = qty_beli?.reduce((val, sum) => {
-                                return val + sum
-                            })
-                            console.log("BRP NI", sum_qty_beli)
-                            if (sum_qty_beli > item.max_qty) {
-                                toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                            } else {
-                                updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
-                            }
+                            updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
+                        } else if (sum_qty_beli > item.max_qty) {
+                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                         } else {
                             toast.error(`Pembelian melebihi batas, pembelian category ini max ${item.max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                         }
@@ -67,25 +65,23 @@ class CartPages extends React.Component {
                     console.log("IDX CATEGORY", i)
                     console.log("MAX QTY", this.state.type[i].max_qty)
                     console.log("DETAIL CART", cart[index].detail)
-                    if (cart[index].detail[idx].amount < this.state.type[i].max_qty) {
+                    let qty_beli = []
+                    cart[index].detail.forEach(el => {
+                        if (el.idcategory === idcategory) {
+                            qty_beli.push(el.amount)
+                        }
+                    })
+                    console.log('qty beli', qty_beli)
+                    let sum_qty_beli = qty_beli?.reduce((val, sum) => {
+                        return val + sum
+                    })
+                    console.log("BRP NI", sum_qty_beli, cart[index].detail[idx].amount)
+                    if (sum_qty_beli < this.state.type[i].max_qty) {
                         cart[index].detail[idx].amount += 1
                         console.log("SKG BRP", cart[index].detail[idx].amount)
-                        let qty_beli = []
-                        cart[index].detail.forEach(el => {
-                            if (el.idcategory === idcategory) {
-                                qty_beli.push(el.amount)
-                            }
-                        })
-                        console.log('qty beli', qty_beli)
-                        let sum_qty_beli = qty_beli?.reduce((val, sum) => {
-                            return val + sum
-                        })
-                        console.log("BRP NI", sum_qty_beli, cart[index].detail[idx].amount)
-                        if (sum_qty_beli > this.state.type[i].max_qty) {
-                            toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
-                        } else {
-                            updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
-                        }
+                        updateCart({ amount: cart[index].detail[idx].amount, idproduct: cart[index].detail[idx].idproduct, idcart: cart[index].idcart, subtotal: cart[index].detail[idx].amount * price })
+                    } else if (sum_qty_beli > this.state.type[i].max_qty) {
+                        toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                     } else {
                         toast.error(`Pembelian melebihi batas, pembelian category ini max ${this.state.type[i].max_qty}!`, { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                     }
@@ -222,6 +218,8 @@ class CartPages extends React.Component {
     handleToCheckOut = () => {
         if (this.totalQty() < this.props.cart.length * 5) {
             toast.warn('Kuantity anda kurang, pilih produk lagi!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+        } else if (this.totalQty() > this.props.cart.length * 5) {
+            toast.warn('Kuantity anda tidak sesuai!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
         }
     }
 
