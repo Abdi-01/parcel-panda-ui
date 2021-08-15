@@ -7,6 +7,7 @@ import "../resetPass/resetPassPage.css"
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 
 toast.configure()
 
@@ -37,6 +38,7 @@ class ResetPassPage extends React.Component {
                             axios.patch(URL_API + `/auth/update-pass`, { email: email, password: newPass })
                                 .then(res => {
                                     this.setState({ loading: false })
+                                    this.props.history.push('/')
                                     toast.success('Hey 👋 Your account has been updated!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
                                     console.log(res.data)
                                 }).catch(errPatch => console.log(errPatch))
@@ -49,6 +51,7 @@ class ResetPassPage extends React.Component {
                 }).catch(err => {
                     console.log(err)
                     toast.error('Reset Password Failed!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                    this.setState({ loading: false })
                 })
         } else {
             toast.warn('Your Email Invalid', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
@@ -100,7 +103,7 @@ class ResetPassPage extends React.Component {
                                 <small className="p-d-block username1-help">Confirm your password.</small>
                             </div>
                             <Button onClick={this.forgetPass} className="btncustom2" style={{ background: "#FAB629", color: "black" }} color="warning">
-                            {this.state.loading === true ? <Spinner color="secondary" style={{alignItems: 'center'}} /> : <span>Submit</span>}
+                                {this.state.loading === true ? <Spinner color="secondary" style={{ alignItems: 'center' }} /> : <span>Submit</span>}
                             </Button>
                         </Col>
                     </Row>
@@ -110,4 +113,4 @@ class ResetPassPage extends React.Component {
     }
 }
 
-export default ResetPassPage;
+export default withRouter(ResetPassPage);

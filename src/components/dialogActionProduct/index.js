@@ -135,7 +135,7 @@ const ActionProduct = ({ open, setOpen, action, data, getProductData }) => {
       console.log(error)
       setLoading(false)
       setOpen(false)
-      toast.error(`Error, can't edit product !`, {
+      toast.error(`Error, can't complete this action !`, {
         position: toast.POSITION.TOP_CENTER, autoClose: 3000
       });
     }

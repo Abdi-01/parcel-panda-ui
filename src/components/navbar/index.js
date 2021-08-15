@@ -19,6 +19,7 @@ class NavbarComp extends React.Component {
 
     onBtLogin = () => {
         this.props.authLogin(this.inputUsername.value, this.state.password)
+        this.props.history.push('/')
         this.setState({ modal: false, });
         this.setState({ password: '' });
     }

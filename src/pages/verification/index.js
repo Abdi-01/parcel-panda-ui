@@ -6,6 +6,7 @@ import "../verification/verificationPage.css"
 import axios from 'axios';
 import { URL_API } from '../../helper';
 import { toast } from 'react-toastify';
+import { withRouter } from 'react-router-dom';
 
 toast.configure()
 
@@ -36,9 +37,11 @@ class VerificationPage extends React.Component {
                 this.setState({ loading: false })
                 console.log(res.data)
                 toast.success('Hey 👋 Verification Success!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                this.props.history.push('/')
             }).catch(err => {
                 console.log(err)
                 toast.error('Verification Failed!', { position: toast.POSITION.TOP_CENTER, autoClose: 3000 })
+                this.setState({ loading: false })
             })
     }
     render() {
@@ -75,4 +78,4 @@ class VerificationPage extends React.Component {
     }
 }
 
-export default VerificationPage;
+export default withRouter(VerificationPage);
